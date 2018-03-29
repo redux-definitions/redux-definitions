@@ -1,0 +1,45 @@
+/* eslint-disable */
+// Flag
+import { createAction } from 'redux-actions'
+
+const generate = (namespace, field, actions, reducerFns) => {
+  const getType = (type) => `${namespace}/${field}/${type}`
+
+  actions[field] = {
+    set: createAction(getType('set')),
+    unset: createAction(getType('unset')),
+    toggle: createAction(getType('toggle')),
+  }
+
+  reducerFns[getType('set')] = (state, action) => {
+    const val = ('payload' in action) ? action.payload : true
+
+    if (typeof val !== 'boolean') {
+      console.warn(`Redux Enterprise\n\n\`${namespace}.${field}\` is being set with a non boolean value! Casting type.\n`)
+    }
+
+    return {
+      ...state,
+      [field]: !!val
+    }
+  }
+
+  reducerFns[getType('unset')] = (state) => {
+    return {
+      ...state,
+      [field]: false,
+    }
+  }
+
+  reducerFns[getType('toggle')] = (state) => {
+    const val = !state[field]
+    return {
+      ...state,
+      [field]: val,
+    }
+  }
+}
+
+export default {
+  generate
+}
