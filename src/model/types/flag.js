@@ -2,16 +2,18 @@
 // Flag
 import { createAction } from 'redux-actions'
 
-const generate = (namespace, field, actions, reducerFns) => {
-  const getType = (type) => `${namespace}/${field}/${type}`
+const generate = (namespace, field) => {
+  const getType = (type) => `${namespace}${field}/${type}`
 
-  actions[field] = {
+  const actions = {
     set: createAction(getType('set')),
     unset: createAction(getType('unset')),
     toggle: createAction(getType('toggle')),
   }
 
-  reducerFns[getType('set')] = (state, action) => {
+  const reducers = {}
+
+  reducers[getType('set')] = (state, action) => {
     const val = ('payload' in action) ? action.payload : true
 
     if (typeof val !== 'boolean') {
@@ -24,19 +26,24 @@ const generate = (namespace, field, actions, reducerFns) => {
     }
   }
 
-  reducerFns[getType('unset')] = (state) => {
+  reducers[getType('unset')] = (state) => {
     return {
       ...state,
       [field]: false,
     }
   }
 
-  reducerFns[getType('toggle')] = (state) => {
+  reducers[getType('toggle')] = (state) => {
     const val = !state[field]
     return {
       ...state,
       [field]: val,
     }
+  }
+
+  return {
+    actions,
+    reducers,
   }
 }
 

@@ -2,26 +2,33 @@
 // Setable
 import { createAction } from 'redux-actions'
 
-const generate = (namespace, field, actions, reducerFns) => {
-  const getType = (type) => `${namespace}/${field}/${type}`
+const generate = (namespace, field) => {
+  const getType = (type) => `${namespace}${field}/${type}`
 
-  actions[field] = {
+  const actions = {
     set: createAction(getType('set')),
     unset: createAction(getType('unset')),
   }
 
-  reducerFns[getType('set')] = (state, { payload }) => {
+  const reducers = {}
+
+  reducers[getType('set')] = (state, { payload }) => {
     return {
       ...state,
       [field]: payload,
     }
   }
 
-  reducerFns[getType('unset')] = (state) => {
+  reducers[getType('unset')] = (state) => {
     return {
       ...state,
       [field]: null,
     }
+  }
+
+  return {
+    actions,
+    reducers,
   }
 }
 

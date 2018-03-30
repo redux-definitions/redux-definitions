@@ -1,48 +1,44 @@
 /* eslint-disable */
 
-import { forIn } from 'lodash/object'
 import Normalized from 'nrmlzd'
 import { createAction, handleActions } from 'redux-actions'
 import {
   generateTypeMap,
   generateReducerMap,
-  generateActionsMap,
-} from './generate-updaters'
+} from './generators'
 
-const reducers = {}
+const Reducers = {}
 const Models = {}
 
 const createModel = (
   namespace,
   initialState,
   schema,
-  customUpdaters,
-  actionlessUpdaters,
+  customReducers,
+  actionlessReducers,
 ) => {
-  let actions = {}
-  let reducerFns = {}
+  let {
+    actions,
+    reducers,
+  } = generateTypeMap(schema, namespace)
 
-  generateTypeMap(schema, namespace, actions, reducerFns)
+  let {
+    actions: customActions,
+    reducers: namespacedCustomReducers,
+  } = generateReducerMap(customReducers, namespace)
 
-  // customUpdaters
-
-  reducerFns = {
-    ...reducerFns,
-    ...generateReducerMap(customUpdaters),
+  reducers = {
+    ...reducers,
+    ...namespacedCustomReducers,
+    ...actionlessReducers,
   }
 
   actions = {
     ...actions,
-    ...generateActionsMap(customUpdaters),
+    ...customActions,
   }
 
-  // actionlessUpdaters
-  reducerFns = {
-    ...reducerFns,
-    ...actionlessUpdaters,
-  }
-
-  const reducer = handleActions(reducerFns, initialState)
+  const reducer = handleActions(reducers, initialState)
 
   const model = {
     reducer,
@@ -50,11 +46,13 @@ const createModel = (
     selectors: {},
   }
 
-  reducers[namespace] = reducer
+  Reducers[namespace] = reducer
   Models[namespace] = model
 
   return model
 }
+
+const reducers = Reducers
 
 export {
   reducers,

@@ -2,42 +2,49 @@
 // Collection
 import { createAction } from 'redux-actions'
 
-const generate = (namespace, field, actions, reducerFns) => {
-  const getType = (type) => `${namespace}/${field}/${type}`
+const generate = (namespace, field) => {
+  const getType = (type) => `${namespace}${field}/${type}`
 
-  actions[field] = {
+  const actions = {
     set: createAction(getType('set')),
     reset: createAction(getType('reset')),
     upsert: createAction(getType('upsert')),
     remove: createAction(getType('remove')),
   }
 
-  reducerFns[getType('set')] = (state, { payload }) => {
+  const reducers = {}
+
+  reducers[getType('set')] = (state, { payload }) => {
     return {
       ...state,
       [field]: payload,
     }
   }
 
-  reducerFns[getType('reset')] = (state) => {
+  reducers[getType('reset')] = (state) => {
     return {
       ...state,
       [field]: Normalized.create(),
     }
   }
 
-  reducerFns[getType('upsert')] = (state, { payload }) => {
+  reducers[getType('upsert')] = (state, { payload }) => {
     return {
       ...state,
       [field]: Normalized.upsert(state[field], payload),
     }
   }
 
-  reducerFns[getType('remove')] = (state, { payload: id }) => {
+  reducers[getType('remove')] = (state, { payload: id }) => {
     return {
       ...state,
       [field]: Normalized.remove(state[field], id),
     }
+  }
+
+  return {
+    actions,
+    reducers,
   }
 }
 

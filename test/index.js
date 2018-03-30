@@ -2,32 +2,11 @@ import { expect } from 'chai'
 import { get } from 'lodash'
 import { createAction } from 'redux-actions'
 import {
-  generateActionMap,
   generateReducerMap,
   generateTypeMap,
-} from '../src/model/generate-updaters'
+} from '../src/model/generators'
 
-describe('generate', () => {
-  it('generateActionMap', () => {
-    const sampleObj = {
-      a: {
-        b: {
-          c: 'c',
-          d: 'd',
-        },
-        f: 'f',
-      },
-      e: 'e'
-    }
-
-    const actionMap = generateActionMap(sampleObj, 'namespace/')
-
-    expect(actionMap.a.b.c()).to.deep.equal(createAction('namespace/a/b/c')())
-    expect(actionMap.a.b.d()).to.deep.equal(createAction('namespace/a/b/d')())
-    expect(actionMap.a.f()).to.deep.equal(createAction('namespace/a/f')())
-    expect(actionMap.e()).to.deep.equal(createAction('namespace/e')())
-  })
-
+describe('generators', () => {
   it('generateReducerMap', () => {
     const sampleObj = {
       a: {
@@ -40,9 +19,14 @@ describe('generate', () => {
       e: 'e'
     }
 
-    const reducerMap = generateReducerMap(sampleObj, 'namespace/')
+    const { actions, reducers } = generateReducerMap(sampleObj, 'namespace/')
 
-    expect(reducerMap).to.deep.equal({
+    expect(actions.a.b.c()).to.deep.equal(createAction('namespace/a/b/c')())
+    expect(actions.a.b.d()).to.deep.equal(createAction('namespace/a/b/d')())
+    expect(actions.a.f()).to.deep.equal(createAction('namespace/a/f')())
+    expect(actions.e()).to.deep.equal(createAction('namespace/e')())
+
+    expect(reducers).to.deep.equal({
       'namespace/a/b/c': 'c',
       'namespace/a/b/d': 'd',
       'namespace/a/f': 'f',
@@ -62,13 +46,13 @@ describe('generate', () => {
       },
     }
 
-    const actions = {}
-    const reducerFns = {}
-
-    generateTypeMap(sampleObj, 'namespace', actions, reducerFns)
+    const { actions, reducers } = generateTypeMap(sampleObj, 'namespace/')
     console.log(actions)
-    console.log(reducerFns)
+    console.log(reducers)
 
-    expect(actions.length).to.equal(5)
+    expect(Object.keys(actions.a).length).to.equal(3)
+    expect(Object.keys(actions.b).length).to.equal(4)
+    expect(Object.keys(actions.c.d).length).to.equal(3)
+    expect(Object.keys(actions.c.e.f).length).to.equal(4)
   })
 })

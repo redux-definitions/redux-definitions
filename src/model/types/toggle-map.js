@@ -2,8 +2,9 @@
 // ToggleMap
 import { createAction } from 'redux-actions'
 
+// REFACTOR
 const generate = (namespace, field, actions, reducerFns, section) => {
-  const getType = (type) => `${namespace}/${field}/${type}`
+  const getType = (type) => `${namespace}${field}/${type}`
 
   if (section && !actions[section]) {
     actions[section] = {}
@@ -25,7 +26,7 @@ const generate = (namespace, field, actions, reducerFns, section) => {
     }
   }
 
-  reducerFns[getType('toggle')] = section
+  reducers[getType('toggle')] = section
     ? (state, action) => ({
         ...state,
         [section]: reducer(state[section], action)
