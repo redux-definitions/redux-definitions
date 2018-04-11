@@ -1,21 +1,29 @@
-import { createModel, Models, reducers } from './model'
-import {
-  attachModelsToConsole as attachModelsToConsoleUnbound
-} from './console'
+import { createModel as createModelO } from './model'
+import { attachModelsToConsole as attachModelsToConsoleO } from './console'
+
+const models = {}
+const reducers = {}
+
+const createModel = (schema) =>
+  createModelO(schema).map(model => {
+    models[model.namespace] = model
+    reducers[model.namespace] = model.reducer
+    return model
+  })
 
 const attachModelsToConsole = () =>
-  attachModelsToConsoleUnbound(Models)
+  attachModelsToConsoleO(models, global)
 
 export default {
-  reducers,
-  Models,
   createModel,
   attachModelsToConsole,
+  models,
+  reducers,
 }
 
 export {
-  reducers,
-  Models,
   createModel,
   attachModelsToConsole,
+  models,
+  reducers,
 }

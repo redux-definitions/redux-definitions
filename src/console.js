@@ -1,51 +1,41 @@
 /* eslint-disable */
 
-import { combineReducers } from 'redux'
-import { forIn, mapValues } from 'lodash/object'
+import { forIn } from 'lodash/object'
 import { upperFirst } from 'lodash/string'
 
-const window = global
-
-export function attachModelsToConsole(models) {
+export function attachModelsToConsole(models, window) {
   if (!window) {
+    console.warn('Attempted to attach model, but no `window`')
     return
   }
 
-  window.re = {}
+  if (!window.dispatch) {
+    console.warn('Attempted to attach model, but no `dispatch` function on `window`')
+    return
+  }
 
-  const reducers = {}
-  const actions = {}
+  forIn(models, (model, key) => {
+    window[upperFirst(key)] = bindActionMap(model.actions, window.dispatch)
+  })
+}
 
-  forIn(models, (model, name) => {
-    const n = upperFirst(name)
+function bindActionMap(actions, dispatch) {
+  const allActions = {}
 
-    // reducer
-    reducers[name] = model.reducer
+  forIn(actions, (val, key) => {
 
-    // actions
-    actions[n] = model.actions
-    window[n] = mapValues(model.actions, (action) => {
-      // make traversing objects generic
-      if (typeof action === 'object') {
-        return mapValues(action, (action) => {
-          return (...params) => {
-            const a = action(...params)
-            console.log(a)
-            window.dispatch(a)
-          }
-        })
-      }
-
-      return (...params) => {
+    if (typeof val === 'object') {
+      allActions[key] = bindActionMap(val, dispatch)
+    } else {
+      const action = val
+      allActions[key] = (...params) => {
         const a = action(...params)
-        console.log(a)
-        window.dispatch(a)
+        // console.log(a)
+        dispatch(a)
+        return a
       }
-    })
+    }
   })
 
-  return {
-    reducers,
-    actions,
-  }
+  return allActions
 }

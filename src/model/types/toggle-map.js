@@ -3,8 +3,10 @@
 import { createAction } from 'redux-actions'
 
 // REFACTOR
-const generate = (namespace, field, actions, reducerFns, section) => {
-  const getType = (type) => `${namespace}${field}/${type}`
+const generate = (namespacing, actions, reducerFns, section) => {
+  const namespace = namespacing.join('/')
+  const field = namespace[-1]
+  const getType = (type) => `${namespace}/${type}`
 
   if (section && !actions[section]) {
     actions[section] = {}

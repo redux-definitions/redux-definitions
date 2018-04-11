@@ -1,9 +1,14 @@
 /* eslint-disable */
 // Flag
 import { createAction } from 'redux-actions'
+import { scopeReductionFactory } from './utils'
 
-const generate = (namespace, field) => {
-  const getType = (type) => `${namespace}${field}/${type}`
+const generate = (namespacing) => {
+  const namespace = namespacing.join('/')
+  const field = namespacing[namespacing.length - 1]
+  const getType = (type) => `${namespace}/${type}`
+  const scopeReduction = scopeReductionFactory(namespacing)
+  const reducers = {}
 
   const actions = {
     set: createAction(getType('set')),
@@ -11,39 +16,38 @@ const generate = (namespace, field) => {
     toggle: createAction(getType('toggle')),
   }
 
-  const reducers = {}
-
-  reducers[getType('set')] = (state, action) => {
+  reducers[getType('set')] = scopeReduction((state, action) => {
     const val = ('payload' in action) ? action.payload : true
 
     if (typeof val !== 'boolean') {
-      console.warn(`Redux Enterprise\n\n\`${namespace}.${field}\` is being set with a non boolean value! Casting type.\n`)
+      console.warn(`Redux Enterprise\n\n\`${namespace}\` is being set with a non boolean value! Casting type.\n`)
     }
 
     return {
       ...state,
       [field]: !!val
     }
-  }
+  })
 
-  reducers[getType('unset')] = (state) => {
+  reducers[getType('unset')] = scopeReduction((state) => {
     return {
       ...state,
       [field]: false,
     }
-  }
+  })
 
-  reducers[getType('toggle')] = (state) => {
+  reducers[getType('toggle')] = scopeReduction((state) => {
     const val = !state[field]
     return {
       ...state,
       [field]: val,
     }
-  }
+  })
 
   return {
     actions,
     reducers,
+    initialState: false,
   }
 }
 

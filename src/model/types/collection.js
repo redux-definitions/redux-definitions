@@ -1,9 +1,15 @@
 /* eslint-disable */
 // Collection
 import { createAction } from 'redux-actions'
+import Normalized from 'nrmlzd'
+import { scopeReductionFactory } from './utils'
 
-const generate = (namespace, field) => {
-  const getType = (type) => `${namespace}${field}/${type}`
+const generate = (namespacing) => {
+  const namespace = namespacing.join('/')
+  const field = namespacing[namespacing.length - 1]
+  const getType = (type) => `${namespace}/${type}`
+  const scopeReduction = scopeReductionFactory(namespacing)
+  const reducers = {}
 
   const actions = {
     set: createAction(getType('set')),
@@ -12,39 +18,38 @@ const generate = (namespace, field) => {
     remove: createAction(getType('remove')),
   }
 
-  const reducers = {}
-
-  reducers[getType('set')] = (state, { payload }) => {
+  reducers[getType('set')] = scopeReduction((state, { payload }) => {
     return {
       ...state,
-      [field]: payload,
+      [field]: Normalized.fromArray(payload),
     }
-  }
+  })
 
-  reducers[getType('reset')] = (state) => {
+  reducers[getType('reset')] = scopeReduction((state) => {
     return {
       ...state,
       [field]: Normalized.create(),
     }
-  }
+  })
 
-  reducers[getType('upsert')] = (state, { payload }) => {
+  reducers[getType('upsert')] = scopeReduction((state, { payload }) => {
     return {
       ...state,
       [field]: Normalized.upsert(state[field], payload),
     }
-  }
+  })
 
-  reducers[getType('remove')] = (state, { payload: id }) => {
+  reducers[getType('remove')] = scopeReduction((state, { payload: id }) => {
     return {
       ...state,
       [field]: Normalized.remove(state[field], id),
     }
-  }
+  })
 
   return {
     actions,
     reducers,
+    initialState: Normalized.create(),
   }
 }
 

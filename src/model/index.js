@@ -1,61 +1,56 @@
 /* eslint-disable */
 
-import Normalized from 'nrmlzd'
 import { createAction, handleActions } from 'redux-actions'
-import {
-  generateTypeMap,
-  generateReducerMap,
-} from './generators'
+import { generateTypeMap, generateReducerMap } from './generators'
 
-const Reducers = {}
-const Models = {}
-
-const createModel = (
+const generateModel = (
   namespace,
-  initialState,
   schema,
-  customReducers,
-  actionlessReducers,
+  // customReducers,
 ) => {
+  const namespacing = [namespace]
+
   let {
     actions,
     reducers,
-  } = generateTypeMap(schema, namespace)
+    initialState,
+  } = generateTypeMap(schema, namespacing)
 
-  let {
-    actions: customActions,
-    reducers: namespacedCustomReducers,
-  } = generateReducerMap(customReducers, namespace)
+  // let {
+  //   actions: customActions,
+  //   reducers: namespacedCustomReducers,
+  //   initialState: customInitialState,
+  // } = generateReducerMap(customReducers, namespacing)
 
   reducers = {
     ...reducers,
-    ...namespacedCustomReducers,
-    ...actionlessReducers,
+    // ...namespacedCustomReducers,
   }
 
   actions = {
     ...actions,
-    ...customActions,
+    // ...customActions,
+  }
+
+  initialState = {
+    ...initialState,
+    // ...customInitialState,
   }
 
   const reducer = handleActions(reducers, initialState)
 
   const model = {
+    namespace,
     reducer,
     actions,
     selectors: {},
   }
 
-  Reducers[namespace] = reducer
-  Models[namespace] = model
-
   return model
 }
 
-const reducers = Reducers
+export const createModel = (schema) =>
+  Object.entries(schema).map(([namespace, reducerSchema]) =>
+    generateModel(namespace, reducerSchema)
+  )
 
-export {
-  reducers,
-  createModel,
-  Models,
-}
