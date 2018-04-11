@@ -70,7 +70,7 @@ import { reducers } from 'redux-enterprise'
 ```
 
 #### Model some data
-Open your reducers/index.js file or any other file that your project imports and use Redux Enterpise to model some new state. This will automatically add a `todos` reducer to your store and actions onto the Redux Enterprise `Actions` object, as well as directly on the browser console by name.
+Open your reducers/index.js file or any other file that your project imports and use Redux Enterprise to model some new state. This will automatically add a `todos` reducer to your store and actions onto the Redux Enterprise `Actions` object, as well as directly on the browser console by name.
 ```js
 import { Model, Types } from 'redux-enterprise'
 const { Collection, Flag, Setable } = Types
