@@ -1,7 +1,6 @@
 <h1 align="center">
   <br>
   🚀 Redux Enterprise
-  <p align="center"><i>standardization, productivity, compatibility</i></p>
   <br>
   <br>
 </h1>
@@ -12,6 +11,8 @@
   <a href="https://www.npmjs.com/package/redux-enterprise"><img src="https://img.shields.io/npm/dm/redux-enterprise.svg" alt="npm downloads"></a>
   <a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="Standard - JavaScript Style Guide"></a>
 </p>
+
+> standardization, productivity, compatibility
 
 ## Overview
 
