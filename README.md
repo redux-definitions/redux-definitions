@@ -40,7 +40,7 @@ Actions.Todos.todos.add({ id: 1, message: 'Hello Burp Morty' })
 Actions.Todos.todos.upsert({ id: 1, message: 'Hello Morty' })
 ```
 
-### Automagic Rails-style REPL right in your browser console
+### Get an auto-magic Redux REPL right in your browser console
 When in dev mode Redux Enterprise also automagically provides an in-browser REPL for dispatching prebound actions or exploring data selectors:
 <img  width="100%" src="images/repl.gif" />
 
