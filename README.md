@@ -45,12 +45,54 @@ When in dev mode Redux Enterprise also automagically provides an in-browser REPL
 <img  width="100%" src="images/repl.gif" />
 
 
-## Installation
+## Add it to your project in under 5 minutes
 
+#### Install
 ```sh
 yarn add redux-enterprise
 ```
 
+#### Configure your store
+The easiest way to get Redux Enterprise reducers plugged into your store is to find your call to Redux's `createStore` and configure it to asyncronously accept some async reducers:
+```js
+import { reducers } from 'redux-enterprise'
+...
+const store = createStore(
+  createRootReducer(reducers),
+  initialState,
+  bindMiddleware()
+)
+...
+```
+
+#### Model some data
+Open your reducers/index.js file or any other file that your project imports and use Redux Enterpise to model some new state. This will automatically add a `todos` reducer to your store and actions onto the Redux Enterprise `Actions` object, as well as directly on the browser console by name.
+```js
+import { Model, Types } from 'redux-enterprise'
+const { Collection, Flag, Setable } = Types
+
+Model({
+  todos: {
+    todos: Collection,
+    isEditing: Flag,
+    EditingId: Setable
+  }
+})
+```
+
+#### Play with the new reducer in your browser console
+```js
+> Todos.isEditing.toggle()
+prev state {todos: { todos: {...}, isEditing: false, editingId: null }}
+action {type: "todos/isEditing/toggle"}
+next state {todos: { todos: {...}, isEditing: true, editingId: null }}
+```
+
+## Boilerplates and Examples
+
+Create React App - Enterprise
+
+Nextjs `examples/with-redux-enterprise`
 
 ## Contributing
 
