@@ -14,7 +14,7 @@
 
 ## Overview
 
-Library for scaling Redux based projects by promoting the use of consistent and standardized reducer and actions. As projects grow it quickly becomes critical to keep reducers lean, map actions to specific reducer handlers, and to standardize handling and naming for the typical best data structures found in redux.
+Redux Enterprise is a library for scaling Redux-based projects that enforces the use of consistent and standardized reducers and actions by generating them from state modeling. As projects grow it quickly becomes critical to keep reducers lean, map actions to specific reducer handlers, and to standardize handling and naming for the typical best data structures found in Redux. The core Redux pattern of message passing, data immutibility, unidirectional flow, and all associated benefits remain, Redux Enterprise simply adds a layer of standarization and tooling so developers can be productive and continue moving quickly even as projects grow to dozens or hundreds of reducers and detailed pieces of state.
 
 ### Generate reducers actions and selectors from a data model
 Redux Enterprise allows you to describe your core application state using a collection of high level data structures:
