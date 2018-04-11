@@ -1,6 +1,7 @@
 <h1 align="center">
   <br>
   🚀 Redux Enterprise
+  <p align="center"><i>standardization, productivity, compatibility</i></p>
   <br>
   <br>
 </h1>
