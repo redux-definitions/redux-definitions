@@ -19,10 +19,10 @@ Redux Enterprise is a library for scaling Redux-based projects that enforces the
 ### Generate reducers actions and selectors from a data model
 Redux Enterprise allows you to describe your core application state using a collection of high level data structures:
 ```js
-import { Model, Types } from 'redux-enterprise'
+import { State, Types } from 'redux-enterprise'
 const { Collection, Flag } = Types
 
-Model({
+const { actions, reducers } = State({
   todos: {
     todos: Collection,
     isEditing: Flag
@@ -31,19 +31,37 @@ Model({
 })
 ```
 ### Fully compatible with any Redux based project - gradually introduce consistency
-The library generates reducers and actions that can seamlessly be introduced into existing Redux projects. The standardized actions are automatically available on the Actions object:
+The library generates reducers and actions that can seamlessly be introduced into existing Redux projects. The standardized `actions` are returned from a `State` definition but also for your convenience automatically available on the library's `Actions` object:
 ```js
+actions.Todos.todos.create({ id: 1, message: 'Hello Burp Morty' })
+Actions.Comments.create({ id: 1, message: 'please add some todos' })
+
+// or 
+
 import { Actions } from 'redux-enterprise'
 
 Actions.Todos.isEditing.set()
-Actions.Todos.todos.add({ id: 1, message: 'Hello Burp Morty' })
+> { type: 'todos/isEditing/set' }
+Actions.Todos.todos.create({ id: 1, message: 'Hello Burp Morty' })
+> { type: 'todos/todos/create', payload: { id: 1, message: 'Hello Burp Morty' } }
 Actions.Todos.todos.upsert({ id: 1, message: 'Hello Morty' })
+> { type: 'todos/todos/upsert', payload: { id: 1, message: 'Hello Morty' } }
+Actions.Todos.todos.remove(1)
+> { type: 'todos/todos/remove', payload: 1 }
+Actions.Comments.create({ id: 1, message: 'I like your todo list' })
+> { type: 'todos/todos/remove', payload: 1 }
 ```
 
-### Get an auto-magic Redux REPL right in your browser console
-When in dev mode Redux Enterprise also automagically provides an in-browser REPL for dispatching prebound actions or exploring data selectors:
-<img  width="100%" src="images/repl.gif" />
+> Remember  these are action creators that return an action object, they must be dispatched just like any other actions!
 
+### Get an automagic Redux-REPL right in your browser console
+There is another added benefit of using Redux Enterprise to describe your state!
+When in dev mode Redux Enterprise also automatically provides an in-browser REPL for dispatching prebound actions or exploring data selectors:
+<img  width="100%" src="images/repl.gif" />
+> Unlike the above actions, these actions are prebound for your convenience. Remember only in the console!
+```js
+> Todos.isEditing.toggle() // is bound to `store.dispatch(Todos.isEditing.toggle())`
+```
 
 ## Add it to your project in under 5 minutes
 
