@@ -1,6 +1,7 @@
 <h1 align="center">
   <br>
-  🚀 Redux Enterprise
+  <img width="30px" src="https://github.com/redux-enterprise/redux-enterprise/blob/master/images/logo.png?raw=true" alt="🚀">
+  Redux Enterprise
   <br>
   <br>
 </h1>
