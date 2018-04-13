@@ -1,5 +1,6 @@
-<p align="center"><img width="50px" src="https://github.com/redux-enterprise/redux-enterprise/blob/master/images/logo.png?raw=true" alt="🚀"></p>
+<p align="center"></p>
 <h1 align="center">
+  <img width="30px" src="https://github.com/redux-enterprise/redux-enterprise/blob/master/images/logo.png?raw=true" alt="🚀">
   Redux Enterprise
   <br>
   <br>
