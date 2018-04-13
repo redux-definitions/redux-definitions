@@ -101,7 +101,7 @@ const { reducers } = defineState({
   comments: Collection,
   notifications: Queue
 })
-// `reducers` contains two reducers:
+// `reducers` contains three reducers:
 // { todos: fn, comments: fn, notifications: fn }
 ```
 
@@ -118,22 +118,22 @@ const rootReducer = combineReducers({
 #### Play with the new reducers in your browser console
 ```js
 > Todos.isEditing.toggle()
-prev state {todos: { todos: {..0}, isEditing: false, editingId: null }, comments: {..0}, notifications: {...} }
+// prev state {todos: { todos: {..0}, isEditing: false, editingId: null }, comments: {..0}, notifications: {...} }
 action {type: "todos/isEditing/toggle"}
-next state {todos: { todos: {..0}, isEditing: true, editingId: null }, comments: {..0}, notifications: {...} }
+// next state {todos: { todos: {..0}, isEditing: true, editingId: null }, comments: {..0}, notifications: {...} }
 > Comments.create({ id: 5, message: 'new comment' })
-prev state {todos: { todos: {..0}, isEditing: true, editingId: null }, comments: {...}, notifications: {...} }
+// prev state {todos: { todos: {..0}, isEditing: true, editingId: null }, comments: {...}, notifications: {...} }
 action {type: "comments/create", payload: { id: 5, message: "new comment" } }
-next state {todos: { todos: {..0}, isEditing: true, editingId: null }, comments: {..1}, notifications: {...} }
+// next state {todos: { todos: {..0}, isEditing: true, editingId: null }, comments: {..1}, notifications: {...} }
 ```
 
 ### Custom reducer functions
-Redux Enterprise `defineState` also allows you to create custom reducers. Anywhere in the state map if a function is added Redux Enterprise passes the function the reducer `state` and `action`:
+Redux Enterprise also allows you to create custom reducer functions. Anywhere in the state map if a function is added, `defineState` passes the function the reducer's `state` and incoming `action`:
 ```js
 import { defineState, StateTypes } from 'redux-enterprise'
 const { Collection, Flag, Setable } = StateTypes
 
-const { reducers } = defineState({
+const { reducers, actions } = defineState({
   todos: {
     todos: Collection,
     isEditing: Flag,
@@ -144,9 +144,16 @@ const { reducers } = defineState({
     }
   }
 })
+
+actions.todos.customReducer('morty')
+// { type: 'todos/customReducer', payload: 'morty' }
 ```
+As shown above, the cooresponding action type is the object path to the function. This action is automatically avaible on the actions object.
+
+#### Nesting
 If you nest a function, the `state` passed in will be scoped to that level of state automatically:
 ```js
+const { reducers } = defineState({
   nested: {
     stuff: {
       someId: Setable,
