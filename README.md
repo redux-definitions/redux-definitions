@@ -14,6 +14,10 @@
   <a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="Standard - JavaScript Style Guide"></a>
 </p>
 
+> Welcome 👋 Make sure to explore our [issues](https://github.com/redux-enterprise/redux-enterprise/issues), and feel free to ask any questions you may have!
+
+> [Learn how to get up and running in 5 minutes](#user-content-add-it-to-your-project-in-under-5-minutes)!
+
 ## Overview
 
 Redux Enterprise is a library for scaling Redux-based projects that enforces the use of consistent and standardized reducers and actions by generating them from a state description. As projects grow it quickly becomes critical to keep reducers lean, map actions to specific reducers. It is also critical to standardize the way reducers update state and the naming of their actions. Reducers housing state of similar data structure should always share identical action/reducer interfaces, we can get this by describing our state and generating everything else. The core Redux pattern of message passing, data immutibility, unidirectional flow, and all associated benefits remain, Redux Enterprise simply adds a layer of standarization and tooling so developers can be productive and continue moving quickly even as projects grow to dozens or hundreds of reducers and detailed pieces of state. Best of all, Redux Enterprise can be gradually introduced into existing projects without any refactoring.
