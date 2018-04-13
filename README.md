@@ -143,9 +143,3 @@ Nextjs `examples/with-redux-enterprise`
 ## Contributing
 
 Please check out the [Contributing](https://github.com/redux-enterprise/redux-enterprise/blob/master/CONTRIBUTING.md) page to learn how to get involved. TLDR the [Github issues tab](https://github.com/redux-enterprise/redux-enterprise/issues) is your friend.
-
-## Community
-
-Feel free to tweet your questions, concerns, ideas, or appreciation to @alexfreska.
-We also plan to create a Spectrum community chat.
-
