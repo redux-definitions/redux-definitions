@@ -48,14 +48,19 @@ const { Todos, TodoEditor, Notifications } = actions
 
 Todos.create({ id: 13, message: 'Hello Burp Morty' })
 // { type: 'todos/create', payload: { id: 13, message: 'Hello Burp Morty' } }
+
 Todos.upsert({ id: 13, message: 'Hello Morty' })
 // { type: 'todos/upsert', payload: { id: 13, message: 'Hello Morty' } }
+
 TodoEditor.editingId.set(37)
 // { type: 'todoEditor/editingId/set', payload: 37 }
+
 Todos.remove(37)
 // { type: 'todos/remove', payload: 37 }
+
 Notifications.push({ id: 37, title: 'Bob has edited a todo' })
 // { type: 'notifications/push', payload: { id: 37, message: 'Bob has edited a todo' } }
+
 Notifications.clear()
 // { type: 'notifications/clear' }
 ```
