@@ -24,7 +24,7 @@ Redux Enterprise is a library for **scaling development on Redux-based projects*
 
 As projects grow it quickly becomes critical to keep reducers lean and to map very specific actions to these reducers. Reducers housing state of similar data structure (eg, Collection, Flag, Form, Request, Inbox) should always share identical standardized action/reducer interfaces when used multiple times in a project or even across projects. We can achieive this by generating our reducers and their actions from a library of reusable state types. State types are high-level enough to promote a focus on business logic, but simple enough to be reusable and composable. The core Redux patterns of message passing, data immutibility, unidirectional flow, and all associated benefits remain; Redux Enterprise simply adds a layer of standarization and tooling so developers can **stay productive and ship features at a consistent pace even as projects grow to dozens or hundreds of reducers**. Best of all, Redux Enterprise can be gradually introduced into existing projects without any refactoring.
 
-### Generate reducers, actions, and selectors from a higher-order state model
+## Generate reducers, actions, and selectors from a higher-order state model
 Redux Enterprise allows you to describe your core application state using a library of [State Types](#state-types):
 ```js
 import { defineState, StateTypes } from 'redux-enterprise'
@@ -41,7 +41,7 @@ const { actions, reducers, selectors } = defineState({
 ```
 > each top-level key in the `defineState` schema generates a separate reducer
 
-#### Actions
+### Actions
 The standardized `actions` are returned from the `defineState` definition. The State Type determines what actions are available. For example a `Collection` has actions `create`, `update`, `upsert`, `remove`, `set`, `reset`, `clear`. Learn more in the [State Types](#state-types) section.
 ```js
 const { Todos, TodoEditor, Notifications } = actions
@@ -60,14 +60,14 @@ Notifications.clear()
 // { type: 'notifications/clear' }
 ```
 
-> Remember:  these are action creators that return an action object, they must be dispatched just like any other actions!
+> ⚠️ Remember that these are action creators. The actions must be dispatched just like any other actions!
 
 For your convenience all actions are also automatically available on the library's `Actions` object:
 ```js
 import { Actions } from 'redux-enterprise'
 ```
 
-#### Selectors
+### Selectors
 Selectors ([from the ubiquitous reselect library](https://github.com/reactjs/reselect)) are also returned from `defineState`. A `Collection` has `all`, `byId`, and `ids`:
 
 ```js
@@ -78,7 +78,7 @@ Todos.byId(state, { id }) // returns a todo with matching `id`
 Todos.ids(state) // returns an array of ids
 ```
 
-### Automagically get a Redux-REPL right in your browser console
+## Automatic Redux-REPL right in your browser console
 When in dev mode Redux Enterprise also automatically provides an in-browser REPL for dispatching prebound actions:
 <img  width="100%" src="images/repl.gif" />
 > For your convenience unlike normal actions, calls to actions in the browser console are prebound to `store.dispatch`. Remember, only in the console!
