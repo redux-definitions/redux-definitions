@@ -39,7 +39,7 @@ const { actions, reducers, selectors } = defineState({
   notifications: Inbox
 })
 ```
-> each top-level key in the `defineState` schema generates a separate reducer
+> Each top-level key in the `defineState` schema generates a separate reducer.
 
 ### Actions
 The standardized `actions` are returned from the `defineState` definition. The State Type determines what actions are available. For example a `Collection` has actions `create`, `update`, `upsert`, `remove`, `set`, `reset`, `clear`. Learn more in the [State Types](#state-types) section.
