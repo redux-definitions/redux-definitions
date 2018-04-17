@@ -198,21 +198,60 @@ const { reducers } = defineState({
 })
 ```
 
-## Boilerplates and Examples
-
-Create React App - Enterprise
-
-Nextjs `examples/with-redux-enterprise`
-
 ## State Types
 
 ### Collection
+A Collection stores like-objects with at minimum `id` attributes.
+
+```js
+Collection
+
+// These are the default options
+Collection({ indices = [], initialState = { ids: [], data: {} } })
+```
+
+#### Data Structure
+The underline data structure is normalized:
+```js
+{
+  ids: [1,2,3],
+  data: {
+    1: { id: 1, name: 'Morty' },
+    2: { id: 1, name: 'Rick' },
+    3: { id: 1, name: 'Summer' }
+  }
+}
+```
+
+#### Actions
+`create`: Adds an object to the collection.
+`update`: Updates an existing object in the collection.
+`upsert`: Updates or creates an object in the collection.
+`remove`: Removes any object with matching id.
+`set`: Sets the entire collection from an array of objects.
+`reset`: Resets collection to initialState.
+`clear`: Empties the colleciton.
+
+##### Selectors
+`all`: Array of all collection items.
+`byId`: Item from the collection if one matches
+`ids`: Array of all collection item ids.
+
+###### Indices
+
+
 ### Flag
 ### Setable
 
 ## Advanced
 
 ## Typescript & Flow Integration
+
+## Boilerplates and Examples
+
+Create React App - Enterprise
+
+Nextjs `examples/with-redux-enterprise`
 
 ## Contributing
 
