@@ -41,8 +41,8 @@ const { actions, reducers, selectors } = defineState({
 ```
 > each top-level key generates a separate reducer
 
-### Fully compatible with any existing Redux-based project - incrementally introduce consistency
-The library generates reducers and actions that can seamlessly be introduced into existing Redux projects without the need to refactor existing code. The standardized `actions` are returned from a `defineState` definition:
+#### Actions
+The standardized `actions` are returned from the `defineState` definition. The State Type determines what actions are available. For example a `Collection` has actions `create`, `update`, `upsert`, `remove`, `set`, `reset`, `clear`. Learn more in the [State Types](#state-types) section.
 ```js
 const { Todos, TodoEditor, Notifications } = actions
 
@@ -60,12 +60,23 @@ Notifications.clear()
 // { type: 'notifications/clear' }
 ```
 
-for your convenience all actions are also automatically available on the library's `Actions` object:
+> Remember:  these are action creators that return an action object, they must be dispatched just like any other actions!
+
+For your convenience all actions are also automatically available on the library's `Actions` object:
 ```js
 import { Actions } from 'redux-enterprise'
 ```
 
-> Remember:  these are action creators that return an action object, they must be dispatched just like any other actions!
+#### Selectors
+Selectors ([from the ubiquitous reselect library](https://github.com/reactjs/reselect)) are also returned from `defineState`. A `Collection` has `all`, `byId`, and `ids`:
+
+```js
+const { Todos, TodoEditor, Notifications } = selectors
+
+Todos.all(state) // returns a collection of todos
+Todos.byId(state, { id }) // returns a todo with matching `id`
+Todos.ids(state) // returns an array of ids
+```
 
 ### Automagically get a Redux-REPL right in your browser console
 When in dev mode Redux Enterprise also automatically provides an in-browser REPL for dispatching prebound actions:
