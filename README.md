@@ -83,7 +83,9 @@ When in dev mode Redux Enterprise also automatically provides an in-browser REPL
 
 
 <img  width="100%" src="images/repl.gif" />
+
 > For your convenience unlike normal actions, calls to actions in the browser console are prebound to `store.dispatch`. Remember, only in the console!
+
 ```js
 > TodoEditor.isEditing.toggle() // is bound to `store.dispatch(TodoEditor.isEditing.toggle())`
 // store.dispatch({ type: 'todoEditor/isEditing/toggle' })
@@ -162,12 +164,11 @@ import { defineState, StateTypes } from 'redux-enterprise'
 const { Collection, Flag, Setable } = StateTypes
 
 const { reducers, actions } = defineState({
-  todos: {
-    todos: Collection,
+  todoEditor: {
     isEditing: Flag,
     editingId: Setable,
     customerReducer: (state, action) => {
-      // do anything I please with the `todos` reducer
+      // do anything I please with the `todoEditor` reducer
       return state
     }
   }
