@@ -63,7 +63,7 @@ Notifications.clear()
 > ⚠️ Remember that these are action creators. The actions must be dispatched just like any other actions!
 
 ### Selectors
-[Selectors](https://github.com/reactjs/reselect)) are also returned from `defineState`. A `Collection` has `all`, `byId`, and `ids`:
+[Selectors](https://github.com/reactjs/reselect) are also returned from `defineState`. A `Collection` has `all`, `byId`, and `ids`:
 
 ```js
 const { Todos, TodoEditor, Notifications } = selectors
@@ -173,7 +173,7 @@ const { reducers, actions } = defineState({
 actions.todos.customReducer('morty')
 // { type: 'todos/customReducer', payload: 'morty' }
 ```
-As shown above, the corresponding action creator is automatically available on the actions object.
+As shown above, the corresponding action creator is available on the actions object.
 
 #### Nesting
 If you nest a function, the `state` passed in will be scoped to that level of state automatically:
