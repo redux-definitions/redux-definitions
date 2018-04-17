@@ -22,61 +22,58 @@
 
 Redux Enterprise is a library for **scaling development on Redux-based projects** through the use of **consistent and standardized** reducers and actions generated from **[higher-order state types](#state-types)**.
 
-As projects grow it quickly becomes critical to keep reducers lean and to map very specific actions to these reducers. Reducers housing state of similar data structure (eg, Collection, Flag, Form, Queue, Inbox) should always share identical standardized action/reducer interfaces when used multiple times in a project or even across projects. We can achieive this by generating our reducers and their actions from a library of reusable state types. State types are high-level enough to promote a focus on business logic, but simple enough to be reusable and composable. The core Redux patterns of message passing, data immutibility, unidirectional flow, and all associated benefits remain; Redux Enterprise simply adds a layer of standarization and tooling so developers can stay productive and ship features at a consistent pace even as projects grow to dozens or hundreds of reducers. Best of all, Redux Enterprise can be gradually introduced into existing projects without any refactoring.
+As projects grow it quickly becomes critical to keep reducers lean and to map very specific actions to these reducers. Reducers housing state of similar data structure (eg, Collection, Flag, Form, Request, Inbox) should always share identical standardized action/reducer interfaces when used multiple times in a project or even across projects. We can achieive this by generating our reducers and their actions from a library of reusable state types. State types are high-level enough to promote a focus on business logic, but simple enough to be reusable and composable. The core Redux patterns of message passing, data immutibility, unidirectional flow, and all associated benefits remain; Redux Enterprise simply adds a layer of standarization and tooling so developers can **stay productive and ship features at a consistent pace even as projects grow to dozens or hundreds of reducers**. Best of all, Redux Enterprise can be gradually introduced into existing projects without any refactoring.
 
-### Generate reducers actions and selectors from a data model
-Redux Enterprise allows you to describe your core application state using a library of data structures, or [state types](#state-types):
+### Generate reducers actions and selectors from a higher-order state model
+Redux Enterprise allows you to describe your core application state using a library of [State Types](#state-types):
 ```js
 import { defineState, StateTypes } from 'redux-enterprise'
-const { Collection, Flag, Queue } = StateTypes
+const { Collection, Flag, Setable, Inbox } = StateTypes
 
 const { actions, reducers } = defineState({
-  todos: {
-    todos: Collection,
-    isEditing: Flag
+  todos: Collection,
+  todoEditor: {
+    isEditing: Flag,
+    editingId: Setable,
   },
-  comments: Collection,
-  notifications: Queue
+  notifications: Inbox
 })
 ```
-### Fully compatible with any Redux based project - gradually introduce consistency
-The library generates reducers and actions that can seamlessly be introduced into existing Redux projects. The standardized `actions` are returned from a `defineState` definition:
-```js
-actions.Todos.todos.create({ id: 1, message: 'Hello Burp Morty' })
-// { type: 'todos/todos/create', payload: { id: 1, message: 'Hello Burp Morty' } }
-actions.Comments.create({ id: 6, message: 'please add some todos' })
-// { type: 'comments/create', payload: { id: 6, message: 'please add some todos' } }
-actions.Notifications.push({ id: 1, title: 'Bob has edited a todo' })
-// { type: 'notifications/push', payload: { id: 1, message: 'Bob has edited a todo' } }
-```
+> each top-level key generates a separate reducer
 
-...but also for your convenience automatically available on the library's `Actions` object:
+### Fully compatible with any existing Redux-based project - incrementally introduce consistency
+The library generates reducers and actions that can seamlessly be introduced into existing Redux projects without the need to refactor existing code. The standardized `actions` are returned from a `defineState` definition:
 ```js
-import { Actions } from 'redux-enterprise'
+const { Todos, TodoEditor, Notifications } = actions
 
-Actions.Todos.isEditing.set()
-// { type: 'todos/isEditing/set' }
-Actions.Todos.todos.create({ id: 1, message: 'Hello Burp Morty' })
-// { type: 'todos/todos/create', payload: { id: 1, message: 'Hello Burp Morty' } }
-Actions.Todos.todos.upsert({ id: 1, message: 'Hello Morty' })
-// { type: 'todos/todos/upsert', payload: { id: 1, message: 'Hello Morty' } }
-Actions.Todos.todos.remove(1)
-// { type: 'todos/todos/remove', payload: 1 }
-Actions.Comments.create({ id: 7, message: 'I like your todo list' })
-// { type: 'todos/todos/remove', payload: 1 }
-Actions.Notifications.clear()
+Todos.create({ id: 13, message: 'Hello Burp Morty' })
+// { type: 'todos/create', payload: { id: 13, message: 'Hello Burp Morty' } }
+Todos.upsert({ id: 13, message: 'Hello Morty' })
+// { type: 'todos/upsert', payload: { id: 13, message: 'Hello Morty' } }
+TodoEditor.editingId.set(37)
+// { type: 'todoEditor/editingId/set', payload: 37 }
+Todos.remove(37)
+// { type: 'todos/remove', payload: 37 }
+Notifications.push({ id: 37, title: 'Bob has edited a todo' })
+// { type: 'notifications/push', payload: { id: 37, message: 'Bob has edited a todo' } }
+Notifications.clear()
 // { type: 'notifications/clear' }
 ```
 
-> Remember  these are action creators that return an action object, they must be dispatched just like any other actions!
+for your convenience all actions are also automatically available on the library's `Actions` object:
+```js
+import { Actions } from 'redux-enterprise'
+```
+
+> Remember:  these are action creators that return an action object, they must be dispatched just like any other actions!
 
 ### Automagically get a Redux-REPL right in your browser console
 When in dev mode Redux Enterprise also automatically provides an in-browser REPL for dispatching prebound actions:
 <img  width="100%" src="images/repl.gif" />
-> Unlike the above actions, these actions are prebound for your convenience. Remember only in the console!
+> For your convenience unlike normal actions, calls to actions in the browser console are prebound to `store.dispatch`. Remember, only in the console!
 ```js
-> Todos.isEditing.toggle() // is bound to `store.dispatch(Todos.isEditing.toggle())`
-// store.dispatch({ type: 'todos/isEditing/toggle' })
+> TodoEditor.isEditing.toggle() // is bound to `store.dispatch(TodoEditor.isEditing.toggle())`
+// store.dispatch({ type: 'todoEditor/isEditing/toggle' })
 ```
 
 ## Add it to your project in under 5 minutes
@@ -90,23 +87,22 @@ yarn add redux-enterprise
 Open your `reducers/index.js` file or create a new file and use Redux Enterprise to model some new state.
 ```js
 import { defineState, StateTypes } from 'redux-enterprise'
-const { Collection, Flag, Setable } = StateTypes
+const { Collection, Flag, Setable, Inbox } = StateTypes
 
 const { reducers } = defineState({
-  todos: {
-    todos: Collection,
+  todos: Collection,
+  todoEditor: {
     isEditing: Flag,
     editingId: Setable
   },
-  comments: Collection,
-  notifications: Queue
+  notifications: Inbox
 })
 // `reducers` contains three reducers:
-// { todos: fn, comments: fn, notifications: fn }
+// { todos: fn, todoEditor: fn, notifications: fn }
 ```
 
-#### Configure your store
-Take the `reducers` from the call to `defineState` and add them into your `combineReducers` call - your existing reducers are completely unaffected:
+#### Add the new reducers
+Take the `reducers` from the call to `defineState` and add them into your `combineReducers` call - your existing reducers will not be affected:
 ```js
 const rootReducer = combineReducers({
   otherExistingReducer,
@@ -115,16 +111,35 @@ const rootReducer = combineReducers({
 })
 ```
 
-#### Play with the new reducers in your browser console
+#### Start the REPL with your store
+Right after your call to Redux's createStore start the Redux Enterprise REPL:
 ```js
-> Todos.isEditing.toggle()
-// prev state {todos: { todos: {..0}, isEditing: false, editingId: null }, comments: {..0}, notifications: {...} }
+import { startRepl } from 'redux-enterprise'
+
+...
+
+const store = createStore(rootReducer, initialState, applyMiddleware(..))
+
+startRepl(store)
+```
+> Note: when server-side rendering this call will be a no-op.
+
+#### All done! Play with the new actions in your browser console
+```js
+> Todos.create({ id: 89, message: 'Do laundry' })
+// prev state { todos: {..0}, todoEditor: { isEditing: false, editingId: null }, notifications: {..0} }
+action {type: "todos/create", payload: { id: 89, message: "Do laundry" } }
+// next state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, notifications: {..0} }
+
+> Notifications.push({ id: 47, message: 'New todo has been added' })
+// prev state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, notifications: {..0} }
+action {type: "notifications/push", payload: { id: 47, message: "Hello there!" } }
+// next state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, notifications: {..1} }
+
+> TodoEditor.isEditing.toggle()
+// prev state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, notifications: {..1} }
 action {type: "todos/isEditing/toggle"}
-// next state {todos: { todos: {..0}, isEditing: true, editingId: null }, comments: {..0}, notifications: {...} }
-> Comments.create({ id: 5, message: 'new comment' })
-// prev state {todos: { todos: {..0}, isEditing: true, editingId: null }, comments: {...}, notifications: {...} }
-action {type: "comments/create", payload: { id: 5, message: "new comment" } }
-// next state {todos: { todos: {..0}, isEditing: true, editingId: null }, comments: {..1}, notifications: {...} }
+// next state { todos: {..1}, todoEditor: { isEditing: true, editingId: null }, notifications: {..1} }
 ```
 
 ### Custom reducer functions
@@ -148,7 +163,7 @@ const { reducers, actions } = defineState({
 actions.todos.customReducer('morty')
 // { type: 'todos/customReducer', payload: 'morty' }
 ```
-As shown above, the cooresponding action type is the object path to the function. This action is automatically avaible on the actions object.
+As shown above, the corresponding action creator is automatically available on the actions object.
 
 #### Nesting
 If you nest a function, the `state` passed in will be scoped to that level of state automatically:
@@ -157,8 +172,10 @@ const { reducers } = defineState({
   nested: {
     stuff: {
       someId: Setable,
+      aontherId: Setable,
       anotherCustomReducer: (state, action) => {
-        // here state is scoped to `nested.stuff`
+        // here `state` is scoped to `nested.stuff`,
+        // so we are reducing: { someId, anotherId }
         return state
       }
     }
@@ -172,17 +189,13 @@ Create React App - Enterprise
 
 Nextjs `examples/with-redux-enterprise`
 
-## Usage: how to model your state
-
-### State types
+## State Types
 
 #### Collection
 #### Flag
 #### Setable
 
 ### Composing models
-
-### Custom reducer functions
 
 ## Contributing
 
