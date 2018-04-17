@@ -62,13 +62,8 @@ Notifications.clear()
 
 > ⚠️ Remember that these are action creators. The actions must be dispatched just like any other actions!
 
-For your convenience all actions are also automatically available on the library's `Actions` object:
-```js
-import { Actions } from 'redux-enterprise'
-```
-
 ### Selectors
-Selectors ([from the ubiquitous reselect library](https://github.com/reactjs/reselect)) are also returned from `defineState`. A `Collection` has `all`, `byId`, and `ids`:
+[Selectors](https://github.com/reactjs/reselect)) are also returned from `defineState`. A `Collection` has `all`, `byId`, and `ids`:
 
 ```js
 const { Todos, TodoEditor, Notifications } = selectors
@@ -77,6 +72,7 @@ Todos.all(state) // returns a collection of todos
 Todos.byId(state, { id }) // returns a todo with matching `id`
 Todos.ids(state) // returns an array of ids
 ```
+
 
 ## Automatic Redux-REPL right in your browser console
 When in dev mode Redux Enterprise also automatically provides an in-browser REPL for dispatching prebound actions.
