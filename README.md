@@ -232,12 +232,12 @@ The underline data structure is normalized:
 `reset`: Resets collection to initialState.
 `clear`: Empties the colleciton.
 
-##### Selectors
+#### Selectors
 `all`: Array of all collection items.
 `byId`: Item from the collection if one matches
 `ids`: Array of all collection item ids.
 
-##### Example
+#### Example
 ```js
 const { actions, selectors } = defineState({
   people: Collection
@@ -262,6 +262,8 @@ selectors.People.byId(2)
 
 ### Flag
 ### Setable
+
+### 3rd Party State Types
 
 ## Advanced
 
