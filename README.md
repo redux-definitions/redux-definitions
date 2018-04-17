@@ -79,7 +79,9 @@ Todos.ids(state) // returns an array of ids
 ```
 
 ## Automatic Redux-REPL right in your browser console
-When in dev mode Redux Enterprise also automatically provides an in-browser REPL for dispatching prebound actions:
+When in dev mode Redux Enterprise also automatically provides an in-browser REPL for dispatching prebound actions.
+
+
 <img  width="100%" src="images/repl.gif" />
 > For your convenience unlike normal actions, calls to actions in the browser console are prebound to `store.dispatch`. Remember, only in the console!
 ```js
