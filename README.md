@@ -89,12 +89,12 @@ When in dev mode Redux Enterprise also automatically provides an in-browser REPL
 
 ## Try Redux Enterprise with your existing project in under 5 minutes
 
-#### Install
+### Install
 ```sh
 yarn add redux-enterprise
 ```
 
-#### Model some state
+### Model some state
 Open your `reducers/index.js` file or create a new file and use Redux Enterprise to model some new state.
 ```js
 import { defineState, StateTypes } from 'redux-enterprise'
@@ -112,7 +112,7 @@ const { reducers } = defineState({
 // { todos: fn, todoEditor: fn, notifications: fn }
 ```
 
-#### Add the new reducers
+### Add the new reducers
 Take the `reducers` from the call to `defineState` and add them into your `combineReducers` call - your existing reducers will not be affected:
 ```js
 const rootReducer = combineReducers({
@@ -122,7 +122,7 @@ const rootReducer = combineReducers({
 })
 ```
 
-#### Start the REPL with your store
+### Start the REPL with your store
 Right after your call to Redux's createStore start the Redux Enterprise REPL:
 ```js
 import { startRepl } from 'redux-enterprise'
@@ -135,7 +135,7 @@ startRepl(store)
 ```
 > Note: when server-side rendering this call will be a no-op.
 
-#### All done! Play with the new actions in your browser console
+### All done! Play with the new actions in your browser console
 ```js
 > Todos.create({ id: 89, message: 'Do laundry' })
 // prev state { todos: {..0}, todoEditor: { isEditing: false, editingId: null }, notifications: {..0} }
@@ -153,7 +153,7 @@ action {type: "todos/isEditing/toggle"}
 // next state { todos: {..1}, todoEditor: { isEditing: true, editingId: null }, notifications: {..1} }
 ```
 
-### Custom reducer functions
+## Custom reducer functions
 Redux Enterprise also allows you to create custom reducer functions. Anywhere in the state map if a function is added, `defineState` passes the function the reducer's `state` and incoming `action`:
 ```js
 import { defineState, StateTypes } from 'redux-enterprise'
@@ -175,7 +175,7 @@ actions.todos.customReducer('morty')
 ```
 As shown above, the corresponding action creator is available on the actions object.
 
-#### Nesting
+### Nesting
 If you nest a function, the `state` passed in will be scoped to that level of state automatically:
 ```js
 const { reducers } = defineState({
@@ -201,11 +201,13 @@ Nextjs `examples/with-redux-enterprise`
 
 ## State Types
 
-#### Collection
-#### Flag
-#### Setable
+### Collection
+### Flag
+### Setable
 
-### Composing models
+## Advanced
+
+## Typescript & Flow Integration
 
 ## Contributing
 
