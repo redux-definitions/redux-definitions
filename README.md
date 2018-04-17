@@ -87,7 +87,7 @@ When in dev mode Redux Enterprise also automatically provides an in-browser REPL
 // store.dispatch({ type: 'todoEditor/isEditing/toggle' })
 ```
 
-## Add it to your project in under 5 minutes
+## Try Redux Enterprise with your existing project in under 5 minutes
 
 #### Install
 ```sh
