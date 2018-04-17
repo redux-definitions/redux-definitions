@@ -201,13 +201,13 @@ const { reducers } = defineState({
 ## State Types
 
 ### Collection
-A Collection stores like-objects with at minimum `id` attributes.
+A Collection stores object items with at minimum `id` attributes.
 
 ```js
 Collection
 
 // These are the default options
-Collection({ indices = [], initialState = { ids: [], data: {} } })
+Collection({ initialState: { ids: [], data: {} } })
 ```
 
 #### Data Structure
@@ -217,8 +217,8 @@ The underline data structure is normalized:
   ids: [1,2,3],
   data: {
     1: { id: 1, name: 'Morty' },
-    2: { id: 1, name: 'Rick' },
-    3: { id: 1, name: 'Summer' }
+    2: { id: 2, name: 'Rick' },
+    3: { id: 3, name: 'Summer' }
   }
 }
 ```
@@ -237,8 +237,28 @@ The underline data structure is normalized:
 `byId`: Item from the collection if one matches
 `ids`: Array of all collection item ids.
 
-###### Indices
+##### Example
+```js
+const { actions, selectors } = defineState({
+  people: Collection
+})
 
+// actions
+actions.People.create({ id: 1, name: 'Morty Burp' })
+actions.People.update({ id: 1, name: 'Morty' })
+actions.People.create({ id: 3, name: 'Summer' })
+actions.People.remove(1)
+
+// selectors
+selectors.People.all(state)
+// [{ id: 3, name: 'Summer' }]
+
+selectors.People.byId(1)
+// { id: 3, name: 'Summer' }
+
+selectors.People.byId(2)
+// null
+```
 
 ### Flag
 ### Setable
