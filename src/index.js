@@ -1,29 +1,44 @@
-import { createModel as createModelO } from './model'
-import { attachModelsToConsole as attachModelsToConsoleO } from './console'
+import { createModel } from './model'
+import { attachModelsToConsole } from './console'
 
 const models = {}
 const reducers = {}
 
-const createModel = (schema) =>
-  createModelO(schema).map(model => {
+const isTest = process.env.NODE_ENV === 'test'
+
+const defineState = (schema) =>
+  createModel(schema).map(model => {
     models[model.namespace] = model
     reducers[model.namespace] = model.reducer
     return model
   })
 
-const attachModelsToConsole = () =>
-  attachModelsToConsoleO(models, global)
+const startRepl = (store) => {
+  if ((process && process.title === 'browser') || isTest) {
+    const w = isTest ? global : window
+    if (!store || !store.dispatch) {
+      throw Error('Redux Enterprise: `startRepl` requires a valid store object')
+    }
+    w.dispatch = store.dispatch
+    attachModelsToConsole(models, w)
+
+    if(!isTest) {
+      console.log('Redux Enterprise: starting REPL')
+    }
+  }
+  return store
+}
 
 export default {
-  createModel,
-  attachModelsToConsole,
+  defineState,
+  startRepl,
   models,
   reducers,
 }
 
 export {
-  createModel,
-  attachModelsToConsole,
+  defineState,
+  startRepl,
   models,
   reducers,
 }

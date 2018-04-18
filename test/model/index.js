@@ -4,18 +4,16 @@ import { createAction } from 'redux-actions'
 import { createLogger } from 'redux-logger'
 import Normalized from 'nrmlzd'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import Re from '../../src'
+import { defineState, startRepl, reducers } from '../../src'
 
 const makeStore = () => {
   const store = createStore(
-    combineReducers(Re.reducers),
+    combineReducers(reducers),
     {},
     // applyMiddleware(createLogger())
     applyMiddleware()
   )
-  global.dispatch = store.dispatch
-  Re.attachModelsToConsole()
-  return store
+  return startRepl(store)
 }
 
 describe('model', () => {
@@ -23,7 +21,7 @@ describe('model', () => {
   })
 
   it('initialized data types', () => {
-    Re.createModel({
+    defineState({
       space: {
         foo: 'collection'
       }
@@ -34,7 +32,7 @@ describe('model', () => {
   })
 
   it('nests data', () => {
-    Re.createModel({
+    defineState({
       space: {
         foo: {
           bar: 'collection'
@@ -48,7 +46,7 @@ describe('model', () => {
 
   describe('collection', () => {
     it('reducer receives action', () => {
-      Re.createModel({
+      defineState({
         space: {
           foo: 'collection'
         }
@@ -65,7 +63,7 @@ describe('model', () => {
     })
 
     it('reducer receives nested action', () => {
-      Re.createModel({
+      defineState({
         space: {
           foo: {
             bar: 'collection'
@@ -85,7 +83,7 @@ describe('model', () => {
 
   describe('flag', () => {
     it('reducer receives action', () => {
-      Re.createModel({
+      defineState({
         space: {
           foo: 'flag'
         }
@@ -97,7 +95,7 @@ describe('model', () => {
     })
 
     it('reducer receives nested action', () => {
-      Re.createModel({
+      defineState({
         space: {
           foo: {
             bar: 'flag'
@@ -113,7 +111,7 @@ describe('model', () => {
 
   describe('setable', () => {
     it('reducer receives setable action', () => {
-      Re.createModel({
+      defineState({
         space: {
           foo: 'setable'
         }
@@ -125,7 +123,7 @@ describe('model', () => {
     })
 
     it('reducer receives nested setable action', () => {
-      Re.createModel({
+      defineState({
         space: {
           foo: {
             bar: 'setable'
