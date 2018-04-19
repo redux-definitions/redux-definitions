@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import { createAction, handleActions } from 'redux-actions'
-import { generateTypeMap, generateReducerMap } from './generators'
+import { generateTypeMap } from './generators'
 
 const generateState = (namespace, schema) => {
   const namespacing = [namespace]
