@@ -275,6 +275,9 @@ Create React App - Enterprise
 
 Nextjs `examples/with-redux-enterprise`
 
+## FAQ
+
+
 ## Contributing
 
 Please check out the [Contributing](https://github.com/redux-enterprise/redux-enterprise/blob/master/CONTRIBUTING.md) page to learn how to get involved. TLDR the [Github issues tab](https://github.com/redux-enterprise/redux-enterprise/issues) is your friend.
