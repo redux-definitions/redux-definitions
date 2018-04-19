@@ -43,39 +43,53 @@ export const generateReducerMap = (obj, base = '') => {
 }
 
 export const generateTypeMap = (schema, namespacing) => {
-  const allActions = {}
+  let allActions = {}
   let allReducers = {}
-  const allInitialState = {}
+  let allInitialState = {}
 
-  forIn(schema, (type, field) => {
-    if(typeof type === 'object') {
-      const {
-        actions,
-        reducers,
-        initialState,
-      } = generateTypeMap(type, [...namespacing, field])
+  if (typeof schema === 'string') {
+    const type = schema
 
-      allActions[field] = actions
-      allInitialState[field] = initialState
-      allReducers = {
-        ...allReducers,
-        ...reducers,
+    const {
+      actions,
+      reducers,
+      initialState,
+    } = buildType(type, namespacing, true)
+
+    allActions = actions
+    allInitialState = initialState
+    allReducers = reducers
+  } else {
+    forIn(schema, (type, field) => {
+      if(typeof type === 'object') {
+        const {
+          actions,
+          reducers,
+          initialState,
+        } = generateTypeMap(type, [...namespacing, field])
+
+        allActions[field] = actions
+        allInitialState[field] = initialState
+        allReducers = {
+          ...allReducers,
+          ...reducers,
+        }
+      } else {
+        const {
+          actions,
+          reducers,
+          initialState,
+        } = buildType(type, [...namespacing, field])
+
+        allActions[field] = actions
+        allInitialState[field] = initialState
+        allReducers = {
+          ...allReducers,
+          ...reducers,
+        }
       }
-    } else {
-      const {
-        actions,
-        reducers,
-        initialState,
-      } = buildType(type, [...namespacing, field])
-
-      allActions[field] = actions
-      allInitialState[field] = initialState
-      allReducers = {
-        ...allReducers,
-        ...reducers,
-      }
-    }
-  })
+    })
+  }
 
   return {
     actions: allActions,
@@ -84,24 +98,22 @@ export const generateTypeMap = (schema, namespacing) => {
   }
 }
 
-const buildType = (type, namespacing) => {
+const buildType = (type, namespacing, topLevel) => {
   if (typeof type !== 'string') {
     throw Error(`CreateModel: Invalid type "${type}" for model "${params[0]}"`)
   }
 
-  if (type === 'flag') {
-    return Flag.generate(namespacing)
+  const stateDefinitionMap = {
+    flag: Flag,
+    setable: Setable,
+    collection: Collection,
   }
 
-  if (type === 'setable') {
-    return Setable.generate(namespacing)
+  const StateDefinitionFactory = stateDefinitionMap[type]
+
+  if (!StateDefinitionFactory) {
+    throw Error('Redux Enterprise: No valid state definition `type`')
   }
 
-  if (type === 'collection') {
-    return Collection.generate(namespacing)
-  }
-
-  // if (type === 'toggleMap') {
-  //   return ToggleMap.generate(namespacing)
-  // }
+  return StateDefinitionFactory.generate(namespacing, topLevel)
 }

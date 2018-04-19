@@ -31,6 +31,21 @@ describe('model', () => {
     expect(store.getState().space.foo).to.deep.equal(Normalized.create())
   })
 
+  it('initialized flat types', () => {
+    defineState({
+      space: 'collection'
+    })
+    const store = makeStore()
+
+
+    expect(store.getState().space).to.deep.equal(Normalized.create())
+
+    const item = { id: 'id' }
+    global.Space.upsert(item)
+
+    expect(store.getState().space).to.deep.equal(Normalized.fromArray([item]))
+  })
+
   it('nests data', () => {
     defineState({
       space: {
