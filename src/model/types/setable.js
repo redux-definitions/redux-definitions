@@ -16,17 +16,11 @@ const generate = (namespacing) => {
   }
 
   reducers[getType('set')] = scopeReduction((state, { payload }) => {
-    return {
-      ...state,
-      [field]: payload,
-    }
+    return payload
   })
 
   reducers[getType('unset')] = scopeReduction((state) => {
-    return {
-      ...state,
-      [field]: null,
-    }
+    return null
   })
 
   return {

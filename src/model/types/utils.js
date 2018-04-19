@@ -5,10 +5,10 @@ export const scopeReductionFactory = (namespacing) => (fn) => (state, action) =>
   const namespacingWithoutRootOrField = namespacingWithoutRoot.slice(0, -1)
   const nextState = { ...state }
 
-  if (namespacingWithoutRootOrField.length) {
+  if (namespacingWithoutRoot.length) {
     return update(
       nextState,
-      namespacingWithoutRootOrField.join('.'),
+      namespacingWithoutRoot.join('.'),
       (scopedState) => fn(scopedState, action),
     )
   }

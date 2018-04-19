@@ -23,25 +23,16 @@ const generate = (namespacing) => {
       console.warn(`Redux Enterprise\n\n\`${namespace}\` is being set with a non boolean value! Casting type.\n`)
     }
 
-    return {
-      ...state,
-      [field]: !!val
-    }
+    return !!val
   })
 
   reducers[getType('unset')] = scopeReduction((state) => {
-    return {
-      ...state,
-      [field]: false,
-    }
+    return false
   })
 
   reducers[getType('toggle')] = scopeReduction((state) => {
     const val = !state[field]
-    return {
-      ...state,
-      [field]: val,
-    }
+    return val
   })
 
   return {
