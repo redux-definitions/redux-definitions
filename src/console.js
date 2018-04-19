@@ -3,14 +3,14 @@
 import { forIn } from 'lodash/object'
 import { upperFirst } from 'lodash/string'
 
-export function attachModelsToConsole(models, window) {
+export function attachStateModelsToConsole(models, window) {
   if (!window) {
-    console.warn('Attempted to attach model, but no `window`')
+    console.warn('Redux Enterprise: REPL cannot mount, `window` undefined')
     return
   }
 
   if (!window.dispatch) {
-    console.warn('Attempted to attach model, but no `dispatch` function on `window`')
+    console.warn('Redux Enterprise: REPL cannot mount, `window.dispatch` undefined')
     return
   }
 

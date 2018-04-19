@@ -3,7 +3,7 @@ import { createAction } from 'redux-actions'
 import {
   generateReducerMap,
   generateTypeMap,
-} from '../../../src/model/generators'
+} from '../../../src/state/generators'
 
 describe('generators', () => {
   it('generateReducerMap', () => {

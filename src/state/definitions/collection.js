@@ -4,7 +4,7 @@ import { createAction } from 'redux-actions'
 import Normalized from 'nrmlzd'
 import { scopeReductionFactory } from './utils'
 
-const generate = (namespacing, topLevel) => {
+const generate = (namespacing) => {
   const namespace = namespacing.join('/')
   const field = namespacing[namespacing.length - 1]
   const getType = (type) => `${namespace}/${type}`

@@ -2,11 +2,7 @@
 
 import { createAction } from 'redux-actions'
 import { forIn } from 'lodash/object'
-
-import Collection from './types/collection'
-import Flag from './types/flag'
-import Setable from './types/setable'
-import ToggleMap from './types/toggle-map'
+import { Collection, Flag, Setable } from './definitions'
 
 export const generateReducerMap = (obj, base = '') => {
   let allReducers = {}
