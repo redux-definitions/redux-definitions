@@ -1,3 +1,4 @@
+import { forIn } from 'lodash/object'
 import { createState } from './state'
 import { attachStateModelsToConsole } from './console'
 import { Collection, Flag, Setable } from './state/definitions'
@@ -15,13 +16,13 @@ const defineState = (schema) =>
   })
 
 const clearAllState = () => {
-  for (const key in reducers) {
+  forIn(reducers, (_, key) => {
     delete reducers[key]
-  }
+  })
 
-  for (const key in stateModels) {
+  forIn(stateModels, (_, key) => {
     delete stateModels[key]
-  }
+  })
 }
 
 const startRepl = (store) => {
@@ -36,7 +37,7 @@ const startRepl = (store) => {
     attachStateModelsToConsole(stateModels, w)
 
     if (!isTest) {
-      console.log('Redux Enterprise: starting REPL')
+      console.log('Redux Enterprise: starting REPL') // eslint-disable-line
     }
   }
   return store
