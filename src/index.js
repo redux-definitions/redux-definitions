@@ -1,7 +1,7 @@
 import { forIn } from 'lodash/object'
 import { createState } from './state'
 import { attachStateModelsToConsole } from './console'
-import { Collection, Flag, Setable } from './state/definitions'
+import StateDefinitions from './state/definitions'
 
 const stateModels = {}
 const reducers = {}
@@ -46,12 +46,6 @@ const startRepl = (store) => {
     }
   }
   return store
-}
-
-const StateDefinitions = {
-  Collection,
-  Flag,
-  Setable,
 }
 
 export default {

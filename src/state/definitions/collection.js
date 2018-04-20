@@ -12,7 +12,8 @@ const generate = createDefinition({
   upsert: (state, { payload }) => Normalized.upsert(state, payload),
   remove: (state, { payload: id }) => Normalized.remove(state, id),
 }, {
-  all: (state) => Normalized.toArray(state),
+  items: (state) => Normalized.toArray(state),
+  ids: (state) => state.ids,
   byId: (state, { id }) => state.data[id] || null,
 }, Normalized.create())
 

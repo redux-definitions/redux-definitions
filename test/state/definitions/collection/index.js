@@ -34,7 +34,8 @@ describe('definition - collection', () => {
         Normalized.fromArray(collection)
       )
 
-      expect(m.space.selectors.all(store.getState())).to.deep.equal(collection)
+      expect(m.space.selectors.items(store.getState())).to.deep.equal(collection)
+      expect(m.space.selectors.ids(store.getState())).to.deep.equal(['1'])
     })
   })
 
