@@ -20,7 +20,7 @@ const generate = createDefinition({
     const val = !state[field]
     return val
   },
-}, false, true)
+}, {}, false, true)
 
 export default {
   generate

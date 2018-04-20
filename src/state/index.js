@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import { createAction, handleActions } from 'redux-actions'
-import { generateTypeMap } from './generators'
+import { generateStateMap } from './generators'
 
 const generateState = (namespace, schema) => {
   const namespacing = [namespace]
@@ -9,8 +9,9 @@ const generateState = (namespace, schema) => {
   let {
     actions,
     reducers,
+    selectors,
     initialState,
-  } = generateTypeMap(schema, namespacing)
+  } = generateStateMap(schema, namespacing)
 
   const reducer = handleActions(reducers, initialState)
 
@@ -18,14 +19,19 @@ const generateState = (namespace, schema) => {
     namespace,
     reducer,
     actions,
-    selectors: {},
+    selectors,
   }
 
   return model
 }
 
-export const createState = (schema) =>
-  Object.entries(schema).map(([namespace, reducerSchema]) =>
+export const createState = (schema) => {
+  if (typeof schema !== 'object') {
+    throw Error('Redux Enterprise: defineState must be passed an object as first parameter')
+  }
+
+  return Object.entries(schema).map(([namespace, reducerSchema]) =>
     generateState(namespace, reducerSchema)
   )
+}
 

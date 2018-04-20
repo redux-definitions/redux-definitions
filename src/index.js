@@ -5,15 +5,20 @@ import { Collection, Flag, Setable } from './state/definitions'
 
 const stateModels = {}
 const reducers = {}
+const selectors = {}
 
 const isTest = process.env.NODE_ENV === 'test'
 
-const defineState = (schema) =>
-  createState(schema).map(model => {
+const defineState = (schema) => {
+  const models = {}
+  createState(schema).forEach(model => {
+    models[model.namespace] = model
     stateModels[model.namespace] = model
     reducers[model.namespace] = model.reducer
-    return model
+    selectors[model.namespace] = model.selectors
   })
+  return models
+}
 
 const clearAllState = () => {
   forIn(reducers, (_, key) => {

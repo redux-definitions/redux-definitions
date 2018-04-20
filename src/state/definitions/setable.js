@@ -10,7 +10,7 @@ const generate = createDefinition({
   unset: (state) => {
     return null
   }
-}, undefined, true)
+}, {}, undefined, true)
 
 export default {
   generate

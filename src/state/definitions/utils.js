@@ -1,8 +1,8 @@
-import { update } from 'lodash/object'
+import { update, get } from 'lodash/object'
 import { createAction } from 'redux-actions'
 
 export const createDefinition =
-  (updaters, initialState, invalidAtTopLevel) =>
+  (updaters, selectorFns, initialState, invalidAtTopLevel) =>
   (namespacing, topLevel) => {
   if (invalidAtTopLevel && topLevel) {
     throw Error('Redux Enterprise: State Definition cannot be used at the reducer top level. Redux reducers do not support entire state being this initialState value.')
@@ -12,6 +12,7 @@ export const createDefinition =
   const getType = (type) => `${namespace}/${type}`
   const scopeReduction = scopeReductionFactory(namespacing)
   const reducers = {}
+  const selectors = {}
   const actions = {}
 
   for (const [key, fn] of Object.entries(updaters)) {
@@ -20,21 +21,48 @@ export const createDefinition =
     reducers[type] = scopeReduction(fn)
   }
 
+  for (const [key, fn] of Object.entries(selectorFns)) {
+    selectors[key] = (state, params) =>
+      fn(get(state, namespacing), params)
+  }
+
   return {
     actions,
     reducers,
+    selectors,
     initialState,
   }
 }
 
-export const scopeReductionFactory = (namespacing) => (fn) => (state, action) => {
-  const [_, ...namespacingWithoutRoot] = namespacing
+export const generateFunction = (fn, namespacing, topLevel) => {
+  if (topLevel) {
+    throw Error('Redux Enterprise: State Definition custom functions cannot be used at the reducer top level.')
+  }
+
+  const namespace = namespacing.join('/')
+
+  return {
+    action: createAction(namespace),
+    reducers: {
+      [namespace]: scopeReductionFactory(namespacing, true)(fn),
+    },
+  }
+}
+
+export const scopeReductionFactory =
+  (namespacing, excludeField) =>
+  (fn) =>
+  (state, action) => {
+  const keyPath = excludeField
+    ? namespacing.slice(1, -1)
+    : namespacing.slice(1)
+
   const nextState = { ...state }
 
-  if (namespacingWithoutRoot.length) {
+  if (keyPath.length) {
     return update(
       nextState,
-      namespacingWithoutRoot.join('.'),
+      keyPath.join('.'),
       (scopedState) => fn(scopedState, action),
     )
   }

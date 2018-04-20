@@ -21,7 +21,7 @@ describe('definition - collection', () => {
     })
 
     it('receives action', () => {
-      defineState({
+      const m = defineState({
         space: Collection
       })
       const store = makeStore()
@@ -33,6 +33,8 @@ describe('definition - collection', () => {
       expect(store.getState().space).to.deep.equal(
         Normalized.fromArray(collection)
       )
+
+      expect(m.space.selectors.all(store.getState())).to.deep.equal(collection)
     })
   })
 
