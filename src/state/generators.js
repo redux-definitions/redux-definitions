@@ -2,33 +2,49 @@
 
 import { createAction } from 'redux-actions'
 import { forIn } from 'lodash/object'
-import { Collection, Flag, Setable } from './definitions'
+
+const isStateDefinition = (i) => {
+  return typeof i === 'object' && i.generate
+}
 
 export const generateTypeMap = (schema, namespacing) => {
   let allActions = {}
   let allReducers = {}
   let allInitialState = {}
 
-  if (typeof schema === 'string') {
-    const type = schema
+  if (isStateDefinition(schema)) {
+    const stateDefinition = schema
 
     const {
       actions,
       reducers,
       initialState,
-    } = buildType(type, namespacing, true)
+    } = buildType(stateDefinition, namespacing, true)
 
     allActions = actions
     allInitialState = initialState
     allReducers = reducers
   } else {
-    forIn(schema, (type, field) => {
-      if(typeof type === 'object') {
+    forIn(schema, (value, field) => {
+      if (isStateDefinition(value)) {
         const {
           actions,
           reducers,
           initialState,
-        } = generateTypeMap(type, [...namespacing, field])
+        } = buildType(value, [...namespacing, field])
+
+        allActions[field] = actions
+        allInitialState[field] = initialState
+        allReducers = {
+          ...allReducers,
+          ...reducers,
+        }
+      } else if (typeof value === 'object') {
+        const {
+          actions,
+          reducers,
+          initialState,
+        } = generateTypeMap(value, [...namespacing, field])
 
         allActions[field] = actions
         allInitialState[field] = initialState
@@ -37,18 +53,9 @@ export const generateTypeMap = (schema, namespacing) => {
           ...reducers,
         }
       } else {
-        const {
-          actions,
-          reducers,
-          initialState,
-        } = buildType(type, [...namespacing, field])
-
-        allActions[field] = actions
-        allInitialState[field] = initialState
-        allReducers = {
-          ...allReducers,
-          ...reducers,
-        }
+        throw Error(
+          `Redux Enterprise: Invalid schema at '${namespacing.join('.')}': ${value}`
+        )
       }
     })
   }
@@ -60,22 +67,6 @@ export const generateTypeMap = (schema, namespacing) => {
   }
 }
 
-const buildType = (type, namespacing, topLevel) => {
-  if (typeof type !== 'string') {
-    throw Error(`CreateModel: Invalid type "${type}" for model "${params[0]}"`)
-  }
-
-  const stateDefinitionMap = {
-    flag: Flag,
-    setable: Setable,
-    collection: Collection,
-  }
-
-  const StateDefinitionFactory = stateDefinitionMap[type]
-
-  if (!StateDefinitionFactory) {
-    throw Error('Redux Enterprise: No valid state definition `type`')
-  }
-
-  return StateDefinitionFactory.generate(namespacing, topLevel)
+const buildType = (stateDefinition, namespacing, topLevel) => {
+  return stateDefinition.generate(namespacing, topLevel)
 }
