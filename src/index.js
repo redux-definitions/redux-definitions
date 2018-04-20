@@ -14,6 +14,16 @@ const defineState = (schema) =>
     return model
   })
 
+const clearAllState = () => {
+  for (const key in reducers) {
+    delete reducers[key]
+  }
+
+  for (const key in stateModels) {
+    delete stateModels[key]
+  }
+}
+
 const startRepl = (store) => {
   if ((process && process.title === 'browser') || isTest) {
     const w = isTest ? global : window
@@ -41,6 +51,7 @@ const StateDefinitions = {
 export default {
   defineState,
   startRepl,
+  clearAllState,
   reducers,
   StateDefinitions,
 }
@@ -48,6 +59,7 @@ export default {
 export {
   defineState,
   startRepl,
+  clearAllState,
   reducers,
   StateDefinitions,
 }

@@ -21,8 +21,8 @@ describe('generators', () => {
     const { actions, reducers } = generateTypeMap(sampleObj, ['namespace'])
 
     expect(Object.keys(actions.a).length).to.equal(3)
-    expect(Object.keys(actions.b).length).to.equal(4)
+    expect(Object.keys(actions.b).length).to.equal(5)
     expect(Object.keys(actions.c.d).length).to.equal(3)
-    expect(Object.keys(actions.c.e.f).length).to.equal(4)
+    expect(Object.keys(actions.c.e.f).length).to.equal(5)
   })
 })

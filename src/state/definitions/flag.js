@@ -1,26 +1,10 @@
 /* eslint-disable */
 // Flag
 import { createAction } from 'redux-actions'
-import { scopeReductionFactory } from './utils'
+import { createDefinition } from './utils'
 
-const generate = (namespacing, topLevel) => {
-  if (topLevel) {
-    throw Error('Redux Enterprise: State Definition `Flag` cannot be used at the reducer top level. Redux reducers do not support entire state being a boolean value.')
-  }
-
-  const namespace = namespacing.join('/')
-  const field = namespacing[namespacing.length - 1]
-  const getType = (type) => `${namespace}/${type}`
-  const scopeReduction = scopeReductionFactory(namespacing)
-  const reducers = {}
-
-  const actions = {
-    set: createAction(getType('set')),
-    unset: createAction(getType('unset')),
-    toggle: createAction(getType('toggle')),
-  }
-
-  reducers[getType('set')] = scopeReduction((state, action) => {
+const generate = createDefinition({
+  set: (state, action) => {
     const val = ('payload' in action) ? action.payload : true
 
     if (typeof val !== 'boolean') {
@@ -28,23 +12,15 @@ const generate = (namespacing, topLevel) => {
     }
 
     return !!val
-  })
-
-  reducers[getType('unset')] = scopeReduction((state) => {
+  },
+  unset: (state) => {
     return false
-  })
-
-  reducers[getType('toggle')] = scopeReduction((state) => {
+  },
+  toggle: (state) => {
     const val = !state[field]
     return val
-  })
-
-  return {
-    actions,
-    reducers,
-    initialState: false,
-  }
-}
+  },
+}, false, true)
 
 export default {
   generate
