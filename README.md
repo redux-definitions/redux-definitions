@@ -20,12 +20,12 @@
 
 ## Overview
 
-Redux Enterprise is a library for **scaling development on Redux-based projects** through the use of **consistent and standardized** reducers and actions generated from **[higher-order state types](#state-types)**.
+Redux Enterprise is a library for **scaling development on Redux-based projects** through the use of **consistent and standardized** reducers and actions generated from **[higher-order state definitions](#state-definitions)**.
 
-As projects grow it quickly becomes critical to keep reducers lean and to map very specific actions to these reducers. Reducers housing state of similar data structure (eg, Collection, Flag, Form, Request, Inbox) should always share identical standardized action/reducer interfaces when used multiple times in a project or even across projects. We can achieive this by generating our reducers and their actions from a library of reusable state types. State types are high-level enough to promote a focus on business logic, but simple enough to be reusable and composable. The core Redux patterns of message passing, data immutibility, unidirectional flow, and all associated benefits remain; Redux Enterprise simply adds a layer of standarization and tooling so developers can **stay productive and ship features at a consistent pace even as projects grow to dozens or hundreds of reducers**. Best of all, Redux Enterprise can be gradually introduced into existing projects without any refactoring.
+As projects grow it quickly becomes critical to keep reducers lean and to map very specific actions to these reducers. Reducers housing state of similar data structure (eg, Collection, Flag, Form, Request, Inbox) should always share identical standardized action/reducer interfaces when used multiple times in a project or even across projects. We can achieive this by generating our reducers and their actions from a library of reusable state definitions. State definitions are high-level enough to promote a focus on business logic, but simple enough to be reusable and composable. The core Redux patterns of message passing, data immutibility, unidirectional flow, and all associated benefits remain; Redux Enterprise simply adds a layer of standarization and tooling so developers can **stay productive and ship features at a consistent pace even as projects grow to dozens or hundreds of reducers**. Best of all, Redux Enterprise can be gradually introduced into existing projects without any refactoring.
 
 ## Generate reducers, actions, and selectors from a higher-order state model
-Redux Enterprise allows you to describe your core application state using a library of [State Types](#state-types):
+Redux Enterprise allows you to describe your core application state using a library of [State Definitions](#state-definitions):
 ```js
 import { defineState, StateTypes } from 'redux-enterprise'
 const { Collection, Flag, Setable, Inbox } = StateTypes
@@ -42,7 +42,7 @@ const { actions, reducers, selectors } = defineState({
 > Each top-level key in the `defineState` schema generates a separate reducer.
 
 ### Actions
-The standardized `actions` are returned from the `defineState` definition. The State Type determines what actions are available. For example a `Collection` has actions `create`, `update`, `upsert`, `remove`, `set`, `reset`, `clear`. Learn more in the [State Types](#state-types) section.
+The standardized `actions` are returned from the `defineState` definition. The State Definition determines what actions are available. For example a `Collection` has actions `create`, `update`, `upsert`, `remove`, `set`, `reset`, `clear`. Learn more in the [State Definitions](#state-definitions) section.
 ```js
 const { Todos, TodoEditor, Notifications } = actions
 
@@ -198,7 +198,7 @@ const { reducers } = defineState({
 })
 ```
 
-## State Types
+## State Definitions
 
 ### Collection
 A Collection stores object items with at minimum `id` attributes.
@@ -263,7 +263,7 @@ selectors.People.byId(2)
 ### Flag
 ### Setable
 
-### 3rd Party State Types
+### 3rd Party State Definitions
 
 ## Advanced
 
@@ -281,3 +281,4 @@ Nextjs `examples/with-redux-enterprise`
 ## Contributing
 
 Please check out the [Contributing](https://github.com/redux-enterprise/redux-enterprise/blob/master/CONTRIBUTING.md) page to learn how to get involved. TLDR the [Github issues tab](https://github.com/redux-enterprise/redux-enterprise/issues) is your friend.
+
