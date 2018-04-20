@@ -1,13 +1,15 @@
 import { expect } from 'chai'
 import Normalized from 'nrmlzd'
-import { defineState } from '../../../../src'
+import { defineState, StateDefinitions } from '../../../../src'
 import { makeStore } from '../utils'
+
+const { Collection } = StateDefinitions
 
 describe('definition - collection', () => {
   describe('flat', () => {
     it('state placement', () => {
       defineState({
-        space: 'collection'
+        space: Collection
       })
       const store = makeStore()
 
@@ -16,7 +18,7 @@ describe('definition - collection', () => {
 
     it('receives action', () => {
       defineState({
-        space: 'collection'
+        space: Collection
       })
       const store = makeStore()
 
@@ -34,7 +36,7 @@ describe('definition - collection', () => {
     it('state placement', () => {
       defineState({
         space: {
-          foo: 'collection'
+          foo: Collection
         }
       })
       const store = makeStore()
@@ -45,7 +47,7 @@ describe('definition - collection', () => {
     it('receives action', () => {
       defineState({
         space: {
-          foo: 'collection'
+          foo: Collection
         }
       })
       const store = makeStore()
@@ -65,7 +67,7 @@ describe('definition - collection', () => {
       defineState({
         space: {
           foo: {
-            bar: 'collection'
+            bar: Collection
           }
         }
       })
@@ -78,7 +80,7 @@ describe('definition - collection', () => {
       defineState({
         space: {
           foo: {
-            bar: 'collection'
+            bar: Collection
           }
         }
       })

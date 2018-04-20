@@ -1,5 +1,6 @@
 import { createState } from './state'
 import { attachStateModelsToConsole } from './console'
+import { Collection, Flag, Setable } from './state/definitions'
 
 const stateModels = {}
 const reducers = {}
@@ -31,14 +32,22 @@ const startRepl = (store) => {
   return store
 }
 
+const StateDefinitions = {
+  Collection,
+  Flag,
+  Setable,
+}
+
 export default {
   defineState,
   startRepl,
   reducers,
+  StateDefinitions,
 }
 
 export {
   defineState,
   startRepl,
   reducers,
+  StateDefinitions,
 }
