@@ -1,16 +1,20 @@
 import { expect } from 'chai'
 import Normalized from 'nrmlzd'
-import { defineState, StateDefinitions } from '../../../../src'
+import { defineState, clearAllState, StateDefinitions } from '../../../../src'
 import { makeStore } from '../utils'
 
 const { Setable } = StateDefinitions
 
 describe('definition - setable', () => {
+  beforeEach(() => {
+    clearAllState()
+  })
+
   describe('flat', () => {
     it('state placement', () => {
       expect(() => defineState({
         space: Setable
-      })).to.throw('Redux Enterprise: State Definition `Setable` cannot be used at the reducer top level. Redux reducers do not support entire state being a boolean value.')
+      })).to.throw('Redux Enterprise: State Definition cannot be used at the reducer top level. Redux reducers do not support entire state being this initialState value.')
     })
   })
 

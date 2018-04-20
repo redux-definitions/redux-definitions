@@ -1,11 +1,15 @@
 import { expect } from 'chai'
 import Normalized from 'nrmlzd'
-import { defineState, StateDefinitions } from '../../../../src'
+import { defineState, clearAllState, StateDefinitions } from '../../../../src'
 import { makeStore } from '../utils'
 
 const { Collection } = StateDefinitions
 
 describe('definition - collection', () => {
+  beforeEach(() => {
+    clearAllState()
+  })
+
   describe('flat', () => {
     it('state placement', () => {
       defineState({
