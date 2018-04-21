@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Normalized from 'nrmlzd'
 import { defineState, clearAllState, StateDefinitions } from '../../../src'
-import { makeStore } from './utils'
+import { makeStoreAndDefineState } from './utils'
 
 const { Collection, Flag, Setable } = StateDefinitions
 
@@ -11,7 +11,7 @@ describe('multiple definitions', () => {
   })
 
   it('crazy', () => {
-    defineState({
+    const { foo, dispatch, getState } = makeStoreAndDefineState({
       space: Collection,
       foo: {
         bar: {
@@ -25,13 +25,12 @@ describe('multiple definitions', () => {
         justTestingEmpty: {},
       }
     })
-    const store = makeStore()
 
-    expect(global.Foo.bar.justTestingEmpty).to.equal(undefined)
+    expect(getState().foo.bar.justTestingEmpty).to.equal(undefined)
   })
 
   it('realistic', () => {
-    defineState({
+    const { getState } = makeStoreAndDefineState({
       todos: Collection,
       notes: Collection,
       friends: Collection,
@@ -46,9 +45,8 @@ describe('multiple definitions', () => {
         isAdmin: Flag,
         isBetaUser: Flag,
       }
-    })
+    }, true)
 
-    const store = makeStore()
     const { Todos, Notes, Editor, Config } = global
 
     Todos.create({ id: 1 })
@@ -75,7 +73,7 @@ describe('multiple definitions', () => {
     Config.isAdmin.set()
     Config.isBetaUser.set()
 
-    expect(store.getState()).to.deep.equal({
+    expect(getState()).to.deep.equal({
       todos: { ids: [4, 5], data: { 4: { id: 4 }, 5: { id: 5 }, }},
       notes: { ids: [1, 2], data: { 1: { id: 1 }, 2: { id: 2, message: 'foo' }, }},
       friends: { ids: [], data: {} },

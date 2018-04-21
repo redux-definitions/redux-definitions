@@ -11,7 +11,7 @@ const generate = createDefinition({
   add: (state, { payload }) => uniq([...state, payload]),
   remove: (state, { payload }) => uniq([...state, payload]),
 }, {
-  all: (state) => state,
+  get: (state) => state,
   includes: (state, { id }) => state.includes(id),
 }, [], true)
 

@@ -3,21 +3,37 @@ import { createState } from './state'
 import { attachStateModelsToConsole } from './console'
 import StateDefinitions from './state/definitions'
 
-const stateModels = {}
+const actions = {}
+const models = {}
 const reducers = {}
 const selectors = {}
 
 const isTest = process.env.NODE_ENV === 'test'
 
 const defineState = (schema) => {
-  const models = {}
+  const localModels = {}
+  const localReducers = {}
+  const localActions = {}
+  const localSelectors = {}
+
   createState(schema).forEach(model => {
+    localModels[model.namespace] = model
+    localReducers[model.namespace] = model.reducer
+    localActions[model.namespace] = model.actions
+    localSelectors[model.namespace] = model.selectors
+
     models[model.namespace] = model
-    stateModels[model.namespace] = model
     reducers[model.namespace] = model.reducer
+    actions[model.namespace] = model.actions
     selectors[model.namespace] = model.selectors
   })
-  return models
+
+  return {
+    ...localModels,
+    reducers: localReducers,
+    actions: localActions,
+    selectors: localSelectors,
+  }
 }
 
 const clearAllState = () => {
@@ -25,8 +41,8 @@ const clearAllState = () => {
     delete reducers[key]
   })
 
-  forIn(stateModels, (_, key) => {
-    delete stateModels[key]
+  forIn(models, (_, key) => {
+    delete models[key]
   })
 }
 
@@ -39,7 +55,7 @@ const startRepl = (store) => {
     }
 
     w.dispatch = store.dispatch
-    attachStateModelsToConsole(stateModels, w)
+    attachStateModelsToConsole(models, w)
 
     if (!isTest) {
       console.log('Redux Enterprise: starting REPL') // eslint-disable-line

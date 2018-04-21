@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Normalized from 'nrmlzd'
 import { defineState, clearAllState, StateDefinitions } from '../../../../src'
-import { makeStore } from '../utils'
+import { makeStoreAndDefineState } from '../utils'
 
 const { Set } = StateDefinitions
 
@@ -12,7 +12,7 @@ describe('definition - set', () => {
 
   describe('flat', () => {
     it('state placement', () => {
-      expect(() => defineState({
+      expect(() => makeStoreAndDefineState({
         space: Set
       })).to.throw('Redux Enterprise: State Definition cannot be used at the reducer top level. Redux reducers do not support entire state being this initialState value.')
     })
@@ -20,58 +20,61 @@ describe('definition - set', () => {
 
   describe('nested', () => {
     it('state placement', () => {
-      defineState({
+      const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
           foo: Set
         }
       })
-      const store = makeStore()
 
-      expect(store.getState().space.foo).to.deep.equal([])
+      expect(getState().space.foo).to.deep.equal([])
     })
 
     it('receives action', () => {
-      defineState({
+      const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
           foo: Set
         }
       })
-      const store = makeStore()
+
+      const { actions, selectors } = space
 
       const set = [1, 2, 3]
-      global.Space.foo.set(set)
+      dispatch(actions.foo.set(set))
 
-      expect(store.getState().space.foo).to.deep.equal(set)
+      expect(getState().space.foo).to.deep.equal(set)
     })
   })
 
   describe('double nested', () => {
     it('state placement', () => {
-      defineState({
+      const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
           foo: {
             bar: Set
           }
         }
       })
-      const store = makeStore()
 
-      expect(store.getState().space.foo.bar).to.deep.equal([])
+      const { actions, selectors } = space
+
+      expect(selectors.foo.bar.get(getState())).to.deep.equal([])
     })
 
     it('receives action', () => {
-      defineState({
+      const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
           foo: {
             bar: Set
           }
         }
       })
-      const store = makeStore()
+
+      const { actions, selectors } = space
 
       const set = [1, 2, 3]
-      global.Space.foo.bar.set(set)
-      expect(store.getState().space.foo.bar).to.deep.equal(set)
+      dispatch(actions.foo.bar.set(set))
+
+      expect(selectors.foo.bar.get(getState())).to.deep.equal(set)
     })
   })
 })

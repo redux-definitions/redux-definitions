@@ -1,14 +1,23 @@
 import { createLogger } from 'redux-logger'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { startRepl, reducers } from '../../../src'
+import { defineState, startRepl } from '../../../src'
 
-export const makeStore = () => {
+export const makeStoreAndDefineState = (schema, repl) => {
+  const res = defineState(schema)
   const store = createStore(
-    combineReducers(reducers),
+    combineReducers(res.reducers),
     {},
     // applyMiddleware(createLogger())
     applyMiddleware()
   )
-  return startRepl(store)
+
+  if (repl) {
+    startRepl(store)
+  }
+
+  return {
+    ...store,
+    ...res
+  }
 }
 

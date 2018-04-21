@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Normalized from 'nrmlzd'
 import { defineState, clearAllState, StateDefinitions } from '../../../../src'
-import { makeStore } from '../utils'
+import { makeStoreAndDefineState } from '../utils'
 
 const { Flag } = StateDefinitions
 
@@ -12,7 +12,7 @@ describe('defintion - flag', () => {
 
   describe('flat', () => {
     it('state placement', () => {
-      expect(() => defineState({
+      expect(() => makeStoreAndDefineState({
         space: Flag
       })).to.throw('Redux Enterprise: State Definition cannot be used at the reducer top level. Redux reducers do not support entire state being this initialState value.')
     })
@@ -20,55 +20,61 @@ describe('defintion - flag', () => {
 
   describe('nested', () => {
     it('state placement', () => {
-      defineState({
+      const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
           foo: Flag
         }
       })
-      const store = makeStore()
 
-      expect(store.getState().space.foo).to.equal(false)
+      const { actions, selectors } = space
+
+      expect(selectors.foo.get(getState())).to.equal(false)
     })
 
     it('receives action', () => {
-      defineState({
+      const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
           foo: Flag
         }
       })
-      const store = makeStore()
 
-      expect(store.getState().space.foo).to.equal(false)
+      const { actions, selectors } = space
+
+      dispatch(actions.foo.set())
+
+      expect(selectors.foo.get(getState())).to.equal(true)
     })
   })
 
   describe('double nested', () => {
     it('state placement', () => {
-      defineState({
+      const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
           foo: {
             bar: Flag
           }
         }
       })
-      const store = makeStore()
 
-      expect(store.getState().space.foo.bar).to.equal(false)
+      const { actions, selectors } = space
+
+      expect(selectors.foo.bar.get(getState())).to.equal(false)
     })
 
     it('receives action', () => {
-      defineState({
+      const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
           foo: {
             bar: Flag
           }
         }
       })
-      const store = makeStore()
 
-      global.Space.foo.bar.set()
+      const { actions, selectors } = space
 
-      expect(store.getState().space.foo.bar).to.equal(true)
+      dispatch(actions.foo.bar.set())
+
+      expect(selectors.foo.bar.get(getState())).to.equal(true)
     })
   })
 })

@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Normalized from 'nrmlzd'
 import { defineState, clearAllState, StateDefinitions } from '../../../../src'
-import { makeStore } from '../utils'
+import { makeStoreAndDefineState } from '../utils'
 
 const { Collection } = StateDefinitions
 
@@ -12,58 +12,58 @@ describe('definition - collection', () => {
 
   describe('flat', () => {
     it('state placement', () => {
-      defineState({
+      const { space, getState } = makeStoreAndDefineState({
         space: Collection
       })
-      const store = makeStore()
 
-      expect(store.getState().space).to.deep.equal(Normalized.create())
+      const { actions, selectors } = space
+
+      expect(getState().space).to.deep.equal(Normalized.create())
+      expect(selectors.items(getState())).to.deep.equal([])
     })
 
     it('receives action', () => {
-      const m = defineState({
+      const { space, dispatch, getState } = makeStoreAndDefineState({
         space: Collection
       })
-      const store = makeStore()
 
-      // set entire collection
+      const { actions, selectors } = space
+
       const collection = [{ id: '1', name: 'foo' }]
-      global.Space.set(collection)
+      dispatch(actions.set(collection))
 
-      expect(store.getState().space).to.deep.equal(
+      expect(selectors.get(getState())).to.deep.equal(
         Normalized.fromArray(collection)
       )
-
-      expect(m.space.selectors.items(store.getState())).to.deep.equal(collection)
-      expect(m.space.selectors.ids(store.getState())).to.deep.equal(['1'])
+      expect(selectors.items(getState())).to.deep.equal(collection)
+      expect(selectors.ids(getState())).to.deep.equal(['1'])
     })
   })
 
   describe('nested', () => {
     it('state placement', () => {
-      defineState({
+      const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
           foo: Collection
         }
       })
-      const store = makeStore()
 
-      expect(store.getState().space.foo).to.deep.equal(Normalized.create())
+      expect(getState().space.foo).to.deep.equal(Normalized.create())
     })
 
     it('receives action', () => {
-      defineState({
+      const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
           foo: Collection
         }
       })
-      const store = makeStore()
 
-      // set entire collection
+      const { actions, selectors } = space
+
       const collection = [{ id: '1', name: 'foo' }]
-      global.Space.foo.set(collection)
+      dispatch(actions.foo.set(collection))
 
-      expect(store.getState().space.foo).to.deep.equal(
+      expect(selectors.foo.get(getState())).to.deep.equal(
         Normalized.fromArray(collection)
       )
     })
@@ -71,34 +71,34 @@ describe('definition - collection', () => {
 
   describe('double nested', () => {
     it('state placement', () => {
-      defineState({
+      const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
           foo: {
             bar: Collection
           }
         }
       })
-      const store = makeStore()
 
-      expect(store.getState().space.foo.bar).to.deep.equal(Normalized.create())
+      const { actions, selectors } = space
+
+      expect(selectors.foo.bar.items(getState())).to.deep.equal([])
     })
 
     it('receives action', () => {
-      defineState({
+      const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
           foo: {
             bar: Collection
           }
         }
       })
-      const store = makeStore()
 
-      // set entire collection
+      const { actions, selectors } = space
+
       const collection = [{ id: '1', name: 'foo' }]
-      global.Space.foo.bar.set(collection)
-      expect(store.getState().space.foo.bar).to.deep.equal(
-        Normalized.fromArray(collection)
-      )
+      dispatch(actions.foo.bar.set(collection))
+
+      expect(selectors.foo.bar.items(getState())).to.deep.equal(collection)
     })
   })
 })
