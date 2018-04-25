@@ -14,18 +14,20 @@
   <a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="Standard - JavaScript Style Guide"></a>
 </p>
 
-> Welcome 👋 Make sure to explore our [issues](https://github.com/redux-enterprise/redux-enterprise/issues), and feel free to ask any questions you may have!
+> ⚠ Remember this package is functional but still an Alpha release!
 
-> [Learn how to get up and running in 5 minutes below 👇🏽](#user-content-add-it-to-your-project-in-under-5-minutes)
+>👋 Welcome! Make sure to explore our [issues](https://github.com/redux-enterprise/redux-enterprise/issues), and feel free to ask any questions you may have!
+
+> [👇🏽Learn how to get up and running in 5 minutes below](#user-content-add-it-to-your-project-in-under-5-minutes)
 
 ## Overview
 
-Redux Enterprise is a library for **scaling development on Redux-based projects** through the use of **consistent and standardized** reducers and actions generated from **[higher-order state definitions](#state-definitions)**.
+Redux Enterprise is a library for **scaling development on Redux-based projects** through the use of **consistent and standardized** reducers and actions generated from **higher-order state types**.
 
-As projects grow it quickly becomes critical to keep reducers lean and to map very specific actions to these reducers. Reducers housing state of similar data structure (eg, Collection, Flag, Form, Request, Inbox) should always share identical standardized action/reducer interfaces when used multiple times in a project or even across projects. We can achieive this by generating our reducers and their actions from a library of reusable state definitions. State definitions are high-level enough to promote a focus on business logic, but simple enough to be reusable and composable. The core Redux patterns of message passing, data immutibility, unidirectional flow, and all associated benefits remain; Redux Enterprise simply adds a layer of standarization and tooling so developers can **stay productive and ship features at a consistent pace even as projects grow to dozens or hundreds of reducers**. Best of all, Redux Enterprise can be gradually introduced into existing projects without any refactoring.
+As projects grow it quickly becomes critical to keep reducers lean and to map very specific actions to these reducers. Reducers housing state of similar data structure (eg, Collection, Flag, Form, Request, Inbox) should always share identical standardized action/reducer interfaces when used multiple times in a project or even across projects. We can achieive this by generating our reducers and their actions from a library of reusable state types. State types are high-level enough to promote a focus on business logic, but simple enough to be reusable and composable. The core Redux patterns of message passing, data immutibility, unidirectional flow, and all associated benefits remain; Redux Enterprise simply adds a layer of standarization and tooling so developers can **stay productive and ship features at a consistent pace even as projects grow to dozens or hundreds of reducers**. Best of all, Redux Enterprise can be gradually introduced into existing projects without any refactoring.
 
 ## Generate reducers, actions, and selectors from a higher-order state model
-Redux Enterprise allows you to describe your core application state using a library of [State Definitions](#state-definitions):
+Redux Enterprise allows you to describe your core application state using a library of [State Types](#state-types):
 ```js
 import { defineState, StateTypes } from 'redux-enterprise'
 const { Collection, Flag, Setable, Inbox } = StateTypes
@@ -41,8 +43,17 @@ const { actions, reducers, selectors } = defineState({
 ```
 > Each top-level key in the `defineState` schema generates a separate reducer.
 
+## Automatic Redux-REPL right in your browser console
+When in dev mode Redux Enterprise automatically provides an in-browser REPL for dispatching prebound actions.
+
+
+<img  width="100%" src="images/repl.gif" />
+
+> For your convenience unlike normal actions, calls to actions in the browser console are prebound to `store.dispatch`. Remember, only in the console!
+
 ### Actions
-The standardized `actions` are returned from the `defineState` definition. The State Definition determines what actions are available. For example a `Collection` has actions `create`, `update`, `upsert`, `remove`, `set`, `reset`, `clear`. Learn more in the [State Definitions](#state-definitions) section.
+Standardized `actions` are returned from `defineState` definitions. The State Type determines what actions are available. For example a `Collection` has actions `create`, `update`, `upsert`, `remove`, `set`, `reset`, `clear`. Learn more in the [State Types](#state-types) section.
+
 ```js
 const { Todos, TodoEditor, Notifications } = actions
 
@@ -68,28 +79,14 @@ Notifications.clear()
 > ⚠️ Remember that these are action creators. The actions must be dispatched just like any other actions!
 
 ### Selectors
-[Selectors](https://github.com/reactjs/reselect) are also returned from `defineState`. A `Collection` has `all`, `byId`, and `ids`:
+[Selectors](https://github.com/reactjs/reselect) are also returned from `defineState`. For example a `Collection` has `items`, `byId`, and `ids`:
 
 ```js
 const { Todos, TodoEditor, Notifications } = selectors
 
-Todos.all(state) // returns a collection of todos
+Todos.items(state) // returns a collection of todos
 Todos.byId(state, { id }) // returns a todo with matching `id`
 Todos.ids(state) // returns an array of ids
-```
-
-
-## Automatic Redux-REPL right in your browser console
-When in dev mode Redux Enterprise also automatically provides an in-browser REPL for dispatching prebound actions.
-
-
-<img  width="100%" src="images/repl.gif" />
-
-> For your convenience unlike normal actions, calls to actions in the browser console are prebound to `store.dispatch`. Remember, only in the console!
-
-```js
-> TodoEditor.isEditing.toggle() // is bound to `store.dispatch(TodoEditor.isEditing.toggle())`
-// store.dispatch({ type: 'todoEditor/isEditing/toggle' })
 ```
 
 ## Try Redux Enterprise with your existing project in under 5 minutes
@@ -100,7 +97,8 @@ yarn add redux-enterprise
 ```
 
 ### Model some state
-Open your `reducers/index.js` file or create a new file and use Redux Enterprise to model some new state.
+Open your `reducers/index.js` file or create a new file and use Redux Enterprise to model some new state. State can be grouped and nested in any way or depth.
+
 ```js
 import { defineState, StateTypes } from 'redux-enterprise'
 const { Collection, Flag, Setable, Inbox } = StateTypes
@@ -198,85 +196,24 @@ const { reducers } = defineState({
 })
 ```
 
-## State Definitions
+## State Types
+Docs coming soon
 
-### Collection
-A Collection stores object items with at minimum `id` attributes.
-
-```js
-Collection
-
-// These are the default options
-Collection({ initialState: { ids: [], data: {} } })
-```
-
-#### Data Structure
-The underline data structure is normalized:
-```js
-{
-  ids: [1,2,3],
-  data: {
-    1: { id: 1, name: 'Morty' },
-    2: { id: 2, name: 'Rick' },
-    3: { id: 3, name: 'Summer' }
-  }
-}
-```
-
-#### Actions
-`create`: Adds an object to the collection.
-`update`: Updates an existing object in the collection.
-`upsert`: Updates or creates an object in the collection.
-`remove`: Removes any object with matching id.
-`set`: Sets the entire collection from an array of objects.
-`reset`: Resets collection to initialState.
-`clear`: Empties the colleciton.
-
-#### Selectors
-`all`: Array of all collection items.
-`byId`: Item from the collection if one matches
-`ids`: Array of all collection item ids.
-
-#### Example
-```js
-const { actions, selectors } = defineState({
-  people: Collection
-})
-
-// actions
-actions.People.create({ id: 1, name: 'Morty Burp' })
-actions.People.update({ id: 1, name: 'Morty' })
-actions.People.create({ id: 3, name: 'Summer' })
-actions.People.remove(1)
-
-// selectors
-selectors.People.all(state)
-// [{ id: 3, name: 'Summer' }]
-
-selectors.People.byId(1)
-// { id: 3, name: 'Summer' }
-
-selectors.People.byId(2)
-// null
-```
-
-### Flag
-### Setable
-
-### 3rd Party State Definitions
+### 3rd Party State Types
+Coming soon
 
 ## Advanced
+Coming soon
 
 ## Typescript & Flow Integration
+Coming soon
 
 ## Boilerplates and Examples
 
-Create React App - Enterprise
-
-Nextjs `examples/with-redux-enterprise`
+CRA and NextJS boilerplates coming soon!
 
 ## FAQ
-
+Coming soon
 
 ## Contributing
 
