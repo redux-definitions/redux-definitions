@@ -52,7 +52,7 @@ When in dev mode Redux Enterprise automatically provides an in-browser REPL for 
 > For your convenience unlike normal actions, calls to actions in the browser console are prebound to `store.dispatch`. Remember, only in the console!
 
 ### Actions
-Standardized `actions` are returned from `defineState` definitions. The State Type determines what actions are available. For example a `Collection` has actions `create`, `update`, `upsert`, `remove`, `set`, `reset`, `clear`. Learn more in the [State Types](#state-types) section.
+Standardized `actions` are returned from `defineState` calls. The State Type determines what actions are available. For example a `Collection` has actions `create`, `update`, `upsert`, `remove`, `set`, `reset`, `clear`. Learn more in the [State Types](#state-types) section.
 
 ```js
 const { Todos, TodoEditor, Notifications } = actions

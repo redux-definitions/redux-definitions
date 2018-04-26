@@ -5,7 +5,7 @@ export const createDefinition =
   (updaters, selectorFns, initialState, invalidAtTopLevel) =>
   (namespacing, topLevel) => {
   if (invalidAtTopLevel && topLevel) {
-    throw Error('Redux Enterprise: State Definition cannot be used at the reducer top level. Redux reducers do not support entire state being this initialState value.')
+    throw Error('Redux Enterprise: State Type cannot be used at the reducer top level. Redux reducers do not support entire state being this initialState value.')
   }
 
   const namespace = namespacing.join('/')
@@ -36,7 +36,7 @@ export const createDefinition =
 
 export const generateFunction = (fn, namespacing, topLevel) => {
   if (topLevel) {
-    throw Error('Redux Enterprise: State Definition custom functions cannot be used at the reducer top level.')
+    throw Error('Redux Enterprise: State Type custom functions cannot be used at the reducer top level.')
   }
 
   const namespace = namespacing.join('/')

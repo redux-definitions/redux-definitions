@@ -9,33 +9,55 @@ export function attachStateModelsToConsole(models, window) {
     return
   }
 
-  if (!window.dispatch) {
-    console.warn('Redux Enterprise: REPL cannot mount, `window.dispatch` undefined')
+  if (!window.store) {
+    console.warn('Redux Enterprise: REPL cannot mount, `window.store` undefined')
     return
   }
 
+  window.Actions = {}
+  window.Selectors = {}
+
   forIn(models, (model, key) => {
-    window[upperFirst(key)] = bindActionMap(model.actions, window.dispatch)
+    window.Actions[upperFirst(key)] = bindActionMap(model.actions, window.store)
+    window.Selectors[upperFirst(key)] = bindSelectorMap(model.selectors, window.store)
   })
 }
 
-function bindActionMap(actions, dispatch) {
+function bindActionMap(actions, store) {
   const allActions = {}
 
   forIn(actions, (val, key) => {
-
     if (typeof val === 'object') {
-      allActions[key] = bindActionMap(val, dispatch)
+      allActions[key] = bindActionMap(val, store)
     } else {
       const action = val
       allActions[key] = (...params) => {
         const a = action(...params)
         // console.log(a)
-        dispatch(a)
+        store.dispatch(a)
         return a
       }
     }
   })
 
   return allActions
+}
+
+function bindSelectorMap(selectors, store) {
+  const allSelectors = {}
+
+  forIn(selectors, (val, key) => {
+    if (typeof val === 'object') {
+      allSelectors[key] = bindSelectorMap(val, store)
+    } else {
+      const selector = val
+      allSelectors[key] = (...params) => {
+        const s = selector(store.getState(), ...params)
+        // console.log(s)
+        return s
+      }
+    }
+  })
+
+  return allSelectors
 }

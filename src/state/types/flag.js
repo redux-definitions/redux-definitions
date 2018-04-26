@@ -17,8 +17,7 @@ const generate = createDefinition({
     return false
   },
   toggle: (state) => {
-    const val = !state[field]
-    return val
+    return !state
   },
 }, {
   get: (state) => state,

@@ -1,11 +1,11 @@
 import { expect } from 'chai'
 import Normalized from 'nrmlzd'
-import { defineState, clearAllState, StateDefinitions } from '../../../src'
+import { defineState, clearAllState, StateTypes } from '../../../src'
 import { makeStoreAndDefineState } from './utils'
 
-const { Collection, Flag, Setable } = StateDefinitions
+const { Collection, Flag, Setable } = StateTypes
 
-describe('multiple definitions', () => {
+describe('multiple types', () => {
   beforeEach(() => {
     clearAllState()
   })
@@ -39,6 +39,13 @@ describe('multiple definitions', () => {
         isPending: Flag,
         firstname: Setable,
         lastname: Setable,
+        clearFullName: (state, action) => {
+          return {
+            ...state,
+            firstname: null,
+            lastname: null,
+          }
+        },
         dob: Setable,
       },
       config: {
@@ -47,7 +54,7 @@ describe('multiple definitions', () => {
       }
     }, true)
 
-    const { Todos, Notes, Editor, Config } = global
+    const { Todos, Notes, Editor, Config } = global.Actions
 
     Todos.create({ id: 1 })
     Todos.create({ id: 2 })
@@ -66,7 +73,8 @@ describe('multiple definitions', () => {
     Editor.isOpen.unset()
     Editor.firstname.set('jon')
     Editor.lastname.set('snowden')
-    Editor.lastname.set('snow')
+    Editor.clearFullName()
+    Editor.firstname.set('john')
     Editor.isOpen.unset()
     Editor.isPending.set()
 
@@ -78,8 +86,8 @@ describe('multiple definitions', () => {
       notes: { ids: [1, 2], data: { 1: { id: 1 }, 2: { id: 2, message: 'foo' }, }},
       friends: { ids: [], data: {} },
       editor: {
-        firstname: 'jon',
-        lastname: 'snow',
+        firstname: 'john',
+        lastname: null,
         dob: undefined,
         isOpen: false,
         isPending: true,

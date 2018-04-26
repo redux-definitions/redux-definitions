@@ -6,8 +6,10 @@ import Set from './set'
 
 export default {
   Collection,
-  FormField,
   Flag,
   Setable,
   Set,
+  labs: {
+    FormField
+  }
 }

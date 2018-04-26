@@ -1,9 +1,9 @@
 import { expect } from 'chai'
 import Normalized from 'nrmlzd'
-import { defineState, clearAllState, StateDefinitions } from '../../../../src'
+import { defineState, clearAllState, StateTypes } from '../../../../src'
 import { makeStoreAndDefineState } from '../utils'
 
-const { FormField } = StateDefinitions
+const { FormField } = StateTypes.labs
 
 const formField = FormField({
   validators: [
@@ -13,7 +13,7 @@ const formField = FormField({
   value: 'flim'
 })
 
-describe('definition - formField', () => {
+describe('formField', () => {
   beforeEach(() => {
     clearAllState()
   })
@@ -22,7 +22,7 @@ describe('definition - formField', () => {
     it('state placement', () => {
       expect(() => makeStoreAndDefineState({
         space: formField
-      })).to.throw('Redux Enterprise: State Definition cannot be used at the reducer top level. Redux reducers do not support entire state being this initialState value.')
+      })).to.throw('Redux Enterprise: State Type cannot be used at the reducer top level. Redux reducers do not support entire state being this initialState value.')
     })
   })
 

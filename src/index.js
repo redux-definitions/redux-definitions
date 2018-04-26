@@ -1,7 +1,7 @@
 import { forIn } from 'lodash/object'
 import { createState } from './state'
 import { attachStateModelsToConsole } from './console'
-import StateDefinitions from './state/definitions'
+import StateTypes from './state/types'
 
 const actions = {}
 const models = {}
@@ -50,11 +50,11 @@ const startRepl = (store) => {
   if ((process && process.title === 'browser') || isTest) {
     const w = isTest ? global : window
 
-    if (!store || !store.dispatch) {
+    if (!store || !store.dispatch || !store.getState) {
       throw Error('Redux Enterprise: `startRepl` requires a valid store object')
     }
 
-    w.dispatch = store.dispatch
+    w.store = store
     attachStateModelsToConsole(models, w)
 
     if (!isTest) {
@@ -69,7 +69,7 @@ export default {
   startRepl,
   clearAllState,
   reducers,
-  StateDefinitions,
+  StateTypes,
 }
 
 export {
@@ -77,5 +77,5 @@ export {
   startRepl,
   clearAllState,
   reducers,
-  StateDefinitions,
+  StateTypes,
 }

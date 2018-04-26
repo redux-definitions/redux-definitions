@@ -2,9 +2,9 @@ import { expect } from 'chai'
 import Normalized from 'nrmlzd'
 import { createAction } from 'redux-actions'
 import { generateStateMap } from '../../../src/state/generators'
-import { StateDefinitions } from '../../../src'
+import { StateTypes } from '../../../src'
 
-const { Collection, Setable, Flag } = StateDefinitions
+const { Collection, Setable, Flag } = StateTypes
 
 describe('generateStateMap', () => {
   it('nested structure', () => {

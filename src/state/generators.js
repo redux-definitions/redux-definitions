@@ -2,9 +2,9 @@
 
 import { createAction } from 'redux-actions'
 import { forIn } from 'lodash/object'
-import { generateFunction } from './definitions/utils'
+import { generateFunction } from './types/utils'
 
-const isStateDefinition = (i) => {
+const isStateType = (i) => {
   return typeof i === 'object' && i.generate
 }
 
@@ -14,15 +14,15 @@ export const generateStateMap = (schema, namespacing) => {
   let allSelectors = {}
   let allInitialState = {}
 
-  if (isStateDefinition(schema)) {
-    const stateDefinition = schema
+  if (isStateType(schema)) {
+    const stateType = schema
 
     const {
       actions,
       reducers,
       selectors,
       initialState,
-    } = buildStateDefinition(stateDefinition, namespacing, true)
+    } = buildStateType(stateType, namespacing, true)
 
     allActions = actions
     allReducers = reducers
@@ -38,13 +38,13 @@ export const generateStateMap = (schema, namespacing) => {
     allReducers = reducers
   } else {
     forIn(schema, (value, field) => {
-      if (isStateDefinition(value)) {
+      if (isStateType(value)) {
         const {
           actions,
           reducers,
           selectors,
           initialState,
-        } = buildStateDefinition(value, [...namespacing, field])
+        } = buildStateType(value, [...namespacing, field])
 
         allActions[field] = actions
         allSelectors[field] = selectors
@@ -95,6 +95,6 @@ export const generateStateMap = (schema, namespacing) => {
   }
 }
 
-const buildStateDefinition = (stateDefinition, namespacing, topLevel) => {
-  return stateDefinition.generate(namespacing, topLevel)
+const buildStateType = (stateType, namespacing, topLevel) => {
+  return stateType.generate(namespacing, topLevel)
 }
