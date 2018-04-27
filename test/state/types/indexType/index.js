@@ -3,24 +3,28 @@ import Normalized from 'nrmlzd'
 import { defineState, clearAllState, StateTypes } from '../../../../src'
 import { makeStoreAndDefineState } from '../utils'
 
-const { Set } = StateTypes
+const { Index } = StateTypes
 
-describe('set', () => {
+describe('index', () => {
   beforeEach(() => {
     clearAllState()
   })
 
   it('state placement', () => {
-    expect(() => makeStoreAndDefineState({
-      space: Set
-    })).to.throw('Redux Enterprise: State Type cannot be used at the reducer top level. Redux reducers do not support entire state being this initialState value.')
+    const { space, getState } = makeStoreAndDefineState({
+      space: Index
+    })
+
+    const { actions, selectors } = space
+
+    expect(selectors.get(getState())).to.deep.equal([])
   })
 
   describe('actions', () => {
     it('api', () => {
       const { space } = makeStoreAndDefineState({
         space: {
-          foo: Set
+          foo: Index
         }
       })
 
@@ -37,7 +41,7 @@ describe('set', () => {
     it('set', () => {
       const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
-          foo: Set
+          foo: Index
         }
       })
 
@@ -52,7 +56,7 @@ describe('set', () => {
     it('add', () => {
       const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
-          foo: Set
+          foo: Index
         }
       })
 
@@ -70,7 +74,7 @@ describe('set', () => {
     it('remove', () => {
       const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
-          foo: Set
+          foo: Index
         }
       })
 
@@ -88,7 +92,7 @@ describe('set', () => {
     it('reset', () => {
       const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
-          foo: Set
+          foo: Index
         }
       })
 
@@ -106,7 +110,7 @@ describe('set', () => {
     it('api', () => {
       const { space } = makeStoreAndDefineState({
         space: {
-          foo: Set
+          foo: Index
         }
       })
 
@@ -121,7 +125,7 @@ describe('set', () => {
     it('includes', () => {
       const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
-          foo: Set
+          foo: Index
         }
       })
 
@@ -129,14 +133,14 @@ describe('set', () => {
 
       const set = [1,2,3]
       dispatch(actions.foo.set(set))
-      expect(selectors.foo.includes(getState(), { id: 1 })).to.equal(true)
-      expect(selectors.foo.includes(getState(), { id: 4 })).to.equal(false)
+      expect(selectors.foo.includes(getState(), 1)).to.equal(true)
+      expect(selectors.foo.includes(getState(), 4)).to.equal(false)
     })
 
     it('get', () => {
       const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
-          foo: Set
+          foo: Index
         }
       })
 
@@ -151,23 +155,23 @@ describe('set', () => {
   it('nested', () => {
     const { space, dispatch, getState } = makeStoreAndDefineState({
       space: {
-        foo: Set
+        foo: Index
       }
     })
 
     const { actions, selectors } = space
 
-    expect(getState().space.foo).to.deep.equal([])
+    expect(selectors.foo.get(getState())).to.deep.equal([])
     const set = [1, 2, 3]
     dispatch(actions.foo.set(set))
-    expect(getState().space.foo).to.deep.equal(set)
+    expect(selectors.foo.get(getState())).to.deep.equal(set)
   })
 
   it('double nested', () => {
     const { space, dispatch, getState } = makeStoreAndDefineState({
       space: {
         foo: {
-          bar: Set
+          bar: Index
         }
       }
     })

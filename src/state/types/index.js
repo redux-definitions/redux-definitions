@@ -1,14 +1,14 @@
 import Collection from './collection'
 import Flag from './flag'
 import FormField from './formField'
-import Setable from './setable'
-import Set from './set'
+import Field from './field'
+import Index from './indexType'
 
 export default {
   Collection,
   Flag,
-  Setable,
-  Set,
+  Field,
+  Index,
   labs: {
     FormField
   }

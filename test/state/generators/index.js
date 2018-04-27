@@ -4,7 +4,7 @@ import { createAction } from 'redux-actions'
 import { generateStateMap } from '../../../src/state/generators'
 import { StateTypes } from '../../../src'
 
-const { Collection, Setable, Flag } = StateTypes
+const { Collection, Field, Flag } = StateTypes
 
 describe('generateStateMap', () => {
   it('nested structure', () => {
@@ -42,7 +42,7 @@ describe('generateStateMap', () => {
       c: (state, action) => {
         return action.payload
       },
-      g: Setable,
+      g: Field,
     }
 
     const { actions, reducers, initialState } = generateStateMap(sampleObj, ['namespace'])
@@ -60,7 +60,7 @@ describe('generateStateMap', () => {
         },
         f: Flag,
       },
-      g: Setable,
+      g: Field,
     }
 
     const { actions, reducers, initialState } = generateStateMap(sampleObj, ['namespace'])

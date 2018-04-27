@@ -3,7 +3,7 @@ import Normalized from 'nrmlzd'
 import { defineState, clearAllState, StateTypes } from '../../../src'
 import { makeStoreAndDefineState } from './utils'
 
-const { Collection, Flag, Setable } = StateTypes
+const { Collection, Flag, Field } = StateTypes
 
 describe('multiple types', () => {
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe('multiple types', () => {
             beep: Collection,
             bloop: Flag,
           },
-          flim: Setable,
+          flim: Field,
           flam: Flag,
         },
         justTestingEmpty: {},
@@ -37,8 +37,8 @@ describe('multiple types', () => {
       editor: {
         isOpen: Flag,
         isPending: Flag,
-        firstname: Setable,
-        lastname: Setable,
+        firstname: Field,
+        lastname: Field,
         clearFullName: (state, action) => {
           return {
             ...state,
@@ -46,7 +46,7 @@ describe('multiple types', () => {
             lastname: null,
           }
         },
-        dob: Setable,
+        dob: Field,
       },
       config: {
         isAdmin: Flag,

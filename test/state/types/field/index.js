@@ -3,7 +3,7 @@ import Normalized from 'nrmlzd'
 import { defineState, clearAllState, StateTypes } from '../../../../src'
 import { makeStoreAndDefineState } from '../utils'
 
-const { Setable } = StateTypes
+const { Field } = StateTypes
 
 describe('setable', () => {
   beforeEach(() => {
@@ -12,7 +12,7 @@ describe('setable', () => {
 
   it('state placement', () => {
     expect(() => makeStoreAndDefineState({
-      space: Setable
+      space: Field
     })).to.throw('Redux Enterprise: State Type cannot be used at the reducer top level. Redux reducers do not support entire state being this initialState value.')
   })
 
@@ -20,7 +20,7 @@ describe('setable', () => {
     it('api', () => {
       const { space } = makeStoreAndDefineState({
         space: {
-          foo: Setable
+          foo: Field
         }
       })
 
@@ -35,7 +35,7 @@ describe('setable', () => {
     it('set', () => {
       const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
-          foo: Setable
+          foo: Field
         }
       })
 
@@ -49,7 +49,7 @@ describe('setable', () => {
     it('unset', () => {
       const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
-          foo: Setable
+          foo: Field
         }
       })
 
@@ -66,7 +66,7 @@ describe('setable', () => {
     it('api', () => {
       const { space } = makeStoreAndDefineState({
         space: {
-          foo: Setable
+          foo: Field
         }
       })
 
@@ -81,7 +81,7 @@ describe('setable', () => {
     it('isSet', () => {
       const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
-          foo: Setable
+          foo: Field
         }
       })
 
@@ -97,7 +97,7 @@ describe('setable', () => {
     it('get', () => {
       const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
-          foo: Setable
+          foo: Field
         }
       })
 
@@ -113,7 +113,7 @@ describe('setable', () => {
   describe('nested', () => {
     const { space, dispatch, getState } = makeStoreAndDefineState({
       space: {
-        foo: Setable
+        foo: Field
       }
     })
 
@@ -128,7 +128,7 @@ describe('setable', () => {
     const { space, dispatch, getState } = makeStoreAndDefineState({
       space: {
         foo: {
-          bar: Setable
+          bar: Field
         }
       }
     })
