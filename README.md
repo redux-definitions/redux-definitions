@@ -14,8 +14,6 @@
   <a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="Standard - JavaScript Style Guide"></a>
 </p>
 
-> ⚠ Remember this package is functional but still an Alpha release!
-
 >👋 Welcome! Make sure to explore our [issues](https://github.com/redux-enterprise/redux-enterprise/issues), and feel free to ask any questions you may have!
 
 > [👇🏽Learn how to get up and running in 5 minutes below](#user-content-add-it-to-your-project-in-under-5-minutes)
