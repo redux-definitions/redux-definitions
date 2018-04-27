@@ -22,9 +22,7 @@
 
 ## Overview
 
-Redux Enterprise is a library for **scaling development and maintainability of Redux-based projects**.
-
-Redux Enterprise achieves this by abstracting away common action, reducer, and selector patterns into a library of higher-level **state types**.
+Redux Enterprise is a library for **scaling development and maintainability of Redux-based projects** by abstracting away common action, reducer, and selector patterns into a library of higher-level **state types**.
 
 ### Whats included?
 - Library of reusable state types (flag, field, collection, index, etc)
@@ -56,7 +54,7 @@ When in dev-mode Redux Enterprise automatically provides a REPL-like experience 
 
 <img  width="100%" src="images/repl.gif" />
 
-> For your convenience unlike normal actions, calls to actions in the browser console are pre-bound to `store.dispatch`. Remember, only in the console!
+> For your convenience unlike normal actions and selectors, calls to actions and selectors in the browser console are pre-bound to `store.dispatch` and `store.getState`. Remember, only in the console!
 
 ## Actions
 Standardized `actions` are returned from `defineState` calls. The State Type determines what actions are available. For example a `Collection` has actions `create`, `upsert`, `remove`, `set`, `reset`, `clear`. Learn more in the [State Types](#state-types) section.
@@ -173,15 +171,15 @@ const { reducers, actions } = defineState({
   todoEditor: {
     isEditing: Flag,
     editingId: Setable,
-    customerReducer: (state, action) => {
+    customReducerFunction: (state, action) => {
       // do anything I please with the `todoEditor` reducer
       return state
     }
   }
 })
 
-actions.todos.customReducer('morty')
-// { type: 'todos/customReducer', payload: 'morty' }
+actions.todos.customReducerFunction('morty')
+// { type: 'todos/customReducerFunction', payload: 'morty' }
 ```
 As shown above, the corresponding action creator is available on the actions object.
 
@@ -193,7 +191,7 @@ const { reducers } = defineState({
     stuff: {
       someId: Setable,
       aontherId: Setable,
-      anotherCustomReducer: (state, action) => {
+      nestedCustomReducerFunction: (state, action) => {
         // here `state` is scoped to `nested.stuff`,
         // so we are reducing: { someId, anotherId }
         return state
@@ -207,30 +205,30 @@ const { reducers } = defineState({
 
 ### Collection
 Collection of objects with an `id` key. Collection is stored in normalized form: `{ ids, data }` where `ids` is an array of unique `id` keys and `data` is an `id`-based lookup map.
-**Actions**
+#### Actions
 `create`, `upsert`, `remove`, `set`, `reset`, `clear`
-**Selectors**
+#### Selectors
 `items`, `ids`, `byId`
 
 ### Field
 A basic value of any type.
-**Actions**
+#### Actions
 `set`, `unset`, `reset`
-**Selectors**
+#### Selectors
 `get`, `isSet`
 
 ### Flag
 A boolean value that can be toggled.
-**Actions**
+#### Actions
 `set`, `unset`, `toggle`
-**Selectors**
+#### Selectors
 `get`
 
 ### Index
 A set of unique values.
-**Actions**
+#### Actions
 `set`, `clear`, `add`, `remove`
-**Selectors**
+#### Selectors
 `get`
 
 ### 3rd Party State Types
