@@ -16,7 +16,7 @@
 
 >👋 Welcome! Make sure to explore our [issues](https://github.com/redux-enterprise/redux-enterprise/issues), and feel free to ask any questions you may have!
 
-> [👇🏽Learn how to get up and running in 5 minutes below](#user-content-add-it-to-your-project-in-under-5-minutes)
+> [👇🏽Learn how to get up and running in 5 minutes below](#try-it-in-your-existing-project-in-under-5-minutes)
 
 ## Overview
 
