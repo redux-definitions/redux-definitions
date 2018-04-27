@@ -22,37 +22,44 @@
 
 ## Overview
 
-Redux Enterprise is a library for **scaling development on Redux-based projects** through the use of **consistent and standardized** reducers and actions generated from **higher-order state types**.
+Redux Enterprise is a library for **scaling development and maintainability of Redux-based projects**.
 
-As projects grow it quickly becomes critical to keep reducers lean and to map very specific actions to these reducers. Reducers housing state of similar data structure (eg, Collection, Flag, Form, Request, Inbox) should always share identical standardized action/reducer interfaces when used multiple times in a project or even across projects. We can achieive this by generating our reducers and their actions from a library of reusable state types. State types are high-level enough to promote a focus on business logic, but simple enough to be reusable and composable. The core Redux patterns of message passing, data immutibility, unidirectional flow, and all associated benefits remain; Redux Enterprise simply adds a layer of standarization and tooling so developers can **stay productive and ship features at a consistent pace even as projects grow to dozens or hundreds of reducers**. Best of all, Redux Enterprise can be gradually introduced into existing projects without any refactoring.
+Redux Enterprise achieves this by abstracting away common action, reducer, and selector patterns into a library of higher-level **state types**.
 
-## Generate reducers, actions, and selectors from a higher-order state model
-Redux Enterprise allows you to describe your core application state using a library of [State Types](#state-types):
+### Whats included?
+- Library of reusable state types (flag, field, collection, index, etc)
+- Consistent and predictable way to describe, name, scope, update, and derive application state
+- In-browser REPL for interacting with running application
+
+### Why Redux Enterprise over alternative frameworks?
+Redux Enterprise was designed with compatibility & incremental improvement in mind!  Redux Enterprise allows developers to leverage their existing code and the immense Redux ecosystem by building on Redux rather than replacing it.
+
+## Generate reducers, actions, and selectors
+Describe your core application state using a library of [State Types](#state-types):
 ```js
 import { defineState, StateTypes } from 'redux-enterprise'
-const { Collection, Flag, Setable, Inbox } = StateTypes
+const { Collection, Flag, Field, Index } = StateTypes
 
 const { actions, reducers, selectors } = defineState({
   todos: Collection,
+  selected: Index
   todoEditor: {
     isEditing: Flag,
-    editingId: Setable,
-  },
-  notifications: Inbox
+    editingId: Field
+  }
 })
 ```
 > Each top-level key in the `defineState` schema generates a separate reducer.
 
-## Automatic Redux-REPL right in your browser console
-When in dev mode Redux Enterprise automatically provides an in-browser REPL for dispatching prebound actions.
-
+## Redux-REPL
+When in dev-mode Redux Enterprise automatically provides a REPL-like experience in the browser console for dispatching pre-bound actions and selectors.
 
 <img  width="100%" src="images/repl.gif" />
 
-> For your convenience unlike normal actions, calls to actions in the browser console are prebound to `store.dispatch`. Remember, only in the console!
+> For your convenience unlike normal actions, calls to actions in the browser console are pre-bound to `store.dispatch`. Remember, only in the console!
 
-### Actions
-Standardized `actions` are returned from `defineState` calls. The State Type determines what actions are available. For example a `Collection` has actions `create`, `update`, `upsert`, `remove`, `set`, `reset`, `clear`. Learn more in the [State Types](#state-types) section.
+## Actions
+Standardized `actions` are returned from `defineState` calls. The State Type determines what actions are available. For example a `Collection` has actions `create`, `upsert`, `remove`, `set`, `reset`, `clear`. Learn more in the [State Types](#state-types) section.
 
 ```js
 const { Todos, TodoEditor, Notifications } = actions
@@ -69,27 +76,27 @@ TodoEditor.editingId.set(37)
 Todos.remove(37)
 // { type: 'todos/remove', payload: 37 }
 
-Notifications.push({ id: 37, title: 'Bob has edited a todo' })
-// { type: 'notifications/push', payload: { id: 37, message: 'Rick has edited a todo' } }
+Selected.add(13)
+// { type: 'selected/add', payload: 13 } }
 
-Notifications.clear()
-// { type: 'notifications/clear' }
+Selected.clear()
+// { type: 'selected/clear' }
 ```
 
 > ⚠️ Remember that these are action creators. The actions must be dispatched just like any other actions!
 
-### Selectors
+## Selectors
 [Selectors](https://github.com/reactjs/reselect) are also returned from `defineState`. For example a `Collection` has `items`, `byId`, and `ids`:
 
 ```js
-const { Todos, TodoEditor, Notifications } = selectors
+const { Todos, TodoEditor, Selected } = selectors
 
 Todos.items(state) // returns a collection of todos
 Todos.byId(state, { id }) // returns a todo with matching `id`
 Todos.ids(state) // returns an array of ids
 ```
 
-## Try Redux Enterprise with your existing project in under 5 minutes
+## Try it in your existing project in under 5 minutes
 
 ### Install
 ```sh
@@ -97,35 +104,35 @@ yarn add redux-enterprise
 ```
 
 ### Model some state
-Open your `reducers/index.js` file or create a new file and use Redux Enterprise to model some new state. State can be grouped and nested in any way or depth.
+Use Redux Enterprise to model some new state. State can be grouped and nested in any way or depth.
 
 ```js
 import { defineState, StateTypes } from 'redux-enterprise'
-const { Collection, Flag, Setable, Inbox } = StateTypes
+const { Collection, Flag, Field, Index } = StateTypes
 
 const { reducers } = defineState({
   todos: Collection,
+  selected: Index,
   todoEditor: {
     isEditing: Flag,
-    editingId: Setable
-  },
-  notifications: Inbox
+    editingId: Field
+  }
 })
 // `reducers` contains three reducers:
-// { todos: fn, todoEditor: fn, notifications: fn }
+// { todos: fn, todoEditor: fn, selected: fn }
 ```
 
 ### Add the new reducers
-Take the `reducers` from the call to `defineState` and add them into your `combineReducers` call - your existing reducers will not be affected:
+Take the `reducers` from the call to `defineState` and add them into your `combineReducers` call.
 ```js
 const rootReducer = combineReducers({
-  otherExistingReducer,
+  existingReducer,
   anotherReducer,
-  ...reducers
+  ...reducers // <-- add them
 })
 ```
 
-### Start the REPL with your store
+### Setup the REPL with your store
 Right after your call to Redux's createStore start the Redux Enterprise REPL:
 ```js
 import { startRepl } from 'redux-enterprise'
@@ -138,26 +145,26 @@ startRepl(store)
 ```
 > Note: when server-side rendering this call will be a no-op.
 
-### All done! Play with the new actions in your browser console
+### All done! Try things in your browser console
 ```js
-> Todos.create({ id: 89, message: 'Do laundry' })
-// prev state { todos: {..0}, todoEditor: { isEditing: false, editingId: null }, notifications: {..0} }
+> Actions.Todos.create({ id: 89, message: 'Do laundry' })
+// prev state { todos: {..0}, todoEditor: { isEditing: false, editingId: null }, selected: {..0} }
 action {type: "todos/create", payload: { id: 89, message: "Do laundry" } }
-// next state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, notifications: {..0} }
+// next state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, selected: {..0} }
 
-> Notifications.push({ id: 47, message: 'New todo has been added' })
-// prev state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, notifications: {..0} }
-action {type: "notifications/push", payload: { id: 47, message: "Hello there!" } }
-// next state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, notifications: {..1} }
+> Selected.add(89)
+// prev state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, selected: {..0} }
+action {type: "selected/add", payload: 89 }
+// next state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, selected: {..1} }
 
 > TodoEditor.isEditing.toggle()
-// prev state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, notifications: {..1} }
+// prev state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, selected: {..1} }
 action {type: "todos/isEditing/toggle"}
-// next state { todos: {..1}, todoEditor: { isEditing: true, editingId: null }, notifications: {..1} }
+// next state { todos: {..1}, todoEditor: { isEditing: true, editingId: null }, selected: {..1} }
 ```
 
 ## Custom reducer functions
-Redux Enterprise also allows you to create custom reducer functions. Anywhere in the state map if a function is added, `defineState` passes the function the reducer's `state` and incoming `action`:
+Redux Enterprise also allows you to create custom reducer functions. If a function is added anywhere in the state map, `defineState` passes the function the reducer's `state` and incoming `action`:
 ```js
 import { defineState, StateTypes } from 'redux-enterprise'
 const { Collection, Flag, Setable } = StateTypes
@@ -178,7 +185,7 @@ actions.todos.customReducer('morty')
 ```
 As shown above, the corresponding action creator is available on the actions object.
 
-### Nesting
+### Nesting & scoping
 If you nest a function, the `state` passed in will be scoped to that level of state automatically:
 ```js
 const { reducers } = defineState({
@@ -197,25 +204,49 @@ const { reducers } = defineState({
 ```
 
 ## State Types
-Docs coming soon
+
+### Collection
+Collection of objects with an `id` key. Collection is stored in normalized form: `{ ids, data }` where `ids` is an array of unique `id` keys and `data` is an `id`-based lookup map.
+**Actions**
+`create`, `upsert`, `remove`, `set`, `reset`, `clear`
+**Selectors**
+`items`, `ids`, `byId`
+
+### Field
+A basic value of any type.
+**Actions**
+`set`, `unset`, `reset`
+**Selectors**
+`get`, `isSet`
+
+### Flag
+A boolean value that can be toggled.
+**Actions**
+`set`, `unset`, `toggle`
+**Selectors**
+`get`
+
+### Index
+A set of unique values.
+**Actions**
+`set`, `clear`, `add`, `remove`
+**Selectors**
+`get`
 
 ### 3rd Party State Types
-Coming soon
-
-## Advanced
-Coming soon
+Coming soon!
 
 ## Typescript & Flow Integration
-Coming soon
+Coming soon!
 
 ## Boilerplates and Examples
 
 CRA and NextJS boilerplates coming soon!
 
 ## FAQ
-Coming soon
+Coming soon!
 
 ## Contributing
 
-Please check out the [Contributing](https://github.com/redux-enterprise/redux-enterprise/blob/master/CONTRIBUTING.md) page to learn how to get involved. TLDR the [Github issues tab](https://github.com/redux-enterprise/redux-enterprise/issues) is your friend.
+Please check out the [Contributing](https://github.com/redux-enterprise/redux-enterprise/blob/master/CONTRIBUTING.md) page to learn how to get involved.
 
