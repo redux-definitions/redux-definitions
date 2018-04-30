@@ -5,7 +5,7 @@ import { forIn } from 'lodash/object'
 import { generateFunction } from './types/utils'
 
 const isStateType = (i) => {
-  return typeof i === 'object' && i.generate
+  return i && i.generate
 }
 
 export const generateStateMap = (schema, namespacing) => {

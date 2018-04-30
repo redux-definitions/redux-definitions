@@ -10,7 +10,7 @@ const formField = FormField({
     [(val) => typeof val === 'string', 'str heh'],
     [(val) => val.length > 4, 'not long'],
   ],
-  value: 'flim'
+  initialValue: 'flim'
 })
 
 describe('formField', () => {
