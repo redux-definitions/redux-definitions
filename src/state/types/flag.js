@@ -1,28 +1,25 @@
-/* eslint-disable */
-// Flag
-import { createAction } from 'redux-actions'
 import { createDefinition } from './utils'
 
-const generate = createDefinition({
+const generateFactory = ({ initialState = false }) => createDefinition({
   set: (state, action) => {
     const val = ('payload' in action) ? action.payload : true
 
     if (typeof val !== 'boolean') {
-      console.warn(`Redux Enterprise\n\n\`${namespace}\` is being set with a non boolean value! Casting type.\n`)
+      console.warn(`Redux Enterprise\n\n\`${namespace}\` is being set with a non boolean value! Casting type.\n`) // eslint-disable-line
     }
 
     return !!val
   },
-  unset: (state) => {
-    return false
-  },
-  toggle: (state) => {
-    return !state
-  },
+  unset: () => false,
+  toggle: (state) => !state,
 }, {
   get: (state) => state,
-}, false, true)
+}, initialState, true)
 
-export default {
-  generate
-}
+const Type = ({ initialState }) => ({
+  generate: generateFactory({ initialState })
+})
+
+Type.generate = generateFactory({})
+
+export default Type

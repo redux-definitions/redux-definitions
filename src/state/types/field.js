@@ -1,20 +1,17 @@
-/* eslint-disable */
-// Setable
-import { createAction } from 'redux-actions'
 import { createDefinition } from './utils'
 
-const generate = createDefinition({
-  set: (state, { payload }) => {
-    return payload
-  },
-  unset: (state) => {
-    return null
-  }
+const generateFactory = ({ initialState }) => createDefinition({
+  set: (state, { payload }) => payload,
+  unset: () => null,
 }, {
   isSet: (state) => !!state,
   get: (state) => state,
-}, undefined, true)
+}, initialState, true)
 
-export default {
-  generate
-}
+const Type = ({ initialState }) => ({
+  generate: generateFactory({ initialState })
+})
+
+Type.generate = generateFactory({})
+
+export default Type

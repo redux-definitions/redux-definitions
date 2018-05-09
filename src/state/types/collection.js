@@ -1,13 +1,11 @@
-/* eslint-disable */
-// Collection
-import { createAction } from 'redux-actions'
 import Normalized from 'nrmlzd'
-import { scopeReductionFactory } from './utils'
 import { createDefinition } from './utils'
 
-const generate = createDefinition({
-  set: (state, { payload }) => Normalized.fromArray(payload),
-  reset: (state) => Normalized.create(),
+const generateFactory = ({
+  initialState = Normalized.create()
+}) => createDefinition({
+  set: (_, { payload }) => Normalized.fromArray(payload),
+  reset: () => Normalized.create(),
   create: (state, { payload }) => Normalized.upsert(state, payload),
   upsert: (state, { payload }) => Normalized.upsert(state, payload),
   remove: (state, { payload: id }) => Normalized.remove(state, id),
@@ -16,8 +14,12 @@ const generate = createDefinition({
   items: (state) => Normalized.toArray(state),
   ids: (state) => state.ids,
   byId: (state, { id }) => state.data[id] || null,
-}, Normalized.create())
+}, initialState)
 
-export default {
-  generate
-}
+const Type = ({ initialState }) => ({
+  generate: generateFactory({ initialState })
+})
+
+Type.generate = generateFactory({})
+
+export default Type

@@ -3,10 +3,11 @@ import { createState } from './state'
 import { attachStateModelsToConsole } from './console'
 import StateTypes from './state/types'
 
-const actions = {}
-const models = {}
-const reducers = {}
-const selectors = {}
+const Actions = {}
+const Models = {}
+const Reducers = {}
+const reducers = Reducers
+const Selectors = {}
 
 const isTest = process.env.NODE_ENV === 'test'
 
@@ -22,10 +23,10 @@ const defineState = (schema) => {
     localActions[model.namespace] = model.actions
     localSelectors[model.namespace] = model.selectors
 
-    models[model.namespace] = model
-    reducers[model.namespace] = model.reducer
-    actions[model.namespace] = model.actions
-    selectors[model.namespace] = model.selectors
+    Models[model.namespace] = model
+    Reducers[model.namespace] = model.reducer
+    Actions[model.namespace] = model.actions
+    Selectors[model.namespace] = model.selectors
   })
 
   return {
@@ -37,12 +38,20 @@ const defineState = (schema) => {
 }
 
 const clearAllState = () => {
-  forIn(reducers, (_, key) => {
-    delete reducers[key]
+  forIn(Reducers, (_, key) => {
+    delete Reducers[key]
   })
 
-  forIn(models, (_, key) => {
-    delete models[key]
+  forIn(Models, (_, key) => {
+    delete Models[key]
+  })
+
+  forIn(Selectors, (_, key) => {
+    delete Selectors[key]
+  })
+
+  forIn(Actions, (_, key) => {
+    delete Actions[key]
   })
 }
 
@@ -55,7 +64,7 @@ const startRepl = (store) => {
     }
 
     w.store = store
-    attachStateModelsToConsole(models, w)
+    attachStateModelsToConsole(Models, w)
 
     if (!isTest) {
       console.log('Redux Enterprise: starting REPL') // eslint-disable-line
@@ -68,7 +77,11 @@ export default {
   defineState,
   startRepl,
   clearAllState,
-  reducers,
+  Models,
+  Reducers,
+  reducers, // backwards compatible
+  Actions,
+  Selectors,
   StateTypes,
 }
 
@@ -76,6 +89,10 @@ export {
   defineState,
   startRepl,
   clearAllState,
-  reducers,
+  Models,
+  Reducers,
+  reducers, // backwards compatible
+  Actions,
+  Selectors,
   StateTypes,
 }

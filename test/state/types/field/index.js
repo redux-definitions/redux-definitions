@@ -110,7 +110,7 @@ describe('setable', () => {
     })
   })
 
-  describe('nested', () => {
+  it('nested', () => {
     const { space, dispatch, getState } = makeStoreAndDefineState({
       space: {
         foo: Field
@@ -124,7 +124,7 @@ describe('setable', () => {
     expect(selectors.foo.get(getState())).to.equal('foo')
   })
 
-  describe('double nested', () => {
+  it('double nested', () => {
     const { space, dispatch, getState } = makeStoreAndDefineState({
       space: {
         foo: {

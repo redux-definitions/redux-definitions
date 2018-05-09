@@ -5,7 +5,7 @@ import { uniq, without } from 'lodash/array'
 import { scopeReductionFactory } from './utils'
 import { createDefinition } from './utils'
 
-const generate = createDefinition({
+const generateFactory = ({ initialState = { index: [] } }) => createDefinition({
   set: (state, { payload }) => ({
     index: payload
   }),
@@ -21,8 +21,14 @@ const generate = createDefinition({
 }, {
   get: (state) => state.index,
   includes: (state, id) => state.index.includes(id),
-}, { index: [] })
+}, initialState)
 
-export default {
-  generate
+const Type = ({ initialState }) => {
+  return {
+    generate: generateFactory({ initialState })
+  }
 }
+
+Type.generate = generateFactory({})
+
+export default Type
