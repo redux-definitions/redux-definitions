@@ -152,8 +152,8 @@ describe('index', () => {
 
       const set = [1,2,3]
       dispatch(actions.foo.set(set))
-      expect(selectors.foo.includes(getState(), 1)).to.equal(true)
-      expect(selectors.foo.includes(getState(), 4)).to.equal(false)
+      expect(selectors.foo.includes(getState(), { id: 1 })).to.equal(true)
+      expect(selectors.foo.includes(getState(), { id: 4 })).to.equal(false)
     })
 
     it('get', () => {

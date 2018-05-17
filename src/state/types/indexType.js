@@ -28,7 +28,7 @@ const generateFactory = ({ initialState = { index: [] } }) => createDefinition({
   })
 }, {
   get: (state) => state.index,
-  includes: (state, id) => state.index.includes(id),
+  includes: (state, { id }) => state.index.includes(id),
 }, initialState)
 
 const Type = ({ initialState }) => {
