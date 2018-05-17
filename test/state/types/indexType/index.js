@@ -33,6 +33,7 @@ describe('index', () => {
       expect(Object.keys(actions.foo)).to.deep.equal([
         'set',
         'reset',
+        'toggle',
         'add',
         'remove',
       ])
@@ -50,6 +51,24 @@ describe('index', () => {
       const set = [1,2,3]
       expect(selectors.foo.get(getState())).to.deep.equal([])
       dispatch(actions.foo.set(set))
+      expect(selectors.foo.get(getState())).to.deep.equal(set)
+    })
+
+    it('toggle', () => {
+      const { space, dispatch, getState } = makeStoreAndDefineState({
+        space: {
+          foo: Index
+        }
+      })
+
+      const { actions, selectors } = space
+
+      const set = [1,2,3]
+      expect(selectors.foo.get(getState())).to.deep.equal([])
+      dispatch(actions.foo.set(set))
+      dispatch(actions.foo.toggle(3))
+      expect(selectors.foo.get(getState())).to.deep.equal([1,2])
+      dispatch(actions.foo.toggle(3))
       expect(selectors.foo.get(getState())).to.deep.equal(set)
     })
 
@@ -133,8 +152,8 @@ describe('index', () => {
 
       const set = [1,2,3]
       dispatch(actions.foo.set(set))
-      expect(selectors.foo.includes(getState(), 1)).to.equal(true)
-      expect(selectors.foo.includes(getState(), 4)).to.equal(false)
+      expect(selectors.foo.includes(getState(), { id: 1 })).to.equal(true)
+      expect(selectors.foo.includes(getState(), { id: 4 })).to.equal(false)
     })
 
     it('get', () => {

@@ -54,32 +54,32 @@ describe('multiple types', () => {
       }
     }, true)
 
-    const { Todos, Notes, Editor, Config } = global.Actions
+    const { todos, notes, editor, config } = global.Actions
 
-    Todos.create({ id: 1 })
-    Todos.create({ id: 2 })
-    Todos.create({ id: 3 })
-    Todos.reset()
-    Todos.create({ id: 4 })
-    Todos.create({ id: 5 })
+    todos.create({ id: 1 })
+    todos.create({ id: 2 })
+    todos.create({ id: 3 })
+    todos.reset()
+    todos.create({ id: 4 })
+    todos.create({ id: 5 })
 
-    Notes.create({ id: 1 })
-    Notes.remove({ id: 1 })
-    Notes.create({ id: 2 })
-    Notes.upsert({ id: 2, message: 'foo' })
-    Notes.create({ id: 5 })
-    Notes.remove(5)
+    notes.create({ id: 1 })
+    notes.remove({ id: 1 })
+    notes.create({ id: 2 })
+    notes.upsert({ id: 2, message: 'foo' })
+    notes.create({ id: 5 })
+    notes.remove(5)
 
-    Editor.isOpen.unset()
-    Editor.firstname.set('jon')
-    Editor.lastname.set('snowden')
-    Editor.clearFullName()
-    Editor.firstname.set('john')
-    Editor.isOpen.unset()
-    Editor.isPending.set()
+    editor.isOpen.unset()
+    editor.firstname.set('jon')
+    editor.lastname.set('snowden')
+    editor.clearFullName()
+    editor.firstname.set('john')
+    editor.isOpen.unset()
+    editor.isPending.set()
 
-    Config.isAdmin.set()
-    Config.isBetaUser.set()
+    config.isAdmin.set()
+    config.isBetaUser.set()
 
     expect(getState()).to.deep.equal({
       todos: { ids: [4, 5], data: { 4: { id: 4 }, 5: { id: 5 }, }},

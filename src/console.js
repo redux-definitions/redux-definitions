@@ -1,25 +1,22 @@
-/* eslint-disable */
-
 import { forIn } from 'lodash/object'
-import { upperFirst } from 'lodash/string'
 
 export function attachStateModelsToConsole(models, window) {
   if (!window) {
-    console.warn('Redux Enterprise: REPL cannot mount, `window` undefined')
+    console.warn('Redux Enterprise: REPL cannot mount, `window` undefined') // eslint-disable-line
     return
   }
 
   if (!window.store) {
-    console.warn('Redux Enterprise: REPL cannot mount, `window.store` undefined')
+    console.warn('Redux Enterprise: REPL cannot mount, `window.store` undefined') // eslint-disable-line
     return
   }
 
-  window.Actions = {}
-  window.Selectors = {}
+  window.Actions = {} // eslint-disable-line
+  window.Selectors = {} // eslint-disable-line
 
   forIn(models, (model, key) => {
-    window.Actions[upperFirst(key)] = bindActionMap(model.actions, window.store)
-    window.Selectors[upperFirst(key)] = bindSelectorMap(model.selectors, window.store)
+    window.Actions[key] = bindActionMap(model.actions, window.store) // eslint-disable-line
+    window.Selectors[key] = bindSelectorMap(model.selectors, window.store) // eslint-disable-line
   })
 }
 
@@ -33,7 +30,6 @@ function bindActionMap(actions, store) {
       const action = val
       allActions[key] = (...params) => {
         const a = action(...params)
-        // console.log(a)
         store.dispatch(a)
         return a
       }
@@ -53,7 +49,6 @@ function bindSelectorMap(selectors, store) {
       const selector = val
       allSelectors[key] = (...params) => {
         const s = selector(store.getState(), ...params)
-        // console.log(s)
         return s
       }
     }

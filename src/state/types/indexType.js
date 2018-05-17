@@ -12,6 +12,14 @@ const generateFactory = ({ initialState = { index: [] } }) => createDefinition({
   reset: (state) => ({
     index: []
   }),
+  toggle: (state, { payload }) => {
+    const found = state.index.find(e => e === payload)
+    return {
+      index: found
+        ? without(state.index, payload)
+        : uniq([...state.index, payload])
+    }
+  },
   add: (state, { payload }) => ({
     index: uniq([...state.index, payload])
   }),
@@ -20,7 +28,7 @@ const generateFactory = ({ initialState = { index: [] } }) => createDefinition({
   })
 }, {
   get: (state) => state.index,
-  includes: (state, id) => state.index.includes(id),
+  includes: (state, { id }) => state.index.includes(id),
 }, initialState)
 
 const Type = ({ initialState }) => {

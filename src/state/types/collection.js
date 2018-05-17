@@ -2,7 +2,7 @@ import Normalized from 'nrmlzd'
 import { createDefinition } from './utils'
 
 const generateFactory = ({
-  initialState = Normalized.create()
+  initialState = []
 }) => createDefinition({
   set: (_, { payload }) => Normalized.fromArray(payload),
   reset: () => Normalized.create(),
@@ -14,7 +14,7 @@ const generateFactory = ({
   items: (state) => Normalized.toArray(state),
   ids: (state) => state.ids,
   byId: (state, { id }) => state.data[id] || null,
-}, initialState)
+}, Normalized.fromArray(initialState))
 
 const Type = ({ initialState }) => ({
   generate: generateFactory({ initialState })

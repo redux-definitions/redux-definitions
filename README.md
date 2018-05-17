@@ -38,7 +38,7 @@ const { Collection, Flag, Field, Index } = StateTypes
 
 const { actions, reducers, selectors } = defineState({
   todos: Collection,
-  selected: Index
+  selected: Index,
   todoEditor: {
     isEditing: Flag,
     editingId: Field
@@ -58,24 +58,24 @@ When in dev-mode Redux Enterprise automatically provides a REPL-like experience 
 Standardized `actions` are returned from `defineState` calls. The State Type determines what actions are available. For example a `Collection` has actions `create`, `upsert`, `remove`, `set`, `reset`, `clear`. Learn more in the [State Types](#state-types) section.
 
 ```js
-const { Todos, TodoEditor, Notifications } = actions
+const { todos, todoEditor, notifications } = actions
 
-Todos.create({ id: 13, message: 'Hello Burp Morty' })
+todos.create({ id: 13, message: 'Hello Burp Morty' })
 // { type: 'todos/create', payload: { id: 13, message: 'Hello Burp Morty' } }
 
-Todos.upsert({ id: 13, message: 'Hello Morty' })
+todos.upsert({ id: 13, message: 'Hello Morty' })
 // { type: 'todos/upsert', payload: { id: 13, message: 'Hello Morty' } }
 
-TodoEditor.editingId.set(37)
+todoEditor.editingId.set(37)
 // { type: 'todoEditor/editingId/set', payload: 37 }
 
-Todos.remove(37)
+todos.remove(37)
 // { type: 'todos/remove', payload: 37 }
 
-Selected.add(13)
+selected.add(13)
 // { type: 'selected/add', payload: 13 } }
 
-Selected.clear()
+selected.clear()
 // { type: 'selected/clear' }
 ```
 
@@ -85,11 +85,21 @@ Selected.clear()
 [Selectors](https://github.com/reactjs/reselect) are also returned from `defineState`. For example a `Collection` has `items`, `byId`, and `ids`:
 
 ```js
-const { Todos, TodoEditor, Selected } = selectors
+const { todos, todoEditor, selected } = selectors
 
-Todos.items(state) // returns a collection of todos
-Todos.byId(state, { id }) // returns a todo with matching `id`
-Todos.ids(state) // returns an array of ids
+todos.items(state) // returns a collection of todos
+todos.byId(state, { id }) // returns a todo with matching `id`
+todos.ids(state) // returns an array of ids
+```
+
+## Shortcut globals
+For your convenience, Redux Enterprise also exports `Actions` and `Selectors` objects which automatically hold actions and selectors from all `defineState` calls. This is similar to the objects found in the console REPL.
+
+```js
+import { Actions, Selectors } from 'redux-enterprise'
+
+Actions.todoEditor.editingId.set(37)
+// { type: 'todoEditor/editingId/set', payload: 37 }
 ```
 
 ## Try it in your existing project in under 5 minutes
@@ -142,22 +152,7 @@ startRepl(store)
 > Note: when server-side rendering this call will be a no-op.
 
 ### All done! Try things in your browser console
-```js
-> Actions.Todos.create({ id: 89, message: 'Do laundry' })
-// prev state { todos: {..0}, todoEditor: { isEditing: false, editingId: null }, selected: {..0} }
-action {type: "todos/create", payload: { id: 89, message: "Do laundry" } }
-// next state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, selected: {..0} }
-
-> Selected.add(89)
-// prev state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, selected: {..0} }
-action {type: "selected/add", payload: 89 }
-// next state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, selected: {..1} }
-
-> TodoEditor.isEditing.toggle()
-// prev state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, selected: {..1} }
-action {type: "todos/isEditing/toggle"}
-// next state { todos: {..1}, todoEditor: { isEditing: true, editingId: null }, selected: {..1} }
-```
+<img  width="100%" src="images/test-repl.png" />
 
 ## Custom reducer functions
 Redux Enterprise also allows you to create custom reducer functions. If a function is added anywhere in the state map, `defineState` passes the function the reducer's `state` and incoming `action`:
