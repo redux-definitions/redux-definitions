@@ -22,6 +22,20 @@ describe('collection', () => {
     expect(selectors.items(getState())).to.deep.equal([])
   })
 
+  it('initialState', () => {
+    const item = { id: '1' }
+    const { space, getState } = makeStoreAndDefineState({
+      space: Collection({
+        initialState: [item]
+      })
+    })
+
+    const { actions, selectors } = space
+
+    expect(getState().space).to.deep.equal(Normalized.fromArray([item]))
+    expect(selectors.items(getState())).to.deep.equal([item])
+  })
+
   describe('actions', () => {
     it('api', () => {
       const { space } = makeStoreAndDefineState({
