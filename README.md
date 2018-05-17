@@ -152,28 +152,7 @@ startRepl(store)
 > Note: when server-side rendering this call will be a no-op.
 
 ### All done! Try things in your browser console
-```js
-> Actions.todos.create({ id: 89, message: 'Do laundry' })
-// prev state { todos: {..0}, todoEditor: { isEditing: false, editingId: null }, selected: {..0} }
-action {type: "todos/create", payload: { id: 89, message: "Do laundry" } }
-// next state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, selected: {..0} }
-
-> Actions.selected.add(89)
-// prev state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, selected: {..0} }
-action {type: "selected/add", payload: 89 }
-// next state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, selected: {..1} }
-
-> Actions.todoEditor.isEditing.toggle()
-// prev state { todos: {..1}, todoEditor: { isEditing: false, editingId: null }, selected: {..1} }
-action {type: "todos/isEditing/toggle"}
-// next state { todos: {..1}, todoEditor: { isEditing: true, editingId: null }, selected: {..1} }
-
-> Selectors.todos.byId({ id: 89 })
-// { id: 89, message: 'Do laundry' }
-
-> Selectors.todoEditor.editingId.isSet()
-// false
-```
+<img  width="100%" src="images/test-repl.png" />
 
 ## Custom reducer functions
 Redux Enterprise also allows you to create custom reducer functions. If a function is added anywhere in the state map, `defineState` passes the function the reducer's `state` and incoming `action`:
