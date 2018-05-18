@@ -19,6 +19,5 @@ export default createStateType({
   selectors: {
     get: (state) => state,
   },
-  invalidAtTopLevel: true,
 })
 

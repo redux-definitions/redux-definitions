@@ -10,6 +10,5 @@ export default createStateType({
     isSet: (state) => !!state,
     get: (state) => state,
   },
-  invalidAtTopLevel: true,
 })
 

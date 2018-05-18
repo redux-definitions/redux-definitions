@@ -2,14 +2,14 @@ import { update, get } from 'lodash/object'
 import { createAction } from 'redux-actions'
 import { scopeReductionFactory } from 'state/scopeReductionFactory'
 
-const isFunction = (fn) => typeof fn === 'function'
+const isFunction = (i) => typeof i === 'function'
+const isObject = (i) => typeof i === 'object'
 
 export const createStateType = ({
   actions,
   selectors,
   defaultState,
   transformInitialState,
-  invalidAtTopLevel = false,
 }) => {
 
   const generate = (options = {}) =>
@@ -19,7 +19,6 @@ export const createStateType = ({
       actionFns: actions,
       selectorFns: selectors,
       transformInitialState,
-      invalidAtTopLevel,
     })
 
   const Type = (options) => ({
@@ -37,9 +36,13 @@ export const generateModel = ({
   actionFns,
   selectorFns,
   transformInitialState,
-  invalidAtTopLevel,
 }) => (namespacing, topLevel) => {
-  if (invalidAtTopLevel && topLevel) {
+  const transform = transformInitialState || ((s) => s)
+  const { initialState } = options
+  const formattedInitialState = initialState ?
+      transform(initialState) : defaultState
+
+  if (!isObject(formattedInitialState) && topLevel) {
     throw Error('Redux Enterprise: State Type cannot be used at the reducer top level. Redux reducers do not support entire state being this state value.')
   }
 
@@ -64,16 +67,11 @@ export const generateModel = ({
       fn(get(state, namespacing), params)
   }
 
-  const transform = transformInitialState || ((s) => s)
-
-  const { initialState } = options
-
   return {
     actions,
     reducers,
     selectors,
-    initialState: initialState ?
-      transform(initialState) : defaultState,
+    initialState: formattedInitialState,
   }
 }
 
