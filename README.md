@@ -186,7 +186,7 @@ const { reducers } = defineState({
       aontherId: Setable,
       nestedCustomReducerFunction: (state, action) => {
         // here `state` is scoped to `nested.stuff`,
-        // so we are reducing: { someId, anotherId }
+        // so we are reducing: ({ someId, anotherId }, action)
         return state
       }
     }
