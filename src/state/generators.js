@@ -2,7 +2,7 @@
 
 import { createAction } from 'redux-actions'
 import { forIn } from 'lodash/object'
-import { generateFunction } from './types/utils'
+import { generateFunction } from './types/createDefinition'
 
 const isStateType = (i) => {
   return i && i.generate

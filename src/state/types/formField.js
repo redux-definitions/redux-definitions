@@ -1,4 +1,4 @@
-import { createDefinition } from './utils'
+import { createDefinition } from './createDefinition'
 
 const generateFactory = ({
   validators = [],

@@ -1,4 +1,5 @@
-import { createDefinition } from './utils'
+import { makeError, logWarning } from 'utils'
+import { createDefinition } from './createDefinition'
 
 const generateFactory = ({ initialState }) => createDefinition({
   set: (state, { payload }) => payload,

@@ -53,19 +53,32 @@ describe('collection', () => {
       ])
     })
 
-    it('set', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
-        space: Collection
+    describe('set', () => {
+      it('valid', () => {
+        const { space, dispatch, getState } = makeStoreAndDefineState({
+          space: Collection
+        })
+
+        const { actions, selectors } = space
+
+        const collection = [{ id: '1', name: 'foo' }]
+        dispatch(actions.set(collection))
+
+        expect(selectors.get(getState())).to.deep.equal(
+          Normalized.fromArray(collection)
+        )
       })
 
-      const { actions, selectors } = space
+      it('invalid', () => {
+        const { space, dispatch, getState } = makeStoreAndDefineState({
+          space: Collection
+        })
 
-      const collection = [{ id: '1', name: 'foo' }]
-      dispatch(actions.set(collection))
+        const { actions, selectors } = space
 
-      expect(selectors.get(getState())).to.deep.equal(
-        Normalized.fromArray(collection)
-      )
+        const collection = [{ name: 'foo' }]
+        expect(() => dispatch(actions.set(collection))).to.throw()
+      })
     })
 
     it('reset', () => {
@@ -88,50 +101,77 @@ describe('collection', () => {
       expect(selectors.ids(getState())).to.deep.equal([])
     })
 
-    it('create', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
-        space: Collection
+    describe('create', () => {
+      it('valid', () => {
+        const { space, dispatch, getState } = makeStoreAndDefineState({
+          space: Collection
+        })
+
+        const { actions, selectors } = space
+
+        const item1 = { id: '1', name: 'foo' }
+        const item2 = { id: '2', name: 'bar' }
+        const collection = [item1]
+
+        dispatch(actions.set(collection))
+
+        expect(selectors.get(getState())).to.deep.equal(
+          Normalized.fromArray(collection)
+        )
+
+        dispatch(actions.create(item2))
+
+        expect(selectors.items(getState())).to.deep.equal(collection.concat(item2))
+        expect(selectors.ids(getState())).to.deep.equal([item1.id, item2.id])
       })
 
-      const { actions, selectors } = space
+      it('invalid', () => {
+        const { space, dispatch, getState } = makeStoreAndDefineState({
+          space: Collection
+        })
 
-      const item1 = { id: '1', name: 'foo' }
-      const item2 = { id: '2', name: 'bar' }
-      const collection = [item1]
+        const { actions, selectors } = space
 
-      dispatch(actions.set(collection))
-
-      expect(selectors.get(getState())).to.deep.equal(
-        Normalized.fromArray(collection)
-      )
-
-      dispatch(actions.create(item2))
-
-      expect(selectors.items(getState())).to.deep.equal(collection.concat(item2))
-      expect(selectors.ids(getState())).to.deep.equal([item1.id, item2.id])
+        const item = { name: 'foo' }
+        expect(() => dispatch(actions.create(item))).to.throw()
+      })
     })
 
-    it('upsert', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
-        space: Collection
+    describe('upsert', () => {
+      it('upsert', () => {
+        const { space, dispatch, getState } = makeStoreAndDefineState({
+          space: Collection
+        })
+
+        const { actions, selectors } = space
+
+        const item1 = { id: '1', name: 'foo' }
+        const collection = [item1]
+
+        dispatch(actions.set(collection))
+
+        expect(selectors.get(getState())).to.deep.equal(
+          Normalized.fromArray(collection)
+        )
+
+        const updatedItem1 = { id: '1', name: 'bar' }
+        dispatch(actions.upsert(updatedItem1))
+
+        expect(selectors.items(getState())).to.deep.equal([updatedItem1])
+        expect(selectors.ids(getState())).to.deep.equal([item1.id])
       })
 
-      const { actions, selectors } = space
+      it('invalid', () => {
+        const { space, dispatch, getState } = makeStoreAndDefineState({
+          space: Collection
+        })
 
-      const item1 = { id: '1', name: 'foo' }
-      const collection = [item1]
+        const { actions, selectors } = space
 
-      dispatch(actions.set(collection))
+        const item = { name: 'foo' }
 
-      expect(selectors.get(getState())).to.deep.equal(
-        Normalized.fromArray(collection)
-      )
-
-      const updatedItem1 = { id: '1', name: 'bar' }
-      dispatch(actions.upsert(updatedItem1))
-
-      expect(selectors.items(getState())).to.deep.equal([updatedItem1])
-      expect(selectors.ids(getState())).to.deep.equal([item1.id])
+        expect(() => dispatch(actions.upsert(item))).to.throw()
+      })
     })
 
     it('remove', () => {

@@ -2,8 +2,7 @@
 // Collection
 import { createAction } from 'redux-actions'
 import { uniq, without } from 'lodash/array'
-import { scopeReductionFactory } from './utils'
-import { createDefinition } from './utils'
+import { createDefinition, scopeReductionFactory } from './createDefinition'
 
 const generateFactory = ({ initialState = { index: [] } }) => createDefinition({
   set: (state, { payload }) => ({

@@ -1,11 +1,12 @@
-import { createDefinition } from './utils'
+import { createDefinition } from './createDefinition'
+import { logWarning } from 'utils'
 
 const generateFactory = ({ initialState = false }) => createDefinition({
   set: (state, action) => {
     const val = ('payload' in action) ? action.payload : true
 
     if (typeof val !== 'boolean') {
-      console.warn(`Redux Enterprise\n\n\`${namespace}\` is being set with a non boolean value! Casting type.\n`) // eslint-disable-line
+      logWarning(`\`${namespace}\` is being set with a non boolean value! Casting type.`) // eslint-disable-line
     }
 
     return !!val
