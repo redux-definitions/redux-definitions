@@ -1,6 +1,6 @@
 import { createLogger } from 'redux-logger'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { defineState, startRepl } from '../../../src'
+import { defineState, startRepl } from 'index'
 
 export const makeStoreAndDefineState = (schema, repl) => {
   const res = defineState(schema)

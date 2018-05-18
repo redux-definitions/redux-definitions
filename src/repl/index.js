@@ -1,6 +1,29 @@
 import { forIn } from 'lodash/object'
+import { Models } from 'state'
 
-export function attachStateModelsToConsole(models, window) {
+const isTest = process && process.env.NODE_ENV === 'test'
+const isDev = process && process.env.NODE_ENV === 'development'
+const isBrowser = process && process.title === 'browser'
+
+export function startRepl(store) {
+  if ((isDev && isBrowser) || isTest) {
+    const w = isTest ? global : window
+
+    if (!store || !store.dispatch || !store.getState) {
+      throw Error('Redux Enterprise: `startRepl` requires a valid store object')
+    }
+
+    w.store = store
+    attachStateModelsToConsole(Models, w)
+
+    if (!isTest) {
+      console.log('Redux Enterprise: starting REPL') // eslint-disable-line
+    }
+  }
+  return store
+}
+
+function attachStateModelsToConsole(models, window) {
   if (!window) {
     console.warn('Redux Enterprise: REPL cannot mount, `window` undefined') // eslint-disable-line
     return

@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { createAction } from 'redux-actions'
 import Normalized from 'nrmlzd'
-import { defineState, clearAllState, StateTypes } from '../../../../src'
+import { defineState, clearAllState, StateTypes } from 'index'
 import { makeStoreAndDefineState } from '../utils'
 
 const { Collection } = StateTypes

@@ -1,37 +1,53 @@
-/* eslint-disable */
+import { forIn } from 'lodash/object'
+import { createState } from './createState'
 
-import { createAction, handleActions } from 'redux-actions'
-import { generateStateMap } from './generators'
+export const Actions = {}
+export const Models = {}
+export const Reducers = {}
+export const reducers = Reducers
+export const Selectors = {}
 
-const generateState = (namespace, schema) => {
-  const namespacing = [namespace]
+export const defineState = (schema) => {
+  const localModels = {}
+  const localReducers = {}
+  const localActions = {}
+  const localSelectors = {}
 
-  let {
-    actions,
-    reducers,
-    selectors,
-    initialState,
-  } = generateStateMap(schema, namespacing)
+  createState(schema).forEach(model => {
+    localModels[model.namespace] = model
+    localReducers[model.namespace] = model.reducer
+    localActions[model.namespace] = model.actions
+    localSelectors[model.namespace] = model.selectors
 
-  const reducer = handleActions(reducers, initialState)
+    Models[model.namespace] = model
+    Reducers[model.namespace] = model.reducer
+    Actions[model.namespace] = model.actions
+    Selectors[model.namespace] = model.selectors
+  })
 
-  const model = {
-    namespace,
-    reducer,
-    actions,
-    selectors,
+  return {
+    ...localModels,
+    reducers: localReducers,
+    actions: localActions,
+    selectors: localSelectors,
   }
-
-  return model
 }
 
-export const createState = (schema) => {
-  if (typeof schema !== 'object') {
-    throw Error('Redux Enterprise: defineState must be passed an object as first parameter')
-  }
+export const clearAllState = () => {
+  forIn(Reducers, (_, key) => {
+    delete Reducers[key]
+  })
 
-  return Object.entries(schema).map(([namespace, reducerSchema]) =>
-    generateState(namespace, reducerSchema)
-  )
+  forIn(Models, (_, key) => {
+    delete Models[key]
+  })
+
+  forIn(Selectors, (_, key) => {
+    delete Selectors[key]
+  })
+
+  forIn(Actions, (_, key) => {
+    delete Actions[key]
+  })
 }
 
