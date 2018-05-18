@@ -172,7 +172,7 @@ const { reducers, actions } = defineState({
 })
 
 actions.todos.customReducerFunction('morty')
-// { type: 'todos/customReducerFunction', payload: 'morty' }
+// { type: 'todoEditor/customReducerFunction', payload: 'morty' }
 ```
 As shown above, the corresponding action creator is available on the actions object.
 
