@@ -49,6 +49,7 @@ describe('collection', () => {
         'reset',
         'create',
         'upsert',
+        'update',
         'remove',
       ])
     })
@@ -138,7 +139,7 @@ describe('collection', () => {
     })
 
     describe('upsert', () => {
-      it('upsert', () => {
+      it('valid', () => {
         const { space, dispatch, getState } = makeStoreAndDefineState({
           space: Collection
         })
@@ -171,6 +172,56 @@ describe('collection', () => {
         const item = { name: 'foo' }
 
         expect(() => dispatch(actions.upsert(item))).to.throw()
+      })
+    })
+
+    describe('update', () => {
+      it('valid', () => {
+        const { space, dispatch, getState } = makeStoreAndDefineState({
+          space: Collection
+        })
+
+        const { actions, selectors } = space
+
+        const item1 = { id: '1', name: 'foo' }
+        const collection = [item1]
+
+        dispatch(actions.set(collection))
+
+        expect(selectors.get(getState())).to.deep.equal(
+          Normalized.fromArray(collection)
+        )
+
+        const updatedItem1 = { id: '1', name: 'bar' }
+        dispatch(actions.update(updatedItem1))
+
+        expect(selectors.items(getState())).to.deep.equal([updatedItem1])
+        expect(selectors.ids(getState())).to.deep.equal([item1.id])
+      })
+
+      it('invalid', () => {
+        const { space, dispatch, getState } = makeStoreAndDefineState({
+          space: Collection
+        })
+
+        const { actions, selectors } = space
+
+        const item = { name: 'foo' }
+
+        expect(() => dispatch(actions.update(item))).to.throw()
+      })
+
+      it('doesn\'t exist', () => {
+        const { space, dispatch, getState } = makeStoreAndDefineState({
+          space: Collection
+        })
+
+        const { actions, selectors } = space
+
+        const item = { id: '1', name: 'foo' }
+
+        expect(selectors.items(getState())).to.deep.equal([])
+        expect(selectors.ids(getState())).to.deep.equal([])
       })
     })
 

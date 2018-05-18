@@ -4,7 +4,7 @@ export default createStateType({
   defaultState: undefined,
   actions: {
     set: (state, { payload }) => payload,
-    unset: () => null,
+    clear: () => undefined,
   },
   selectors: {
     isSet: (state) => !!state,

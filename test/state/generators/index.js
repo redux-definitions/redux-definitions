@@ -32,9 +32,9 @@ describe('generateStateMap', () => {
       .to.deep.equal(null)
 
     expect(Object.keys(actions.a).length).to.equal(3)
-    expect(Object.keys(actions.b).length).to.equal(5)
+    expect(Object.keys(actions.b).length).to.equal(6)
     expect(Object.keys(actions.c.d).length).to.equal(3)
-    expect(Object.keys(actions.c.e.f).length).to.equal(5)
+    expect(Object.keys(actions.c.e.f).length).to.equal(6)
   })
 
   it('reducer custom function', () => {
