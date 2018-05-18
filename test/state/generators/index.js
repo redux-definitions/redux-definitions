@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import Normalized from 'nrmlzd'
 import { createAction } from 'redux-actions'
-import { generateStateMap } from '../../../src/state/generators'
-import { StateTypes } from '../../../src'
+import { generateStateMap } from 'state/generators'
+import { StateTypes } from 'index'
 
 const { Collection, Field, Flag } = StateTypes
 

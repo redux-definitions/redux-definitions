@@ -7,7 +7,7 @@ import {
 } from './state/storage'
 import { defineState } from './state/defineState'
 import { clearAllState } from './state/clearAllState'
-import StateTypes from './state/types'
+import StateTypes from './types'
 
 const reducers = Reducers
 
