@@ -1,26 +1,24 @@
-import { createDefinition } from './createDefinition'
+import { createStateType } from 'state/createStateType'
 import { logWarning } from 'utils'
 
-const generateFactory = ({ initialState = false }) => createDefinition({
-  set: (state, action) => {
-    const val = ('payload' in action) ? action.payload : true
+export default createStateType({
+  defaultState: false,
+  actions: {
+    set: (state, action) => {
+      const val = ('payload' in action) ? action.payload : true
 
-    if (typeof val !== 'boolean') {
-      logWarning(`\`${namespace}\` is being set with a non boolean value! Casting type.`) // eslint-disable-line
-    }
+      if (typeof val !== 'boolean') {
+        logWarning(`\`${namespace}\` is being set with a non boolean value! Casting type.`) // eslint-disable-line
+      }
 
-    return !!val
+      return !!val
+    },
+    unset: () => false,
+    toggle: (state) => !state,
   },
-  unset: () => false,
-  toggle: (state) => !state,
-}, {
-  get: (state) => state,
-}, initialState, true)
-
-const Type = ({ initialState }) => ({
-  generate: generateFactory({ initialState })
+  selectors: {
+    get: (state) => state,
+  },
+  invalidAtTopLevel: true,
 })
 
-Type.generate = generateFactory({})
-
-export default Type

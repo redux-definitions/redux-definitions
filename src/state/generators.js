@@ -1,11 +1,24 @@
-/* eslint-disable */
-
 import { createAction } from 'redux-actions'
 import { forIn } from 'lodash/object'
-import { generateFunction } from './types/createDefinition'
+import { scopeReductionFactory } from 'state/scopeReductionFactory'
 
 const isStateType = (i) => {
   return i && i.generate
+}
+
+const generateFunction = (fn, namespacing, topLevel) => {
+  if (topLevel) {
+    throw Error('Redux Enterprise: State Type custom functions cannot be used at the reducer top level.')
+  }
+
+  const namespace = namespacing.join('/')
+
+  return {
+    action: createAction(namespace),
+    reducers: {
+      [namespace]: scopeReductionFactory(namespacing, true)(fn),
+    },
+  }
 }
 
 export const generateStateMap = (schema, namespacing) => {

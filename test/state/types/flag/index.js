@@ -13,7 +13,7 @@ describe('defintion - flag', () => {
   it('state placement', () => {
     expect(() => makeStoreAndDefineState({
       space: Flag
-    })).to.throw('Redux Enterprise: State Type cannot be used at the reducer top level. Redux reducers do not support entire state being this initialState value.')
+    })).to.throw('Redux Enterprise: State Type cannot be used at the reducer top level. Redux reducers do not support entire state being this state value.')
   })
 
   describe('actions', () => {

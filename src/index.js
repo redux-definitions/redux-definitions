@@ -1,12 +1,12 @@
 import { startRepl } from './repl'
 import {
-  defineState,
-  clearAllState,
   Actions,
   Selectors,
   Models,
   Reducers,
-} from './state'
+} from './state/storage'
+import { defineState } from './state/defineState'
+import { clearAllState } from './state/clearAllState'
 import StateTypes from './state/types'
 
 const reducers = Reducers

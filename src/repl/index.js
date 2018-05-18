@@ -1,5 +1,5 @@
 import { forIn } from 'lodash/object'
-import { Models } from 'state'
+import { Models } from 'state/storage'
 
 const isTest = process && process.env.NODE_ENV === 'test'
 const isDev = process && process.env.NODE_ENV === 'development'

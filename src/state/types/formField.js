@@ -1,50 +1,43 @@
-import { createDefinition } from './createDefinition'
+import { createStateType } from 'state/createStateType'
 
-const generateFactory = ({
-  validators = [],
-  initialState = {
+export default createStateType({
+  defaultState: {
     value: '',
     isValid: false,
     error: null,
     isDirty: false,
-  }
-}) => createDefinition({
-  set: (state, { payload }) => {
-    const invalid = validators.find(([fn, _]) => !fn(payload))
-
-    return {
-      ...state,
-      value: payload,
-      isDirty: true,
-      isValid: !!invalid,
-      error: invalid && invalid[1],
-    }
   },
-  reset: () => initialState,
-  unset: (state) => ({
-    ...state,
-    value: null,
-  })
-}, {
-  isSet: (state) => !!state.value,
-  value: (state) => state.value,
-  isValid: (state) => state.isValid,
-  error: (state) => state.error,
-}, initialState, true)
+  actions: ({ validators }) => ({
+    set: (state, { payload }) => {
+      const invalid = validators.find(([fn, _]) => !fn(payload))
 
-const Type = ({ validators = [], initialState, initialValue }) => {
-  const fullInitialState = initialState || {
-    value: initialValue || '',
+      return {
+        ...state,
+        value: payload,
+        isDirty: true,
+        isValid: !!invalid,
+        error: invalid && invalid[1],
+      }
+    },
+    reset: () => initialState,
+    unset: (state) => ({
+      ...state,
+      value: null,
+    })
+  }),
+  selectors: {
+    get: (state) => state,
+    isSet: (state) => !!state.value,
+    value: (state) => state.value,
+    isValid: (state) => state.isValid,
+    error: (state) => state.error,
+  },
+  transformInitialState: (initialState = {}) => ({
+    value: '',
     isValid: false,
     error: null,
     isDirty: false,
-  }
+    ...initialState,
+  }),
+})
 
-  return {
-    generate: generateFactory({ initialState: fullInitialState, validators })
-  }
-}
-
-Type.generate = generateFactory({})
-
-export default Type

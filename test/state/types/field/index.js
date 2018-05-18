@@ -5,7 +5,7 @@ import { makeStoreAndDefineState } from '../utils'
 
 const { Field } = StateTypes
 
-describe('setable', () => {
+describe('field', () => {
   beforeEach(() => {
     clearAllState()
   })
@@ -13,7 +13,7 @@ describe('setable', () => {
   it('state placement', () => {
     expect(() => makeStoreAndDefineState({
       space: Field
-    })).to.throw('Redux Enterprise: State Type cannot be used at the reducer top level. Redux reducers do not support entire state being this initialState value.')
+    })).to.throw('Redux Enterprise: State Type cannot be used at the reducer top level. Redux reducers do not support entire state being this state value.')
   })
 
   describe('actions', () => {

@@ -1,18 +1,15 @@
-import { makeError, logWarning } from 'utils'
-import { createDefinition } from './createDefinition'
+import { createStateType } from 'state/createStateType'
 
-const generateFactory = ({ initialState }) => createDefinition({
-  set: (state, { payload }) => payload,
-  unset: () => null,
-}, {
-  isSet: (state) => !!state,
-  get: (state) => state,
-}, initialState, true)
-
-const Type = ({ initialState }) => ({
-  generate: generateFactory({ initialState })
+export default createStateType({
+  defaultState: undefined,
+  actions: {
+    set: (state, { payload }) => payload,
+    unset: () => null,
+  },
+  selectors: {
+    isSet: (state) => !!state,
+    get: (state) => state,
+  },
+  invalidAtTopLevel: true,
 })
 
-Type.generate = generateFactory({})
-
-export default Type
