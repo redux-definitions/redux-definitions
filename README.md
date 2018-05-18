@@ -158,12 +158,12 @@ startRepl(store)
 Redux Enterprise also allows you to create custom reducer functions. If a function is added anywhere in the state map, `defineState` passes the function the reducer's `state` and incoming `action`:
 ```js
 import { defineState, StateTypes } from 'redux-enterprise'
-const { Collection, Flag, Setable } = StateTypes
+const { Collection, Flag, Field } = StateTypes
 
 const { reducers, actions } = defineState({
   todoEditor: {
     isEditing: Flag,
-    editingId: Setable,
+    editingId: Field,
     customReducerFunction: (state, action) => {
       // do anything I please with the `todoEditor` reducer
       return state
@@ -171,8 +171,8 @@ const { reducers, actions } = defineState({
   }
 })
 
-actions.todos.customReducerFunction('morty')
-// { type: 'todos/customReducerFunction', payload: 'morty' }
+actions.todoEditor.customReducerFunction('morty')
+// { type: 'todoEditor/customReducerFunction', payload: 'morty' }
 ```
 As shown above, the corresponding action creator is available on the actions object.
 
@@ -182,11 +182,11 @@ If you nest a function, the `state` passed in will be scoped to that level of st
 const { reducers } = defineState({
   nested: {
     stuff: {
-      someId: Setable,
-      aontherId: Setable,
+      someId: Field,
+      aontherId: Field,
       nestedCustomReducerFunction: (state, action) => {
         // here `state` is scoped to `nested.stuff`,
-        // so we are reducing: { someId, anotherId }
+        // so we are reducing: ({ someId, anotherId }, action)
         return state
       }
     }
