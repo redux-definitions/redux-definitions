@@ -9,7 +9,9 @@ const Reducers = {}
 const reducers = Reducers
 const Selectors = {}
 
-const isTest = process.env.NODE_ENV === 'test'
+const isTest = process && process.env.NODE_ENV === 'test'
+const isDev = process && process.env.NODE_ENV === 'development'
+const isBrowser = process && process.title === 'browser'
 
 const defineState = (schema) => {
   const localModels = {}
@@ -56,7 +58,7 @@ const clearAllState = () => {
 }
 
 const startRepl = (store) => {
-  if ((process && process.title === 'browser') || isTest) {
+  if ((isDev && isBrowser) || isTest) {
     const w = isTest ? global : window
 
     if (!store || !store.dispatch || !store.getState) {
