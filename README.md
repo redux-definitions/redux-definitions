@@ -199,14 +199,14 @@ const { reducers } = defineState({
 ### Collection
 Collection of objects with an `id` key. Collection is stored in normalized form: `{ ids, data }` where `ids` is an array of unique `id` keys and `data` is an `id`-based lookup map.
 #### Actions
-`create`, `upsert`, `remove`, `set`, `reset`, `clear`
+`set`, `reset`, `create`, `update`, `upsert`, `remove`
 #### Selectors
-`items`, `ids`, `byId`
+`get`, `items`, `ids`, `byId`
 
 ### Field
 A basic value of any type.
 #### Actions
-`set`, `unset`, `reset`
+`set`, `clear`
 #### Selectors
 `get`, `isSet`
 
@@ -220,12 +220,26 @@ A boolean value that can be toggled.
 ### Index
 A set of unique values.
 #### Actions
-`set`, `clear`, `add`, `remove`
+`set`, `reset`, `toggle`, `add`, `remove`
 #### Selectors
-`get`
+`get`, `includes`
 
 ### 3rd Party State Types
-Coming soon!
+Create new state types with the `createStateType` function. The resulting object is a valid state type that can be used.
+```js
+import { createStateType } from 'redux-enterprise'
+
+const MortyType = createStateType({
+  defaultState: 'morty',
+  actions: {
+    set: (state, { payload }) => payload,
+    clear: () => undefined,
+  },
+  selectors: {
+    get: (state) => state
+  }
+})
+```
 
 ## Typescript & Flow Integration
 Coming soon!

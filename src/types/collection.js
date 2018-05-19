@@ -24,7 +24,6 @@ export default createStateType({
       }
       return Normalized.upsert(state, check(payload))
     },
-    upsert: (state, { payload }) => Normalized.upsert(state, check(payload)),
     update: (state, { payload }) => {
       check(payload)
       if (state.ids.find(id => id === payload)) {
@@ -32,6 +31,7 @@ export default createStateType({
       }
       return Normalized.upsert(state, payload)
     },
+    upsert: (state, { payload }) => Normalized.upsert(state, check(payload)),
     remove: (state, { payload: id }) => Normalized.remove(state, id),
   },
   selectors: {

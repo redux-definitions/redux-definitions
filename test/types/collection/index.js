@@ -48,8 +48,8 @@ describe('collection', () => {
         'set',
         'reset',
         'create',
-        'upsert',
         'update',
+        'upsert',
         'remove',
       ])
     })
