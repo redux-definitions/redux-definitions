@@ -1,12 +1,14 @@
 import { createStateType } from 'state/createStateType'
 
+const defaultState = {
+  value: '',
+  isValid: false,
+  error: null,
+  isDirty: false,
+}
+
 export default createStateType({
-  defaultState: {
-    value: '',
-    isValid: false,
-    error: null,
-    isDirty: false,
-  },
+  defaultState,
   actions: ({ validators }) => ({
     set: (state, { payload }) => {
       const invalid = validators.find(([fn, _]) => !fn(payload))
@@ -19,7 +21,7 @@ export default createStateType({
         error: invalid && invalid[1],
       }
     },
-    reset: () => initialState,
+    reset: () => defaultState,
     unset: (state) => ({
       ...state,
       value: null,
@@ -33,10 +35,7 @@ export default createStateType({
     error: (state) => state.error,
   },
   transformInitialState: (initialState = {}) => ({
-    value: '',
-    isValid: false,
-    error: null,
-    isDirty: false,
+    ...defaultState,
     ...initialState,
   }),
 })

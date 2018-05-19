@@ -7,7 +7,7 @@ export default createStateType({
     set: (state, { payload }) => ({
       index: payload
     }),
-    reset: (state) => ({
+    reset: () => ({
       index: []
     }),
     toggle: (state, { payload }) => {

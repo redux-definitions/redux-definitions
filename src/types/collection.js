@@ -19,14 +19,14 @@ export default createStateType({
     set: (_, { payload }) => Normalized.fromArray(checkAll(payload)),
     reset: () => Normalized.create(),
     create: (state, { payload }) => {
-      if (state.ids.find(id => id === payload)) {
-        logWarning(`Collection already has an item with id: ${id}`)
+      if (state.ids.find(id => id === payload.id)) {
+        logWarning(`Collection already has an item with id: ${payload.id}`)
       }
       return Normalized.upsert(state, check(payload))
     },
     update: (state, { payload }) => {
       check(payload)
-      if (state.ids.find(id => id === payload)) {
+      if (state.ids.find(id => id === payload.id)) {
         return state
       }
       return Normalized.upsert(state, payload)

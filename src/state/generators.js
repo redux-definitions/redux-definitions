@@ -2,9 +2,7 @@ import { createAction } from 'redux-actions'
 import { forIn } from 'lodash/object'
 import { scopeReductionFactory } from 'state/scopeReductionFactory'
 
-const isStateType = (i) => {
-  return i && i.generate
-}
+const isStateType = (i) => i && i.generate
 
 const generateFunction = (fn, namespacing, topLevel) => {
   if (topLevel) {
@@ -108,6 +106,5 @@ export const generateStateMap = (schema, namespacing) => {
   }
 }
 
-const buildStateType = (stateType, namespacing, topLevel) => {
-  return stateType.generate(namespacing, topLevel)
-}
+const buildStateType = (stateType, namespacing, topLevel) =>
+  stateType.generate(namespacing, topLevel)

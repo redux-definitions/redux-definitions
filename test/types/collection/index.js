@@ -195,7 +195,7 @@ describe('collection', () => {
         const updatedItem1 = { id: '1', name: 'bar' }
         dispatch(actions.update(updatedItem1))
 
-        expect(selectors.items(getState())).to.deep.equal([updatedItem1])
+        expect(selectors.items(getState())).to.deep.equal([item1])
         expect(selectors.ids(getState())).to.deep.equal([item1.id])
       })
 

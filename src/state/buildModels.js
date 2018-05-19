@@ -1,9 +1,9 @@
 import { makeError } from 'utils'
-import { createAction, handleActions } from 'redux-actions'
+import { handleActions } from 'redux-actions'
 import { generateStateMap } from './generators'
 
 const buildModel = (namespace, schema) => {
-  let {
+  const {
     actions,
     reducers,
     selectors,

@@ -1,4 +1,4 @@
-import { update, get } from 'lodash/object'
+import { get } from 'lodash/object'
 import { createAction } from 'redux-actions'
 import { scopeReductionFactory } from 'state/scopeReductionFactory'
 
@@ -11,7 +11,6 @@ export const createStateType = ({
   defaultState,
   transformInitialState,
 }) => {
-
   const generate = (options = {}) =>
     generateModel({
       options,
