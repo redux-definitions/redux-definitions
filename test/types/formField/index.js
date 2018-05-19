@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Normalized from 'nrmlzd'
-import { defineState, clearAllState, StateTypes } from '../../../../src'
+import { defineState, clearAllState, StateTypes } from 'index'
 import { makeStoreAndDefineState } from '../utils'
 
 const { FormField } = StateTypes.labs
@@ -10,7 +10,9 @@ const formField = FormField({
     [(val) => typeof val === 'string', 'str heh'],
     [(val) => val.length > 4, 'not long'],
   ],
-  initialValue: 'flim'
+  initialState: {
+    value: 'flim'
+  }
 })
 
 describe('formField', () => {
@@ -18,12 +20,22 @@ describe('formField', () => {
     clearAllState()
   })
 
-  describe('flat', () => {
-    it('state placement', () => {
-      expect(() => makeStoreAndDefineState({
-        space: formField
-      })).to.throw('Redux Enterprise: State Type cannot be used at the reducer top level. Redux reducers do not support entire state being this initialState value.')
+  it('state placement', () => {
+    const { space, getState } = makeStoreAndDefineState({
+      space: formField
     })
+
+    const { actions, selectors } = space
+
+    const state  = {
+      value: 'flim',
+      error: null,
+      isDirty: false,
+      isValid: false,
+    }
+
+    expect(getState().space).to.deep.equal(state)
+    expect(selectors.get(getState())).to.deep.equal(state)
   })
 
   describe('nested', () => {

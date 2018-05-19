@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Normalized from 'nrmlzd'
-import { defineState, clearAllState, StateTypes } from '../../../../src'
+import { defineState, clearAllState, StateTypes } from 'index'
 import { makeStoreAndDefineState } from '../utils'
 
 const { Index } = StateTypes

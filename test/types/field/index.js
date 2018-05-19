@@ -1,11 +1,11 @@
 import { expect } from 'chai'
 import Normalized from 'nrmlzd'
-import { defineState, clearAllState, StateTypes } from '../../../../src'
+import { defineState, clearAllState, StateTypes } from 'index'
 import { makeStoreAndDefineState } from '../utils'
 
 const { Field } = StateTypes
 
-describe('setable', () => {
+describe('field', () => {
   beforeEach(() => {
     clearAllState()
   })
@@ -13,7 +13,7 @@ describe('setable', () => {
   it('state placement', () => {
     expect(() => makeStoreAndDefineState({
       space: Field
-    })).to.throw('Redux Enterprise: State Type cannot be used at the reducer top level. Redux reducers do not support entire state being this initialState value.')
+    })).to.throw('Redux Enterprise: State Type cannot be used at the reducer top level. Redux reducers do not support entire state being this state value.')
   })
 
   describe('actions', () => {
@@ -28,7 +28,7 @@ describe('setable', () => {
 
       expect(Object.keys(actions.foo)).to.deep.equal([
         'set',
-        'unset',
+        'clear',
       ])
     })
 
@@ -46,7 +46,7 @@ describe('setable', () => {
       expect(selectors.foo.get(getState())).to.equal('bar')
     })
 
-    it('unset', () => {
+    it('clear', () => {
       const { space, dispatch, getState } = makeStoreAndDefineState({
         space: {
           foo: Field
@@ -57,8 +57,8 @@ describe('setable', () => {
 
       dispatch(actions.foo.set('bar'))
       expect(selectors.foo.get(getState())).to.equal('bar')
-      dispatch(actions.foo.unset())
-      expect(selectors.foo.get(getState())).to.equal(null)
+      dispatch(actions.foo.clear())
+      expect(selectors.foo.get(getState())).to.equal(undefined)
     })
   })
 
@@ -90,7 +90,7 @@ describe('setable', () => {
       const collection = [{ id: '1', name: 'foo' }]
       dispatch(actions.foo.set('bar'))
       expect(selectors.foo.isSet(getState())).to.equal(true)
-      dispatch(actions.foo.unset())
+      dispatch(actions.foo.clear())
       expect(selectors.foo.isSet(getState())).to.equal(false)
     })
 

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Normalized from 'nrmlzd'
-import { defineState, clearAllState, StateTypes } from '../../../../src'
+import { defineState, clearAllState, StateTypes } from 'index'
 import { makeStoreAndDefineState } from '../utils'
 
 const { Flag } = StateTypes
@@ -13,7 +13,7 @@ describe('defintion - flag', () => {
   it('state placement', () => {
     expect(() => makeStoreAndDefineState({
       space: Flag
-    })).to.throw('Redux Enterprise: State Type cannot be used at the reducer top level. Redux reducers do not support entire state being this initialState value.')
+    })).to.throw('Redux Enterprise: State Type cannot be used at the reducer top level. Redux reducers do not support entire state being this state value.')
   })
 
   describe('actions', () => {

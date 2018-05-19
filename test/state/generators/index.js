@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import Normalized from 'nrmlzd'
 import { createAction } from 'redux-actions'
-import { generateStateMap } from '../../../src/state/generators'
-import { StateTypes } from '../../../src'
+import { generateStateMap } from 'state/generators'
+import { StateTypes } from 'index'
 
 const { Collection, Field, Flag } = StateTypes
 
@@ -32,9 +32,9 @@ describe('generateStateMap', () => {
       .to.deep.equal(null)
 
     expect(Object.keys(actions.a).length).to.equal(3)
-    expect(Object.keys(actions.b).length).to.equal(5)
+    expect(Object.keys(actions.b).length).to.equal(6)
     expect(Object.keys(actions.c.d).length).to.equal(3)
-    expect(Object.keys(actions.c.e.f).length).to.equal(5)
+    expect(Object.keys(actions.c.e.f).length).to.equal(6)
   })
 
   it('reducer custom function', () => {
