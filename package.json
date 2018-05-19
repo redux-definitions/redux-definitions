@@ -1,6 +1,6 @@
 {
   "name": "redux-enterprise",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Library for organizing and scaling redux based projects",
   "main": "./lib/index.js",
   "scripts": {
