@@ -16,20 +16,20 @@ describe('collection', () => {
 
     const { actions, selectors } = space
 
-    expect(selectors.items(getState())).toEqual([])
+    expect(selectors.all(getState())).toEqual([])
   })
 
   it('initialState', () => {
-    const item = { id: '1' }
+    const entity = { id: '1' }
     const { space, getState } = makeStoreAndDefineState({
       space: Collection({
-        initialState: [item]
+        initialState: [entity]
       })
     })
 
     const { actions, selectors } = space
 
-    expect(selectors.items(getState())).toEqual([item])
+    expect(selectors.all(getState())).toEqual([entity])
   })
 
   describe('actions', () => {
@@ -94,7 +94,7 @@ describe('collection', () => {
 
       dispatch(actions.reset())
 
-      expect(selectors.items(getState())).toEqual([])
+      expect(selectors.all(getState())).toEqual([])
       expect(selectors.ids(getState())).toEqual([])
     })
 
@@ -106,9 +106,9 @@ describe('collection', () => {
 
         const { actions, selectors } = space
 
-        const item1 = { id: '1', name: 'foo' }
-        const item2 = { id: '2', name: 'bar' }
-        const collection = [item1]
+        const entity1 = { id: '1', name: 'foo' }
+        const entity2 = { id: '2', name: 'bar' }
+        const collection = [entity1]
 
         dispatch(actions.set(collection))
 
@@ -116,10 +116,10 @@ describe('collection', () => {
           Normalized.fromArray(collection)
         )
 
-        dispatch(actions.create(item2))
+        dispatch(actions.create(entity2))
 
-        expect(selectors.items(getState())).toEqual(collection.concat(item2))
-        expect(selectors.ids(getState())).toEqual([item1.id, item2.id])
+        expect(selectors.all(getState())).toEqual(collection.concat(entity2))
+        expect(selectors.ids(getState())).toEqual([entity1.id, entity2.id])
       })
 
       it('invalid', () => {
@@ -129,8 +129,8 @@ describe('collection', () => {
 
         const { actions, selectors } = space
 
-        const item = { name: 'foo' }
-        expect(() => dispatch(actions.create(item))).toThrow()
+        const entity = { name: 'foo' }
+        expect(() => dispatch(actions.create(entity))).toThrow()
       })
     })
 
@@ -142,8 +142,8 @@ describe('collection', () => {
 
         const { actions, selectors } = space
 
-        const item1 = { id: '1', name: 'foo' }
-        const collection = [item1]
+        const entity1 = { id: '1', name: 'foo' }
+        const collection = [entity1]
 
         dispatch(actions.set(collection))
 
@@ -151,11 +151,11 @@ describe('collection', () => {
           Normalized.fromArray(collection)
         )
 
-        const updatedItem1 = { id: '1', name: 'bar' }
-        dispatch(actions.upsert(updatedItem1))
+        const updatedEntity1 = { id: '1', name: 'bar' }
+        dispatch(actions.upsert(updatedEntity1))
 
-        expect(selectors.items(getState())).toEqual([updatedItem1])
-        expect(selectors.ids(getState())).toEqual([item1.id])
+        expect(selectors.all(getState())).toEqual([updatedEntity1])
+        expect(selectors.ids(getState())).toEqual([entity1.id])
       })
 
       it('invalid', () => {
@@ -165,9 +165,9 @@ describe('collection', () => {
 
         const { actions, selectors } = space
 
-        const item = { name: 'foo' }
+        const entity = { name: 'foo' }
 
-        expect(() => dispatch(actions.upsert(item))).toThrow()
+        expect(() => dispatch(actions.upsert(entity))).toThrow()
       })
     })
 
@@ -179,8 +179,8 @@ describe('collection', () => {
 
         const { actions, selectors } = space
 
-        const item1 = { id: '1', name: 'foo' }
-        const collection = [item1]
+        const entity1 = { id: '1', name: 'foo' }
+        const collection = [entity1]
 
         dispatch(actions.set(collection))
 
@@ -188,11 +188,11 @@ describe('collection', () => {
           Normalized.fromArray(collection)
         )
 
-        const updatedItem1 = { id: '1', name: 'bar' }
-        dispatch(actions.update(updatedItem1))
+        const updatedEntity1 = { id: '1', name: 'bar' }
+        dispatch(actions.update(updatedEntity1))
 
-        expect(selectors.items(getState())).toEqual([item1])
-        expect(selectors.ids(getState())).toEqual([item1.id])
+        expect(selectors.all(getState())).toEqual([entity1])
+        expect(selectors.ids(getState())).toEqual([entity1.id])
       })
 
       it('invalid', () => {
@@ -202,9 +202,9 @@ describe('collection', () => {
 
         const { actions, selectors } = space
 
-        const item = { name: 'foo' }
+        const entity = { name: 'foo' }
 
-        expect(() => dispatch(actions.update(item))).toThrow()
+        expect(() => dispatch(actions.update(entity))).toThrow()
       })
 
       it('doesn\'t exist', () => {
@@ -214,9 +214,9 @@ describe('collection', () => {
 
         const { actions, selectors } = space
 
-        const item = { id: '1', name: 'foo' }
+        const entity = { id: '1', name: 'foo' }
 
-        expect(selectors.items(getState())).toEqual([])
+        expect(selectors.all(getState())).toEqual([])
         expect(selectors.ids(getState())).toEqual([])
       })
     })
@@ -228,14 +228,14 @@ describe('collection', () => {
 
       const { actions, selectors } = space
 
-      const item1 = {
+      const entity1 = {
         id: '1', name: 'foo'
       }
-      const item2 = {
+      const entity2 = {
         id: '2', name: 'bar'
       }
 
-      const collection = [item1, item2]
+      const collection = [entity1, entity2]
 
       dispatch(actions.set(collection))
 
@@ -243,10 +243,10 @@ describe('collection', () => {
         Normalized.fromArray(collection)
       )
 
-      dispatch(actions.remove(item1.id))
+      dispatch(actions.remove(entity1.id))
 
-      expect(selectors.items(getState())).toEqual([item2])
-      expect(selectors.ids(getState())).toEqual([item2.id])
+      expect(selectors.all(getState())).toEqual([entity2])
+      expect(selectors.ids(getState())).toEqual([entity2.id])
     })
   })
 
@@ -259,10 +259,10 @@ describe('collection', () => {
       const { selectors } = space
 
       expect(Object.keys(selectors)).toEqual([
-        'byId',
+        'find',
         'get',
         'ids',
-        'items',
+        'all',
       ])
     })
 
@@ -286,28 +286,28 @@ describe('collection', () => {
 
       const { actions, selectors } = space
 
-      const item1 = { id: '1', name: 'foo' }
-      const collection = [item1]
+      const entity1 = { id: '1', name: 'foo' }
+      const collection = [entity1]
       dispatch(actions.set(collection))
 
-      expect(selectors.ids(getState())).toEqual([item1.id])
+      expect(selectors.ids(getState())).toEqual([entity1.id])
     })
 
-    it('items', () => {
+    it('all', () => {
       const { space, dispatch, getState } = makeStoreAndDefineState({
         space: Collection
       })
 
       const { actions, selectors } = space
 
-      const item1 = { id: '1', name: 'foo' }
-      const collection = [item1]
+      const entity1 = { id: '1', name: 'foo' }
+      const collection = [entity1]
       dispatch(actions.set(collection))
 
-      expect(selectors.items(getState())).toEqual(collection)
+      expect(selectors.all(getState())).toEqual(collection)
     })
 
-    describe('byId', () => {
+    describe('find', () => {
       it('exists', () => {
         const { space, dispatch, getState } = makeStoreAndDefineState({
           space: Collection
@@ -315,11 +315,11 @@ describe('collection', () => {
 
         const { actions, selectors } = space
 
-        const item1 = { id: '1', name: 'foo' }
-        const collection = [item1]
+        const entity1 = { id: '1', name: 'foo' }
+        const collection = [entity1]
         dispatch(actions.set(collection))
 
-        expect(selectors.byId(getState(), { id: item1.id })).toEqual(item1)
+        expect(selectors.find(getState(), { id: entity1.id })).toEqual(entity1)
       })
 
       it('does not exist', () => {
@@ -329,11 +329,11 @@ describe('collection', () => {
 
         const { actions, selectors } = space
 
-        const item1 = { id: '1', name: 'foo' }
-        const collection = [item1]
+        const entity1 = { id: '1', name: 'foo' }
+        const collection = [entity1]
         dispatch(actions.set(collection))
 
-        expect(selectors.byId(getState(), { id: '2' })).toEqual(undefined)
+        expect(selectors.find(getState(), { id: '2' })).toEqual(undefined)
       })
     })
   })
@@ -349,8 +349,8 @@ describe('collection', () => {
 
     expect(selectors.foo.get(getState())).toEqual(Normalized.create())
 
-    const item1 = { id: '1', name: 'foo' }
-    const collection = [item1]
+    const entity1 = { id: '1', name: 'foo' }
+    const collection = [entity1]
     dispatch(actions.foo.set(collection))
 
     expect(selectors.foo.get(getState())).toEqual(
@@ -369,11 +369,11 @@ describe('collection', () => {
 
     const { actions, selectors } = space
 
-    expect(selectors.foo.bar.items(getState())).toEqual([])
+    expect(selectors.foo.bar.all(getState())).toEqual([])
 
     const collection = [{ id: '1', name: 'foo' }]
     dispatch(actions.foo.bar.set(collection))
 
-    expect(selectors.foo.bar.items(getState())).toEqual(collection)
+    expect(selectors.foo.bar.all(getState())).toEqual(collection)
   })
 })

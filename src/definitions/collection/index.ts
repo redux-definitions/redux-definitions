@@ -1,33 +1,33 @@
 import { find } from 'lodash'
 import { Action } from 'redux-actions'
-import Normalized, { INorm, Item } from '../../nrmlzd'
+import Normalized, { INorm, IEntity } from '../../nrmlzd'
 import { createDefinition } from 'state/createDefinition'
 import { logWarning, makeError } from 'utils'
 
-const isItem = (arg: any): arg is Item =>
+const isEntity = (arg: any): arg is IEntity =>
   typeof arg === 'object' && arg.id
 
-const validateItem = (o: any) => {
-  if (!isItem(o)) {
-    throw makeError('Collection - Item has no `id` key')
+const validateEntity = (o: any) => {
+  if (!isEntity(o)) {
+    throw makeError('Collection - Entity has no `id` key')
   }
-  return o as Item
+  return o as IEntity
 }
 
-const validateItems = (list: any[]) => list.map(validateItem)
+const validateEntities = (list: any[]) => list.map(validateEntity)
 
 type State = INorm
 
 export default createDefinition<State>({
   actions: {
-    create: (state: State, { payload: item }: Action<Item>): State => {
-      if(!item || !validateItem(item)) {
+    create: (state: State, { payload: entity }: Action<IEntity>): State => {
+      if(!entity || !validateEntity(entity)) {
         return state
       }
-      if (find(state.ids, (id: string) => id === item.id)) {
-        logWarning(`Collection already has an item with id: ${item.id}`)
+      if (find(state.ids, (id: string) => id === entity.id)) {
+        logWarning(`Collection already has an entity with id: ${entity.id}`)
       }
-      return Normalized.upsert(state, item)
+      return Normalized.upsert(state, entity)
     },
     remove: (state: State, { payload: id }: Action<string>): State => {
       if (!id) {
@@ -36,37 +36,37 @@ export default createDefinition<State>({
       return Normalized.remove(state, id)
     },
     reset: (): State => Normalized.create(),
-    set: (state: State, { payload: items }: Action<Item[]>): State => {
-      if (!items|| !validateItems(items)) {
+    set: (state: State, { payload: entities }: Action<IEntity[]>): State => {
+      if (!entities || !validateEntities(entities)) {
         return state
       }
-      return Normalized.fromArray(items)
+      return Normalized.fromArray(entities)
     },
-    update: (state: State, { payload: item }: Action<Item>): State => {
-      if(!item || !validateItem(item)) {
+    update: (state: State, { payload: entity }: Action<IEntity>): State => {
+      if(!entity || !validateEntity(entity)) {
         return state
       }
-      if (find(state.ids, (id: string) => id === item.id)) {
+      if (find(state.ids, (id: string) => id === entity.id)) {
         return state
       }
-      return Normalized.upsert(state, item)
+      return Normalized.upsert(state, entity)
     },
-    upsert: (state: State, { payload: item }: Action<Item>): State => {
-      if(!item || !validateItem(item)) {
+    upsert: (state: State, { payload: entity }: Action<IEntity>): State => {
+      if(!entity || !validateEntity(entity)) {
         return state
       }
-      return Normalized.upsert(state, item)
+      return Normalized.upsert(state, entity)
     }
   },
   defaultState: Normalized.create(),
   selectors: {
-    byId: (state: State, { id }: { id: string }): Item|undefined =>
-      state.data[id] || undefined,
+    find: (state: State, { id }: { id: string }): IEntity|undefined =>
+      state.entities[id] || undefined,
     get: (state: State): State => state,
     ids: (state: State): string[] => state.ids,
-    items: (state: State): Item[] => Normalized.toArray(state),
+    all: (state: State): IEntity[] => Normalized.toArray(state),
   },
-  transformInitialState: (initialState: Item[]): INorm =>
-    Normalized.fromArray(validateItems(initialState)),
+  transformInitialState: (initialState: IEntity[]): INorm =>
+    Normalized.fromArray(validateEntities(initialState)),
 })
 

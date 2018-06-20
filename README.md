@@ -295,7 +295,7 @@ Resets the entire Collection to empty state.
 Takes an Entity and adds it to the collection. Warning will be logged if an entity with the `id` already exists.
 
 `update(payload: Entity)`
-Takes an Entity and updates it in the collection. Warning will be logged if an entity with the `id` did not exist.
+Takes an Entity and updates it in the collection. Entity is not added unless an entity with the `id` already exist.
 
 `upsert(payload: Entity)`
 Takes an Entity and updates it in the collection. The entity will be added if an entity with the `id` does not exist.
