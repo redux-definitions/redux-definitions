@@ -1,11 +1,7 @@
 import { forIn } from 'lodash'
 import { Store } from 'redux'
 import { Models } from '../state/storage'
-import { log, logWarning, makeError } from '../utils'
-
-const isTest: boolean = process && process.env.NODE_ENV === 'test'
-const isDev: boolean = process && process.env.NODE_ENV === 'development'
-const isBrowser: boolean = process && process.title === 'browser'
+import { log, logWarning, makeError, isDev, isBrowser, isTest } from '../utils'
 
 declare var global: any
 declare var window: any
