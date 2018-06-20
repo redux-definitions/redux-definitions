@@ -1,5 +1,5 @@
 <br>
-<p align="center"><img height="55px" src="https://github.com/redux-enterprise/redux-enterprise/blob/master/images/logo-pad-right.png?raw=true" alt="🚀"></p>
+<p align="center"><img height="55px" src="https://raw.githubusercontent.com/redux-enterprise/redux-enterprise/master/images/logo-pad-right.png" alt="🚀"></p>
 <h1 align="center">
   Redux Enterprise
   <br>
@@ -16,7 +16,10 @@
 
 >👋 Welcome! Make sure to explore our [issues](https://github.com/redux-enterprise/redux-enterprise/issues), and feel free to ask any questions you may have!
 
+<br>
+
 **TLDR**
+
 Automatically create standard reducers, actions, and selectors by describing your core application state using a library of [reducer definitions](#reducer-definitions). _The 12 lines of code below replaces 500+ lines of typical Redux code_
 ```sh
 yarn add redux-enterprise
@@ -61,7 +64,7 @@ const { actions, reducers, selectors } = createReducers({
   + [Contributing](#contributing)
  
 ## Overview
-Inspired by productive patterns discovered building enterprise UIs, Redux Enterprise is a library that **abstracts common Redux reducer patterns into a library of reusable reducer definitions** that can be composed to describe and automatically create completely standardized actions, reducers, and selectors.
+Inspired by lessons learned building enterprise UIs, Redux Enterprise is a library that **abstracts common Redux reducer patterns into a library of reusable reducer definitions** that can be composed to describe and automatically create completely standardized actions, reducers, and selectors.
 
 ### Whats the mission?
 To help teams and organizations scale development, maintainability, and velocity on Redux-based projects.
@@ -69,7 +72,7 @@ To help teams and organizations scale development, maintainability, and velocity
 > Redux Enterprise is 100% compatible with any existing Redux-based project.
 
 ### Whats included?
-- Library of reusable reducer definitions (Flag, Field, Collection, Index, Steps, RequestStatus, etc)
+- Library of reusable reducer definitions (Flag, Field, Collection, Index, etc)
 - Standard way to describe, name, scope, update, and derive application state
 - In-browser Redux-REPL for interacting with running application
 
@@ -276,7 +279,7 @@ Actions.todoEditor.editingId.set(37)
 Redux Enterprise provides a handful of reducer definitions that can be found by importing the `Definitions` object. Reducer definitions aim to be low-level enough to be generic but high level enough to abstract state patterns common to all applications.
 
 ## Collection
-Collection of `Entities`. `Entities` are objects with `id` properties. Collection is internally stored in normalized form: `{ ids, entities }` where `ids` is an array of unique `id` keys and `entities` is an `id`-based lookup map. Entities can take any form as long as they at least have an id.
+Collection of `Entities`. `Entities` are objects with `id` properties. Entities can take any form as long as they at least have an id. Collection is internally stored in normalized form: `{ ids, entities }` where `ids` is an array of unique `id` keys and `entities` is an `id`-based lookup map.
 
 `Id = string`
 `Entity = { id: Id }`
@@ -301,7 +304,7 @@ Takes an Entity and updates it in the collection. The entity will be added if an
 Takes an Id and removes any existing entity with the `id`.
 
 ### Selectors
-`list(state: {}): Entity[]`
+`all(state: {}): Entity[]`
 Returns array of entities.
 
 `ids(state: {}): Id[]`
@@ -435,7 +438,9 @@ const { reducers } = createReducers({
 # Appendix
 
 ## Typescript
-In Typescript all actions, reducers, and selectors returned from `createReducers` are typed; typed action payloads for free! ✨
+Redux Enterprise is written in Typescript and comes with type declarations.
+
+Coming in version 0.0.7 all actions returned from `createReducers` will have typed payloads! ✨
 
 ## Boilerplates & Examples
 - [NextJS](https://github.com/redux-enterprise/redux-enterprise-nextjs-example)
