@@ -21,7 +21,7 @@ export type DefinitionReducerMap<State> = IDefinitionReducerMap<State>|ReturnDef
 export interface ICreateModelGenerator<State> {
   options: IOptions
   defaultState: State
-  actionFns: DefinitionReducerMap<State>
+  reducerFns: DefinitionReducerMap<State>
   selectorFns: any
   transformInitialState: any
 }
@@ -32,7 +32,7 @@ export const createModelGenerator =
   const {
     options,
     defaultState,
-    actionFns,
+    reducerFns,
     selectorFns,
     transformInitialState,
   } = params
@@ -53,11 +53,11 @@ export const createModelGenerator =
   }
 
   const actionFnsObject: IDefinitionReducerMap<State> =
-    isFunction(actionFns) ? actionFns(options) : actionFns
+    isFunction(reducerFns) ? reducerFns(options) : reducerFns
 
-  type ActionFnsTuple = [string, Reducer<State, any>]
+  type ReducerFnsTuple = [string, Reducer<State, any>]
   const scope = makeScope(namespacing)
-  for (const [key, fn] of Object.entries(actionFnsObject) as ActionFnsTuple[]) {
+  for (const [key, fn] of Object.entries(actionFnsObject) as ReducerFnsTuple[]) {
     const type = getActionType(namespacing, key)
     const { reducer, action } = scope(type, fn)
     model.reducers[type] = reducer

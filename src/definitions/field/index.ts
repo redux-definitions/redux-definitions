@@ -4,7 +4,7 @@ import { createDefinition } from 'state/createDefinition'
 type State = any
 
 export default createDefinition({
-  actions: {
+  reducers: {
     clear: (): State => undefined,
     set: (state: State, { payload }: Action<any>): State => payload,
   },

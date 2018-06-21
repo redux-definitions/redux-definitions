@@ -19,7 +19,7 @@ const validateEntities = (list: any[]) => list.map(validateEntity)
 type State = INorm
 
 export default createDefinition<State>({
-  actions: {
+  reducers: {
     create: (state: State, { payload: entity }: Action<IEntity>): State => {
       if(!entity || !validateEntity(entity)) {
         return state

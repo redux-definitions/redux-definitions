@@ -1,6 +1,6 @@
 import { startRepl } from './repl/index'
 import { clearAllReducers } from './state/clearAllReducers'
-import { createDefinition, IReducerDefiniton } from './state/createDefinition'
+import { createDefinition, IDefinition } from './state/createDefinition'
 import { createReducers } from './state/createReducers'
 import {
   Actions,

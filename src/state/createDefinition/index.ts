@@ -1,22 +1,22 @@
 import { ISelectorMap } from 'state/types'
 import { createModelGenerator, DefinitionReducerMap } from './createModelGenerator'
 
-export interface IDefiniton<State> {
-  actions: DefinitionReducerMap<State>
+export interface IDefinition<State> {
+  reducers: DefinitionReducerMap<State>
   selectors: ISelectorMap<State>
   defaultState: State
   transformInitialState?: (initialState: any) => State
 }
 
 export const createDefinition = <State>({
-  actions,
+  reducers,
   selectors,
   defaultState,
   transformInitialState,
-}: IDefiniton<State>) => {
+}: IDefinition<State>) => {
   const createModelGeneratorWithOptions = (options: {} = {}) =>
     createModelGenerator<State>({
-      actionFns: actions,
+      reducerFns: reducers,
       defaultState,
       options,
       selectorFns: selectors,

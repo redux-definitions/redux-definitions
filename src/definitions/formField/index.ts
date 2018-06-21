@@ -23,7 +23,7 @@ interface IActionsParams {
 }
 
 export default createDefinition<IState>({
-  actions: ({ validators = [] }) => ({
+  reducers: ({ validators = [] }) => ({
     reset: (state: IState, action: Action<undefined>) => defaultState,
     set: (state: IState, { payload }: Action<string>) => {
       const invalid = validators.find(([fn, _]: [any, any]) => !fn(payload))

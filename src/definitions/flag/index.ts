@@ -5,7 +5,7 @@ import { Action } from 'redux-actions'
 type State = boolean
 
 export default createDefinition<State>({
-  actions: {
+  reducers: {
     set: (state: State, action: Action<boolean>): State => {
       const val = ('payload' in action) ? action.payload : true
 

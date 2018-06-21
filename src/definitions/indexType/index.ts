@@ -7,7 +7,7 @@ interface IState {
 }
 
 export default createDefinition<IState>({
-  actions: {
+  reducers: {
     add: (state: IState, { payload }: Action<string>): IState => {
       if (!payload) {
         return state
