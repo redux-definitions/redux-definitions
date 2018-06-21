@@ -1,8 +1,8 @@
 import { find } from 'lodash'
 import { Action } from 'redux-actions'
-import Normalized, { INorm, IEntity } from 'utils/nrmlzd'
-import { createDefinition } from 'state/createDefinition'
-import { logWarning, makeError } from 'utils'
+import Normalized, { INorm, IEntity } from '../../utils/nrmlzd'
+import { createDefinition } from '../../state/createDefinition'
+import { logWarning, makeError } from '../../utils'
 
 const isEntity = (arg: any): arg is IEntity =>
   typeof arg === 'object' && arg.id

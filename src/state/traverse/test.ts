@@ -1,4 +1,4 @@
-import Normalized from 'utils/nrmlzd'
+import Normalized from '../../utils/nrmlzd'
 import { Action } from 'redux-actions'
 import { createAction } from 'redux-actions'
 import { Definitions } from '../../index'

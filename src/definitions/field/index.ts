@@ -1,5 +1,5 @@
 import { Action } from 'redux-actions'
-import { createDefinition } from 'state/createDefinition'
+import { createDefinition } from '../../state/createDefinition'
 
 type State = any
 

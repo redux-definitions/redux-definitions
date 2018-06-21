@@ -1,5 +1,5 @@
-import Normalized from 'utils/nrmlzd'
-import { clearAllReducers, Definitions } from 'index'
+import Normalized from '../../utils/nrmlzd'
+import { clearAllReducers, Definitions } from '../../index'
 import { makeStoreAndDefineState } from '../test-utils'
 
 const { Collection } = Definitions

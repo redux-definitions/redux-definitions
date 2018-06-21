@@ -1,4 +1,4 @@
-import { clearAllReducers, Definitions } from 'index'
+import { clearAllReducers, Definitions } from '../../index'
 import { makeStoreAndDefineState } from '../test-utils'
 
 const { Flag } = Definitions

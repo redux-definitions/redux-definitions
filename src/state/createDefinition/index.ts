@@ -1,4 +1,4 @@
-import { ISelectorMap } from 'state/types'
+import { ISelectorMap } from '../../state/types'
 import { createModelGenerator, DefinitionReducerMap } from './createModelGenerator'
 
 export interface IDefinition<State> {

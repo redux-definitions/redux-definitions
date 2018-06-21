@@ -1,8 +1,8 @@
-import { createReducers, startRepl } from 'index'
+import { createReducers, startRepl } from '../index'
 import { applyMiddleware, combineReducers, createStore } from 'redux'
 import { Store } from 'redux'
 import { createLogger } from 'redux-logger'
-import { IActionCreatorMap, ISelectorMap } from 'state/types'
+import { IActionCreatorMap, ISelectorMap } from '../state/types'
 
 
 export interface IState {

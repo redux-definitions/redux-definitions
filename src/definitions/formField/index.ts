@@ -1,4 +1,4 @@
-import { createDefinition } from 'state/createDefinition'
+import { createDefinition } from '../../state/createDefinition'
 import { Action } from 'redux-actions';
 
 const defaultState = {

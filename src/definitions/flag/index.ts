@@ -1,5 +1,5 @@
-import { createDefinition } from 'state/createDefinition'
-import { logWarning } from 'utils'
+import { createDefinition } from '../../state/createDefinition'
+import { logWarning } from '../../utils'
 import { Action } from 'redux-actions'
 
 type State = boolean

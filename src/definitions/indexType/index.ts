@@ -1,6 +1,6 @@
 import { find, uniq, without } from 'lodash'
 import { Action } from 'redux-actions'
-import { createDefinition } from 'state/createDefinition'
+import { createDefinition } from '../../state/createDefinition'
 
 interface IState {
   index: string[]

@@ -1,10 +1,9 @@
 import { get } from 'lodash'
 import { Action, Reducer } from 'redux-actions'
-import { makeError } from 'utils'
-import { IModelDefinition } from 'state/traverse/types'
-import { makeScope } from 'state/algorithms/makeScope'
-import { getActionType } from 'state/utils'
-import { isFunction, isObject } from 'state/utils'
+import { makeError } from '../../utils'
+import { IModelDefinition } from '../../state/traverse/types'
+import { makeScope } from '../../state/algorithms/makeScope'
+import { getActionType, isFunction, isObject } from '../../state/utils'
 
 export interface IOptions {
   initialState?: any
