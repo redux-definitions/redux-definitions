@@ -1,4 +1,4 @@
-import Normalized from 'nrmlzd'
+import Normalized from 'utils/nrmlzd'
 import { clearAllReducers, Definitions } from 'index'
 import { makeStoreAndDefineState } from '../test-utils'
 

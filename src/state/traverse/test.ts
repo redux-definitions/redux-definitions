@@ -1,4 +1,4 @@
-import Normalized from 'nrmlzd'
+import Normalized from 'utils/nrmlzd'
 import { Action } from 'redux-actions'
 import { createAction } from 'redux-actions'
 import { Definitions } from '../../index'
@@ -22,13 +22,13 @@ describe('traverse', () => {
     const { actions, selectors, reducers } = traverse(sampleSchema, ['namespace'])
     const state = { namespace: { c: { e: { f: Normalized.fromArray([{ id: '1' }]) } } } }
 
-    expect(selectors.c.e.f.items(state))
+    expect(selectors.c.e.f.all(state))
       .toEqual([{ id: '1' }])
     expect(selectors.c.e.f.ids(state))
       .toEqual(['1'])
-    expect(selectors.c.e.f.byId(state, { id: '1' }))
+    expect(selectors.c.e.f.find(state, { id: '1' }))
       .toEqual({ id: '1' })
-    expect(selectors.c.e.f.byId(state, { id: '2' }))
+    expect(selectors.c.e.f.find(state, { id: '2' }))
       .toEqual(undefined)
 
     expect(Object.keys(actions.a).length).toEqual(3)

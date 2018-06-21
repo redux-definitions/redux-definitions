@@ -21,7 +21,7 @@ export type DefinitionReducerMap<State> = IDefinitionReducerMap<State>|ReturnDef
 export interface ICreateModelGenerator<State> {
   options: IOptions
   defaultState: State
-  reducerFns: DefinitionReducerMap<State>
+  reducerFns: any, // DefinitionReducerMap<State>
   selectorFns: any
   transformInitialState: any
 }

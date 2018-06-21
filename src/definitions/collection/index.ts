@@ -1,6 +1,6 @@
 import { find } from 'lodash'
 import { Action } from 'redux-actions'
-import Normalized, { INorm, IEntity } from '../../nrmlzd'
+import Normalized, { INorm, IEntity } from 'utils/nrmlzd'
 import { createDefinition } from 'state/createDefinition'
 import { logWarning, makeError } from 'utils'
 
