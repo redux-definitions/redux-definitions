@@ -1,9 +1,15 @@
 import { update } from 'lodash'
-import { Action, Reducer, createAction } from 'redux-actions'
+import { Action, createAction } from 'redux-actions'
+import { Reducer, ActionCreator } from '../types'
+
+interface IReducerAndAction<P> {
+  reducer: Reducer<{}>
+  action: ActionCreator<P>
+}
 
 export const makeScope =
   (namespacing: string[], excludeField?: boolean) =>
-  <P>(type: string, fn: Reducer<any, P>) => {
+  <LocalState, P>(type: string, fn: Reducer<LocalState>): IReducerAndAction<P> => {
   const reducer = (state: {}, action: Action<P>) => {
     const keyPath = excludeField
       ? namespacing.slice(1, -1)
@@ -19,7 +25,7 @@ export const makeScope =
       )
     }
 
-    return fn(state, action)
+    return fn(state as any, action)
   }
 
   return {

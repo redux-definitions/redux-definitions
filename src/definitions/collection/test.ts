@@ -10,13 +10,13 @@ describe('collection', () => {
   })
 
   it('state placement', () => {
-    const { space, getState } = makeStoreAndDefineState({
+    const { models, store } = makeStoreAndDefineState({
       space: Collection
     })
 
-    const { actions, selectors } = space
+    const { selectors } =  models.space
 
-    expect(selectors.all(getState())).toEqual([])
+    expect(selectors.all(store.getState())).toEqual([])
   })
 
   it('initialState', () => {

@@ -1,8 +1,9 @@
-import { Action, ActionFunction1, ReducerMap } from 'redux-actions'
-import { createAction } from 'redux-actions'
-import { makeScope } from '../../state/algorithms/makeScope'
-import { ActionCreator, IActionCreatorMap, ISelectorMap } from '../../state/types'
-import { IReducerDefinition, IModelFunction, IModelDefinition } from '../../state/traverse/types'
+import { makeScope } from '../makeScope'
+import {
+  IReducerDefinition,
+  IModelFunction,
+  IModelDefinition
+} from '../types'
 import { getActionType } from '../utils'
 
 export const Model = {

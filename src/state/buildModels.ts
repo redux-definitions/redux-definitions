@@ -1,10 +1,10 @@
-import { Action, handleActions } from 'redux-actions'
+import { handleActions } from 'redux-actions'
 import { makeError } from '../utils'
-import { IActionCreatorMap, ISelectorMap } from './types'
+import { IModel } from './types'
 import { traverse } from './traverse'
-import { IAny, IModelDefinition } from './traverse/types'
+import { IModelDefinition } from './types'
 
-const buildModel = (namespace: string, schema: any) => {
+const buildModel = (namespace: string, schema: any): IModel<{}> => {
   const {
     actions,
     reducers,

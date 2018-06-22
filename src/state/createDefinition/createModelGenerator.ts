@@ -1,49 +1,38 @@
 import { get } from 'lodash'
-import { Action, Reducer } from 'redux-actions'
-import { makeError } from '../../utils'
-import { IModelDefinition } from '../../state/traverse/types'
-import { makeScope } from '../../state/algorithms/makeScope'
-import { getActionType, isFunction, isObject } from '../../state/utils'
+import { Reducer } from 'redux-actions'
+import { IDefinitionReducerMap, IDefinitionOptions, ReducerMapOrConstructor, Selector, IModelDefinitionLowest } from '../types'
+import { makeScope } from '../makeScope'
+import { getActionType } from '../utils'
+import { getFormattedInitialState } from './initialState'
+import { ISelectorMap } from '../types'
 
-export interface IOptions {
-  initialState?: any
-  [name: string]: any
-}
-
-export interface IDefinitionReducerMap<State> {
-  [name: string]: Reducer<State, any>
-}
-
-export type ReturnDefinitionReducerMap<State> = (options: IOptions) => IDefinitionReducerMap<State>
-export type DefinitionReducerMap<State> = IDefinitionReducerMap<State>|ReturnDefinitionReducerMap<State>
-
-export interface ICreateModelGenerator<State> {
-  options: IOptions
-  defaultState: State
-  reducerFns: any, // DefinitionReducerMap<State>
-  selectorFns: any
-  transformInitialState: any
+export interface ICreateModelGenerator<LocalState> {
+  options: IDefinitionOptions
+  defaultState: any
+  reducerMap: ReducerMapOrConstructor<LocalState>
+  selectorMap: ISelectorMap<LocalState>
+  transformInitialState?: any
 }
 
 export const createModelGenerator =
-  <State>(params: ICreateModelGenerator<State>) =>
-  (namespacing: string[], topLevel: boolean): IModelDefinition => {
+  <LocalState>(params: ICreateModelGenerator<LocalState>) =>
+  (namespacing: string[], topLevel: boolean): IModelDefinitionLowest => {
   const {
     options,
     defaultState,
-    reducerFns,
-    selectorFns,
+    reducerMap,
+    selectorMap,
     transformInitialState,
   } = params
 
-  const formattedInitialState = getFormattedInitialState<State>({
+  const formattedInitialState = getFormattedInitialState<typeof defaultState>({
     initialState: options.initialState,
     defaultState,
     transformInitialState,
     topLevel,
   })
 
-  const model: IModelDefinition = {
+  const model: IModelDefinitionLowest = {
     kind: 'definition',
     actions: {},
     initialState: formattedInitialState,
@@ -51,12 +40,17 @@ export const createModelGenerator =
     selectors: {},
   }
 
-  const actionFnsObject: IDefinitionReducerMap<State> =
-    isFunction(reducerFns) ? reducerFns(options) : reducerFns
+  let reducers: IDefinitionReducerMap<LocalState>
 
-  type ReducerFnsTuple = [string, Reducer<State, any>]
+  if (typeof reducerMap === 'function') {
+    reducers = reducerMap(options)
+  } else {
+    reducers = reducerMap
+  }
+
+  type ReducerTuple = [string, Reducer<LocalState, any>]
   const scope = makeScope(namespacing)
-  for (const [key, fn] of Object.entries(actionFnsObject) as ReducerFnsTuple[]) {
+  for (const [key, fn] of Object.entries(reducers) as ReducerTuple[]) {
     const type = getActionType(namespacing, key)
     const { reducer, action } = scope(type, fn)
     model.reducers[type] = reducer
@@ -64,36 +58,11 @@ export const createModelGenerator =
   }
 
   type SelectorTuple = [string, (state: {}, args: any) => any]
-  for (const [key, fn] of Object.entries(selectorFns) as SelectorTuple[]) {
-    model.selectors[key] = (state: any, args: any) =>
+  for (const [key, fn] of Object.entries(selectorMap) as SelectorTuple[]) {
+    const selector: Selector<{}> = (state: {}, args?: any) =>
       fn(get(state, namespacing), args)
+    model.selectors[key] = selector
   }
 
   return model
-}
-
-type TransformInitialState<State> = (s: any) => State
-interface IGetFormattedInitialState<State> {
-  initialState: any
-  transformInitialState?: TransformInitialState<State>
-  topLevel: boolean
-  defaultState: State
-}
-
-const getFormattedInitialState = <State>(params: IGetFormattedInitialState<State>) => {
-  const {
-    initialState,
-    transformInitialState = (((s) => s) as TransformInitialState<State>),
-    topLevel,
-    defaultState,
-  } = params
-
-  const formattedInitialState = initialState ?
-      transformInitialState(initialState) : defaultState
-
-  if (!isObject(formattedInitialState) && topLevel) {
-    throw makeError('This Definition cannot be used at the reducer top level. Redux reducers do not support entire state being this state value.')
-  }
-
-  return formattedInitialState
 }

@@ -1,7 +1,7 @@
 import { forIn } from 'lodash'
 import { makeError } from '../../utils'
 import { Model } from './model'
-import { IModelDefinition, IModelFunction } from './types'
+import { IModelDefinition, IModelFunction } from '../types'
 import { isReducerDefinition, isFunction, isObject } from '../utils'
 
 export const traverse = (schema: any, namespacing: string[]): IModelDefinition => {

@@ -1,6 +1,6 @@
 import { startRepl } from './repl/index'
 import { clearAllReducers } from './state/clearAllReducers'
-import { createDefinition, IDefinition } from './state/createDefinition'
+import { createDefinition } from './state/createDefinition'
 import { createReducers } from './state/createReducers'
 import {
   Actions,
@@ -8,6 +8,10 @@ import {
   Reducers,
   Selectors,
 } from './state/storage'
+import {
+  INestedActionCreatorMap,
+  IDefinition,
+} from './state/types'
 import Definitions from './definitions'
 
 const reducers = Reducers

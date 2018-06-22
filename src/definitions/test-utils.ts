@@ -2,26 +2,17 @@ import { createReducers, startRepl } from '../index'
 import { applyMiddleware, combineReducers, createStore } from 'redux'
 import { Store } from 'redux'
 import { createLogger } from 'redux-logger'
-import { IActionCreatorMap, ISelectorMap } from '../state/types'
+import { IModelMap } from '../state/types'
 
-
-export interface IState {
-  [key: string]: any
+export interface IReturn {
+  store: Store<{}>
+  models: IModelMap<{}>
 }
 
-export interface IModel {
-  actions: IActionCreatorMap,
-  reducers: object,
-  selectors: ISelectorMap<IState>,
-  [namespace: string]: any
-}
-
-export type Return = Store<IState> & IModel
-
-export const makeStoreAndDefineState = (schema: any, repl?: any): Return => {
-  const res = createReducers(schema)
-  const store: Store<IState> = createStore(
-    combineReducers(res.reducers),
+export const makeStoreAndDefineState = (schema: any, repl?: any): IReturn => {
+  const rootModel = createReducers(schema)
+  const store: Store<{}> = createStore(
+    combineReducers(rootModel.reducers),
     {},
     // applyMiddleware(createLogger())
     applyMiddleware()
@@ -32,8 +23,8 @@ export const makeStoreAndDefineState = (schema: any, repl?: any): Return => {
   }
 
   return {
-    ...store,
-    ...res
+    store,
+    models: rootModel.models
   }
 }
 

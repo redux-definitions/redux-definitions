@@ -1,4 +1,6 @@
-export const Actions: any = {}
-export const Models: any = {}
-export const Reducers: any = {}
-export const Selectors: any = {}
+import { INestedActionCreatorMap, IModelMap, IReducerMap, INestedSelectorMap } from './types'
+
+export const Actions: INestedActionCreatorMap = {}
+export const Models: IModelMap<{}> = {}
+export const Reducers: IReducerMap<{}> = {}
+export const Selectors: INestedSelectorMap<{}> = {}
