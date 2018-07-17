@@ -1,12 +1,18 @@
 import { buildModels } from './buildModels'
 import { Actions, Models, Reducers, Selectors } from './storage'
-import { IModelMap, IReducerMap, INestedActionCreatorMap, INestedSelectorMap, IRootModel, IModel } from './types'
+import { IModelMap, IReducerMap, IActionCreatorMapsGroup, ISelectorMapsGroup, IRootModel, IModel, IReducerDefinition } from './types'
 
-export const createReducers = (schema: any): IRootModel<{}> => {
+export interface ISchema {
+  [key: string]: {
+    [key: string]: IReducerDefinition
+  }
+}
+
+export const createReducers = (schema: ISchema): IRootModel<{}> => {
   const localModels: IModelMap<{}> = {}
   const localReducers: IReducerMap<{}> = {}
-  const localActions: INestedActionCreatorMap = {}
-  const localSelectors: INestedSelectorMap<{}> = {}
+  const localActions: IActionCreatorMapsGroup = {}
+  const localSelectors: ISelectorMapsGroup<{}> = {}
 
   buildModels(schema).forEach((model: IModel<{}>) => {
     localModels[model.namespace] = model

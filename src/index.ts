@@ -9,8 +9,12 @@ import {
   Selectors,
 } from './state/storage'
 import {
-  INestedActionCreatorMap,
+  IReducerMap,
   IDefinition,
+  IModelMap,
+  IRootModel,
+  IActionCreatorMapsGroup,
+  ISelectorMapsGroup
 } from './state/types'
 import Definitions from './definitions'
 

@@ -11,36 +11,42 @@ describe('collection', () => {
 
   it('state placement', () => {
     const { models, store } = makeStoreAndDefineState({
-      space: Collection
+      space: {
+        persons: Collection
+      }
     })
 
     const { selectors } =  models.space
 
-    expect(selectors.all(store.getState())).toEqual([])
+    expect(selectors.persons.all(store.getState())).toEqual([])
   })
 
   it('initialState', () => {
     const entity = { id: '1' }
-    const { space, getState } = makeStoreAndDefineState({
-      space: Collection({
-        initialState: [entity]
-      })
+    const { models, store } = makeStoreAndDefineState({
+      space: {
+        persons: Collection({
+          initialState: [entity]
+        })
+      }
     })
 
-    const { actions, selectors } = space
+    const { actions, selectors } = models.space
 
-    expect(selectors.all(getState())).toEqual([entity])
+    expect(selectors.persons.all(store.getState())).toEqual([entity])
   })
 
   describe('actions', () => {
     it('api', () => {
-      const { space } = makeStoreAndDefineState({
-        space: Collection
+      const { models } = makeStoreAndDefineState({
+        space: {
+          persons: Collection
+        }
       })
 
-      const { actions } = space
+      const { actions } = models.space
 
-      expect(Object.keys(actions)).toEqual([
+      expect(Object.keys(actions.persons)).toEqual([
         'create',
         'remove',
         'reset',
@@ -52,181 +58,203 @@ describe('collection', () => {
 
     describe('set', () => {
       it('valid', () => {
-        const { space, dispatch, getState } = makeStoreAndDefineState({
-          space: Collection
+        const { models, store } = makeStoreAndDefineState({
+          space: {
+            persons: Collection
+          }
         })
 
-        const { actions, selectors } = space
+        const { actions, selectors } = models.space
 
         const collection = [{ id: '1', name: 'foo' }]
-        dispatch(actions.set(collection))
+        store.dispatch(actions.persons.set(collection))
 
-        expect(selectors.get(getState())).toEqual(
+        expect(selectors.persons.get(store.getState())).toEqual(
           Normalized.fromArray(collection)
         )
       })
 
       it('invalid', () => {
-        const { space, dispatch, getState } = makeStoreAndDefineState({
-          space: Collection
+        const { models, store } = makeStoreAndDefineState({
+          space: {
+            persons: Collection
+          }
         })
 
-        const { actions, selectors } = space
+        const { actions, selectors } = models.space
 
         const collection = [{ name: 'foo' }]
-        expect(() => dispatch(actions.set(collection))).toThrow()
+        expect(() => store.dispatch(actions.persons.set(collection))).toThrow()
       })
     })
 
-    it.only('reset', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
-        space: Collection
+    it('reset', () => {
+      const { models, store } = makeStoreAndDefineState({
+        space: {
+          persons: Collection
+        }
       })
 
-      const { actions, selectors, model } = space
+      const { actions, selectors } = models.space
 
       const collection = [{ id: '1', name: 'foo' }]
-      dispatch(actions.set(collection))
+      store.dispatch(actions.persons.set(collection))
 
-      expect(selectors.get(getState())).toEqual(
+      expect(selectors.persons.get(store.getState())).toEqual(
         Normalized.fromArray(collection)
       )
 
-      dispatch(actions.reset())
+      store.dispatch(actions.persons.reset(1))
 
-      expect(selectors.all(getState())).toEqual([])
-      expect(selectors.ids(getState())).toEqual([])
+      expect(selectors.persons.all(store.getState())).toEqual([])
+      expect(selectors.persons.ids(store.getState())).toEqual([])
     })
 
     describe('create', () => {
       it('valid', () => {
-        const { space, dispatch, getState } = makeStoreAndDefineState({
-          space: Collection
-        })
+      const { models, store } = makeStoreAndDefineState({
+        space: {
+          persons: Collection
+        }
+      })
 
-        const { actions, selectors } = space
+      const { actions, selectors } = models.space
 
         const entity1 = { id: '1', name: 'foo' }
         const entity2 = { id: '2', name: 'bar' }
         const collection = [entity1]
 
-        dispatch(actions.set(collection))
+        store.dispatch(actions.persons.set(collection))
 
-        expect(selectors.get(getState())).toEqual(
+        expect(selectors.persons.get(store.getState())).toEqual(
           Normalized.fromArray(collection)
         )
 
-        dispatch(actions.create(entity2))
+        store.dispatch(actions.persons.create(entity2))
 
-        expect(selectors.all(getState())).toEqual(collection.concat(entity2))
-        expect(selectors.ids(getState())).toEqual([entity1.id, entity2.id])
+        expect(selectors.persons.all(store.getState())).toEqual(collection.concat(entity2))
+        expect(selectors.persons.ids(store.getState())).toEqual([entity1.id, entity2.id])
       })
 
       it('invalid', () => {
-        const { space, dispatch, getState } = makeStoreAndDefineState({
-          space: Collection
+        const { models, store } = makeStoreAndDefineState({
+          space: {
+            persons: Collection
+          }
         })
 
-        const { actions, selectors } = space
+        const { actions, selectors } = models.space
 
         const entity = { name: 'foo' }
-        expect(() => dispatch(actions.create(entity))).toThrow()
+        expect(() => store.dispatch(actions.persons.create(entity))).toThrow()
       })
     })
 
     describe('upsert', () => {
       it('valid', () => {
-        const { space, dispatch, getState } = makeStoreAndDefineState({
-          space: Collection
+        const { models, store } = makeStoreAndDefineState({
+          space: {
+            persons: Collection
+          }
         })
 
-        const { actions, selectors } = space
+        const { actions, selectors } = models.space
 
         const entity1 = { id: '1', name: 'foo' }
         const collection = [entity1]
 
-        dispatch(actions.set(collection))
+        store.dispatch(actions.persons.set(collection))
 
-        expect(selectors.get(getState())).toEqual(
+        expect(selectors.persons.get(store.getState())).toEqual(
           Normalized.fromArray(collection)
         )
 
         const updatedEntity1 = { id: '1', name: 'bar' }
-        dispatch(actions.upsert(updatedEntity1))
+        store.dispatch(actions.persons.upsert(updatedEntity1))
 
-        expect(selectors.all(getState())).toEqual([updatedEntity1])
-        expect(selectors.ids(getState())).toEqual([entity1.id])
+        expect(selectors.persons.all(store.getState())).toEqual([updatedEntity1])
+        expect(selectors.persons.ids(store.getState())).toEqual([entity1.id])
       })
 
       it('invalid', () => {
-        const { space, dispatch, getState } = makeStoreAndDefineState({
-          space: Collection
-        })
+      const { models, store } = makeStoreAndDefineState({
+        space: {
+          persons: Collection
+        }
+      })
 
-        const { actions, selectors } = space
+        const { actions, selectors } = models.space
 
         const entity = { name: 'foo' }
 
-        expect(() => dispatch(actions.upsert(entity))).toThrow()
+        expect(() => store.dispatch(actions.persons.upsert(entity))).toThrow()
       })
     })
 
     describe('update', () => {
       it('valid', () => {
-        const { space, dispatch, getState } = makeStoreAndDefineState({
-          space: Collection
+        const { models, store } = makeStoreAndDefineState({
+          space: {
+            persons: Collection
+          }
         })
 
-        const { actions, selectors } = space
+        const { actions, selectors } = models.space
 
         const entity1 = { id: '1', name: 'foo' }
         const collection = [entity1]
 
-        dispatch(actions.set(collection))
+        store.dispatch(actions.persons.set(collection))
 
-        expect(selectors.get(getState())).toEqual(
+        expect(selectors.persons.get(store.getState())).toEqual(
           Normalized.fromArray(collection)
         )
 
         const updatedEntity1 = { id: '1', name: 'bar' }
-        dispatch(actions.update(updatedEntity1))
+        store.dispatch(actions.persons.update(updatedEntity1))
 
-        expect(selectors.all(getState())).toEqual([entity1])
-        expect(selectors.ids(getState())).toEqual([entity1.id])
+        expect(selectors.persons.all(store.getState())).toEqual([entity1])
+        expect(selectors.persons.ids(store.getState())).toEqual([entity1.id])
       })
 
       it('invalid', () => {
-        const { space, dispatch, getState } = makeStoreAndDefineState({
-          space: Collection
+        const { models, store } = makeStoreAndDefineState({
+          space: {
+            persons: Collection
+          }
         })
 
-        const { actions, selectors } = space
+        const { actions, selectors } = models.space
 
         const entity = { name: 'foo' }
 
-        expect(() => dispatch(actions.update(entity))).toThrow()
+        expect(() => store.dispatch(actions.persons.update(entity))).toThrow()
       })
 
       it('doesn\'t exist', () => {
-        const { space, dispatch, getState } = makeStoreAndDefineState({
-          space: Collection
+        const { models, store } = makeStoreAndDefineState({
+          space: {
+            persons: Collection
+          }
         })
 
-        const { actions, selectors } = space
+        const { actions, selectors } = models.space
 
         const entity = { id: '1', name: 'foo' }
 
-        expect(selectors.all(getState())).toEqual([])
-        expect(selectors.ids(getState())).toEqual([])
+        expect(selectors.persons.all(store.getState())).toEqual([])
+        expect(selectors.persons.ids(store.getState())).toEqual([])
       })
     })
 
     it('remove', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
-        space: Collection
+      const { models, store } = makeStoreAndDefineState({
+        space: {
+          persons: Collection
+        }
       })
 
-      const { actions, selectors } = space
+      const { actions, selectors } = models.space
 
       const entity1 = {
         id: '1', name: 'foo'
@@ -237,28 +265,30 @@ describe('collection', () => {
 
       const collection = [entity1, entity2]
 
-      dispatch(actions.set(collection))
+      store.dispatch(actions.persons.set(collection))
 
-      expect(selectors.get(getState())).toEqual(
+      expect(selectors.persons.get(store.getState())).toEqual(
         Normalized.fromArray(collection)
       )
 
-      dispatch(actions.remove(entity1.id))
+      store.dispatch(actions.persons.remove(entity1.id))
 
-      expect(selectors.all(getState())).toEqual([entity2])
-      expect(selectors.ids(getState())).toEqual([entity2.id])
+      expect(selectors.persons.all(store.getState())).toEqual([entity2])
+      expect(selectors.persons.ids(store.getState())).toEqual([entity2.id])
     })
   })
 
   describe('selectors', () => {
     it('api', () => {
-      const { space } = makeStoreAndDefineState({
-        space: Collection
+      const { models, store } = makeStoreAndDefineState({
+        space: {
+          persons: Collection
+        }
       })
 
-      const { selectors } = space
+      const { selectors } = models.space
 
-      expect(Object.keys(selectors)).toEqual([
+      expect(Object.keys(selectors.persons)).toEqual([
         'find',
         'get',
         'ids',
@@ -267,113 +297,84 @@ describe('collection', () => {
     })
 
     it('get', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
-        space: Collection
+      const { models, store } = makeStoreAndDefineState({
+        space: {
+          persons: Collection
+        }
       })
 
-      const { actions, selectors } = space
+      const { actions, selectors } = models.space
 
       const collection = [{ id: '1', name: 'foo' }]
-      dispatch(actions.set(collection))
+      store.dispatch(actions.persons.set(collection))
 
-      expect(selectors.get(getState())).toEqual(Normalized.fromArray(collection))
+      expect(selectors.persons.get(store.getState())).toEqual(Normalized.fromArray(collection))
     })
 
     it('ids', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
-        space: Collection
+      const { models, store } = makeStoreAndDefineState({
+        space: {
+          persons: Collection
+        }
       })
 
-      const { actions, selectors } = space
+      const { actions, selectors } = models.space
 
       const entity1 = { id: '1', name: 'foo' }
       const collection = [entity1]
-      dispatch(actions.set(collection))
+      store.dispatch(actions.persons.set(collection))
 
-      expect(selectors.ids(getState())).toEqual([entity1.id])
+      expect(selectors.persons.ids(store.getState())).toEqual([entity1.id])
     })
 
     it('all', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
-        space: Collection
+      const { models, store } = makeStoreAndDefineState({
+        space: {
+          persons: Collection
+        }
       })
 
-      const { actions, selectors } = space
+      const { actions, selectors } = models.space
 
       const entity1 = { id: '1', name: 'foo' }
       const collection = [entity1]
-      dispatch(actions.set(collection))
+      store.dispatch(actions.persons.set(collection))
 
-      expect(selectors.all(getState())).toEqual(collection)
+      expect(selectors.persons.all(store.getState())).toEqual(collection)
     })
 
     describe('find', () => {
       it('exists', () => {
-        const { space, dispatch, getState } = makeStoreAndDefineState({
-          space: Collection
+        const { models, store } = makeStoreAndDefineState({
+          space: {
+            persons: Collection
+          }
         })
 
-        const { actions, selectors } = space
+        const { actions, selectors } = models.space
 
         const entity1 = { id: '1', name: 'foo' }
         const collection = [entity1]
-        dispatch(actions.set(collection))
+        store.dispatch(actions.persons.set(collection))
 
-        expect(selectors.find(getState(), { id: entity1.id })).toEqual(entity1)
+        expect(selectors.persons.find(store.getState(), { id: entity1.id })).toEqual(entity1)
       })
 
       it('does not exist', () => {
-        const { space, dispatch, getState } = makeStoreAndDefineState({
-          space: Collection
+        const { models, store } = makeStoreAndDefineState({
+          space: {
+            persons: Collection
+          }
         })
 
-        const { actions, selectors } = space
+        const { actions, selectors } = models.space
 
         const entity1 = { id: '1', name: 'foo' }
         const collection = [entity1]
-        dispatch(actions.set(collection))
+        store.dispatch(actions.persons.set(collection))
 
-        expect(selectors.find(getState(), { id: '2' })).toEqual(undefined)
+        expect(selectors.persons.find(store.getState(), { id: '2' })).toEqual(undefined)
       })
     })
-  })
-
-  it('nested', () => {
-    const { space, dispatch, getState } = makeStoreAndDefineState({
-      space: {
-        foo: Collection
-      }
-    })
-
-    const { actions, selectors } = space
-
-    expect(selectors.foo.get(getState())).toEqual(Normalized.create())
-
-    const entity1 = { id: '1', name: 'foo' }
-    const collection = [entity1]
-    dispatch(actions.foo.set(collection))
-
-    expect(selectors.foo.get(getState())).toEqual(
-      Normalized.fromArray(collection)
-    )
-  })
-
-  it('double nested', () => {
-    const { space, dispatch, getState } = makeStoreAndDefineState({
-      space: {
-        foo: {
-          bar: Collection
-        }
-      }
-    })
-
-    const { actions, selectors } = space
-
-    expect(selectors.foo.bar.all(getState())).toEqual([])
-
-    const collection = [{ id: '1', name: 'foo' }]
-    dispatch(actions.foo.bar.set(collection))
-
-    expect(selectors.foo.bar.all(getState())).toEqual(collection)
   })
 })

@@ -1,6 +1,6 @@
-import { INestedActionCreatorMap, IModelMap, IReducerMap, INestedSelectorMap } from './types'
+import { IActionCreatorMapsGroup, IModelMap, IReducerMap, ISelectorMapsGroup } from './types'
 
-export const Actions: INestedActionCreatorMap = {}
+export const Actions: IActionCreatorMapsGroup = {}
 export const Models: IModelMap<{}> = {}
 export const Reducers: IReducerMap<{}> = {}
-export const Selectors: INestedSelectorMap<{}> = {}
+export const Selectors: ISelectorMapsGroup<{}> = {}

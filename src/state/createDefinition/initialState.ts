@@ -1,8 +1,8 @@
 import { makeError } from '../../utils'
 import { isObject } from '../utils'
 
-type TransformInitialState<State> = (s: any) => State
-interface IGetFormattedInitialState<State> {
+export type TransformInitialState<State> = (s: any) => State
+export interface IGetFormattedInitialState<State> {
   initialState: any
   transformInitialState?: TransformInitialState<State>
   topLevel: boolean

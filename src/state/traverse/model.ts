@@ -2,7 +2,8 @@ import { makeScope } from '../makeScope'
 import {
   IReducerDefinition,
   IModelFunction,
-  IModelDefinition
+  IModelDefinition,
+  ITopModel
 } from '../types'
 import { getActionType } from '../utils'
 
@@ -26,8 +27,8 @@ export const Model = {
       },
     }
   },
-  update: (rootModel: IModelDefinition, field: string, model: IModelDefinition|IModelFunction) => {
-    if (model.kind === 'definition') {
+  update: (rootModel: ITopModel, field: string, model: IModelDefinition): ITopModel => {
+    // if (model.kind === 'definition') {
       const { actions, initialState, reducers, selectors } = model
       return {
         ...rootModel,
@@ -48,22 +49,22 @@ export const Model = {
           [field]: initialState,
         },
       }
-    }
-    if (model.kind === 'function') {
-      const { action, reducers } = model
-      return {
-        ...rootModel,
-        reducers: {
-          ...rootModel.reducers,
-          ...reducers,
-        },
-        actions: {
-          ...rootModel.actions,
-          [field]: action
-        }
-      }
-    }
+    // }
+    // if (model.kind === 'function') {
+    //   const { action, reducers } = model
+    //   return {
+    //     ...rootModel,
+    //     reducers: {
+    //       ...rootModel.reducers,
+    //       ...reducers,
+    //     },
+    //     actions: {
+    //       ...rootModel.actions,
+    //       [field]: action
+    //     }
+    //   }
+    // }
 
-    return rootModel
+    // return rootModel
   }
 }

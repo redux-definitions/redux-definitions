@@ -1,4 +1,4 @@
-import { INestedSelectorMap, IDefinitionOptions, IDefinition } from '../types'
+import { IDefinitionOptions, IDefinition } from '../types'
 import { createModelGenerator } from './createModelGenerator'
 
 export const createDefinition = <LocalState>({

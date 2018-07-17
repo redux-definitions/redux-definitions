@@ -1,37 +1,57 @@
 import { Action, ActionFunction1, Reducer as BaseReducer } from 'redux-actions'
 
-export type ActionCreator<Payload> = ActionFunction1<Payload, Action<Payload>> 
-export type Selector<State> = (state: State, params?: any) => any
+// reducers 
 export type Reducer<State> = BaseReducer<State, any>
-
-export interface IActionCreatorMap {
-  [name: string]: ActionCreator<any>
-}
-
-export interface INestedActionCreatorMap {
-  [name: string]: ActionCreator<any> | INestedActionCreatorMap
-}
 
 export interface IReducerMap<State> {
   [name: string]: Reducer<State>
 }
 
+// action creators
+export type ActionCreator<Payload> = ActionFunction1<Payload, Action<Payload>> 
+
+export interface IActionCreatorMap {
+  [name: string]: ActionCreator<any>
+}
+
+export interface IActionCreatorMaps {
+  [name: string]: IActionCreatorMap
+}
+
+export interface IRootActionCreatorMaps {
+  [name: string]: IActionCreatorMaps
+}
+
+// selectors
+export type Selector<State> = (state: State, params?: any) => any
+
 export interface ISelectorMap<State> {
   [name: string]: Selector<State>
 }
 
-export interface INestedSelectorMap<State> {
-  [name: string]: Selector<State> | INestedSelectorMap<State>
+export interface ISelectorMaps<State> {
+  [name: string]: ISelectorMap<State>
+}
+
+export interface ISelectorMapsGroup<State> {
+  [name: string]: ISelectorMaps<State>
 }
 
 // Model structures
 
-export interface IModelDefinition {
-  kind: 'definition'
-  actions: INestedActionCreatorMap
+export interface ITopModel {
+  actions: IActionCreatorMaps
   initialState: {}
   reducers: IReducerMap<{}>
-  selectors: INestedSelectorMap<{}>
+  selectors: ISelectorMaps<{}>
+}
+
+export interface IModelDefinition {
+  kind: 'definition'
+  actions: IActionCreatorMap
+  initialState: {}
+  reducers: IReducerMap<{}>
+  selectors: ISelectorMap<{}>
 }
 
 export interface IModelDefinitionLowest {
@@ -50,9 +70,9 @@ export interface IModelFunction {
 
 export interface IModel<State> {
   namespace: string
-  actions: INestedActionCreatorMap
+  actions: IActionCreatorMaps
   reducer: Reducer<State>
-  selectors: INestedSelectorMap<State>
+  selectors: ISelectorMaps<State>
 }
 
 export interface IModelMap<State> {
@@ -60,9 +80,9 @@ export interface IModelMap<State> {
 }
 
 export interface IRootModel<State> {
-  actions: INestedActionCreatorMap
+  actions: IActionCreatorMapsGroup
   reducers: IReducerMap<State>
-  selectors: INestedSelectorMap<State>
+  selectors: ISelectorMapsGroup<State>
   models: IModelMap<State>
 }
 
