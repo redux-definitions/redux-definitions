@@ -1,8 +1,9 @@
 import { IReducerDefinition } from './definition'
 
-// User schema
+export interface IReducerSchema {
+  [key: string]: IReducerDefinition
+}
+
 export interface ISchema {
-  [key: string]: {
-    [key: string]: IReducerDefinition
-  }
+  [key: string]: IReducerSchema
 }

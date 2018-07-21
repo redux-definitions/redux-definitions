@@ -4,10 +4,10 @@ export interface ISelectorMap<State> {
   [name: string]: Selector<State>
 }
 
-export interface ISelectorMaps<State> {
-  [name: string]: ISelectorMap<State>
+export interface ISelectorMaps {
+  [name: string]: ISelectorMap<{}>
 }
 
-export interface IRootSelectorMaps<State> {
-  [name: string]: ISelectorMaps<State>
+export interface IRootSelectorMaps {
+  [name: string]: ISelectorMaps
 }

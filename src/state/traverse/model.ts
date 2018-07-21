@@ -3,7 +3,7 @@ import { IReducerDefinition } from 'state/types/definition'
 import {
   IModelFunction,
   IModelDefinition,
-  ITopModel
+  IIntermediateModel
 } from 'state/types/model'
 import { getActionType } from '../utils'
 
@@ -27,7 +27,7 @@ export const Model = {
       },
     }
   },
-  update: (rootModel: ITopModel, field: string, model: IModelDefinition): ITopModel => {
+  update: (rootModel: IIntermediateModel, field: string, model: IModelDefinition): IIntermediateModel => {
     // if (model.kind === 'definition') {
       const { actions, initialState, reducers, selectors } = model
       return {

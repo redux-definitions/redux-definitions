@@ -1,23 +1,15 @@
 import { IReducerMap, Reducer } from './reducer'
-import { IRootActionCreatorMaps, IActionCreatorMaps, IActionCreatorMap, ActionCreator } from './actionCreator'
-import { IRootSelectorMaps, ISelectorMaps, ISelectorMap } from './selector'
+import { IActionCreatorMaps, IActionCreatorMap, ActionCreator } from './actionCreator'
+import { ISelectorMaps, ISelectorMap } from './selector'
 
-export interface ITopModel {
+export interface IIntermediateModel {
   actions: IActionCreatorMaps
   initialState: {}
   reducers: IReducerMap<{}>
-  selectors: ISelectorMaps<{}>
+  selectors: ISelectorMaps
 }
 
 export interface IModelDefinition {
-  kind: 'definition'
-  actions: IActionCreatorMap
-  initialState: {}
-  reducers: IReducerMap<{}>
-  selectors: ISelectorMap<{}>
-}
-
-export interface IModelDefinitionLowest {
   kind: 'definition'
   actions: IActionCreatorMap
   initialState: {}
@@ -31,20 +23,13 @@ export interface IModelFunction {
   reducers: IReducerMap<{}>
 }
 
-export interface IModel<State> {
+export interface IModel {
   namespace: string
   actions: IActionCreatorMaps
-  reducer: Reducer<State>
-  selectors: ISelectorMaps<State>
+  reducer: Reducer<{}>
+  selectors: ISelectorMaps
 }
 
-export interface IModelMap<State> {
-  [key: string]: IModel<{}>
-}
-
-export interface IRootModel<State> {
-  actions: IRootActionCreatorMaps
-  reducers: IReducerMap<State>
-  selectors: IRootSelectorMaps<State>
-  models: IModelMap<State>
+export interface IModelMap {
+  [key: string]: IModel
 }

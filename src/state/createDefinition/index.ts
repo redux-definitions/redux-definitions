@@ -1,4 +1,4 @@
-import { IDefinitionOptions, IDefinition } from 'state/types/definition'
+import { IInvokeDefinitionOptions, ICreateDefinition } from 'state/types/definition'
 import { createModelGenerator } from './createModelGenerator'
 
 export const createDefinition = <LocalState>({
@@ -6,8 +6,8 @@ export const createDefinition = <LocalState>({
   selectors,
   defaultState,
   transformInitialState,
-}: IDefinition<LocalState>) => {
-  const createModelGeneratorWithOptions = (options: IDefinitionOptions = {}) =>
+}: ICreateDefinition<LocalState>) => {
+  const createModelGeneratorWithOptions = (options: IInvokeDefinitionOptions = {}) =>
     createModelGenerator<LocalState>({
       reducerMap: reducers,
       defaultState,

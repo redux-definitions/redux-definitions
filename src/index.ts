@@ -8,9 +8,10 @@ import {
   Reducers,
   Selectors,
 } from './state/storage'
+import { IRoot } from './state/types/root'
 import { IReducerMap } from './state/types/reducer'
-import { IDefinition } from './state/types/definition'
-import { IModelMap, IRootModel } from './state/types/model'
+import { ICreateDefinition } from './state/types/definition'
+import { IModelMap } from './state/types/model'
 import { IRootActionCreatorMaps } from './state/types/actionCreator'
 import { IRootSelectorMaps } from './state/types/selector'
 import { ISchema } from './state/types/schema'

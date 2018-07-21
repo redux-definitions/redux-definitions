@@ -1,14 +1,14 @@
 import { get } from 'lodash'
 import { Reducer } from 'redux-actions'
-import { IDefinitionReducerMap, IDefinitionOptions, ReducerMapOrConstructor } from 'state/types/definition'
-import { IModelDefinitionLowest } from 'state/types/model'
+import { IDefinitionReducerMap, IInvokeDefinitionOptions, ReducerMapOrConstructor } from 'state/types/definition'
+import { IModelDefinition } from 'state/types/model'
 import { makeScope } from '../makeScope'
 import { getActionType } from '../utils'
 import { getFormattedInitialState } from './initialState'
 import { Selector, ISelectorMap } from 'state/types/selector'
 
 export interface ICreateModelGenerator<LocalState> {
-  options: IDefinitionOptions
+  options: IInvokeDefinitionOptions
   defaultState: any
   reducerMap: ReducerMapOrConstructor<LocalState>
   selectorMap: ISelectorMap<LocalState>
@@ -17,7 +17,7 @@ export interface ICreateModelGenerator<LocalState> {
 
 export const createModelGenerator =
   <LocalState>(params: ICreateModelGenerator<LocalState>) =>
-  (namespacing: string[], topLevel: boolean): IModelDefinitionLowest => {
+  (namespacing: string[], topLevel: boolean): IModelDefinition => {
   const {
     options,
     defaultState,
@@ -33,7 +33,7 @@ export const createModelGenerator =
     topLevel,
   })
 
-  const model: IModelDefinitionLowest = {
+  const model: IModelDefinition = {
     kind: 'definition',
     actions: {},
     initialState: formattedInitialState,

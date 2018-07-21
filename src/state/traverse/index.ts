@@ -1,11 +1,11 @@
 import { forIn } from 'lodash'
 import { makeError } from '../../utils'
 import { Model } from './model'
-import { IModelDefinition, ITopModel } from 'state/types/model'
+import { IModelDefinition, IIntermediateModel } from 'state/types/model'
 import { isReducerDefinition, isFunction, isObject } from '../utils'
 
-export const traverse = (schema: any, namespacing: string[]): ITopModel => {
-  let rootModel: ITopModel = {
+export const traverse = (schema: any, namespacing: string[]): IIntermediateModel => {
+  let rootModel: IIntermediateModel = {
     actions: {},
     initialState: {},
     reducers: {},
