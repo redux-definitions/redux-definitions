@@ -1,13 +1,13 @@
 import { IRootActionCreatorMaps, IActionCreatorMap } from 'state/types/actionCreator'
 import { IReducerMap } from 'state/types/reducer'
 import { IRootSelectorMaps } from 'state/types/selector'
-import { IModelMap } from 'state/types/model'
+import { IMappedModelMap } from 'state/types/model'
 
 export type IRoot<Schema> = {
   actions: IRootActionCreatorMaps<Schema>
   reducers: IReducerMap<{}>
   selectors: IRootSelectorMaps<Schema>
-  models: IModelMap<Schema>
+  models: IMappedModelMap<Schema>
 }
 
 export type IGenericActionCreatorMaps = {
@@ -16,11 +16,4 @@ export type IGenericActionCreatorMaps = {
 
 export type IGenericRootActionCreatorMaps = {
   [key: string]: IGenericActionCreatorMaps
-}
-
-export type IGenericRoot<Schema> = {
-  actions: IRootActionCreatorMaps<Schema>
-  reducers: IReducerMap<{}>
-  selectors: IRootSelectorMaps<Schema>
-  models: IModelMap<Schema>
 }

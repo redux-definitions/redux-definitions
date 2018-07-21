@@ -20,9 +20,6 @@ export const traverse = <ReducerSchema extends IReducerSchema>(schema: ReducerSc
     throw makeError('Reducer cannot be function')
   }
 
-  type FieldAndModelDefinition = [string, IModelDefinition]
-  const models: FieldAndModelDefinition[] = []
-
   forIn(schema, (value, field) => {
     if (isReducerDefinition(value)) {
       const model = Model.fromDefinition(value, [...namespacing, field])

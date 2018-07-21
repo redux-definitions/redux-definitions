@@ -46,3 +46,4 @@ const { models, actions, selectors } = createReducers({
 
 console.log(actions.foo.people)
 console.log(selectors.foo.people)
+console.log(models.foo.actions.people)

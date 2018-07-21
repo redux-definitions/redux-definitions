@@ -39,13 +39,24 @@ export interface IModelFunction {
   reducers: IReducerMap<{}>
 }
 
-export interface IModel<ReducerSchema> {
+export interface IModel {
+  namespace: string
+  actions: IActionCreatorMaps
+  reducer: Reducer<{}>
+  selectors: ISelectorMaps
+}
+
+export type IModelMap = {
+  [key: string]: IModel
+}
+
+export type IMappedModel<ReducerSchema> = {
   namespace: string
   actions: IMappedActionCreatorMaps<ReducerSchema>
   reducer: Reducer<{}>
   selectors: IMappedSelectorMaps<ReducerSchema>
 }
 
-export type IModelMap<Schema> = {
-  [Key in keyof Schema]: IModel<Schema[Key]>
+export type IMappedModelMap<Schema> = {
+  [Key in keyof Schema]: IMappedModel<Schema[Key]>
 }
