@@ -4,13 +4,13 @@ import { IModel, IIntermediateModel } from 'state/types/model'
 import { traverse } from './traverse'
 import { ISchema, IReducerSchema } from 'state/types/schema'
 
-const buildModel = (namespace: string, schema: IReducerSchema): IModel => {
+const buildModel = <ReducerSchema extends IReducerSchema>(namespace: string, schema: ReducerSchema): IModel<ReducerSchema> => {
   const {
     actions,
     reducers,
     selectors,
     initialState,
-  }: IIntermediateModel = traverse(schema, [namespace])
+  } = traverse(schema, [namespace])
 
   const reducer = handleActions(reducers, initialState)
 

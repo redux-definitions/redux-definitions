@@ -1,6 +1,22 @@
 import { IReducerMap, Reducer } from './reducer'
-import { IActionCreatorMaps, IActionCreatorMap, ActionCreator } from './actionCreator'
-import { ISelectorMaps, ISelectorMap } from './selector'
+import {
+  IActionCreatorMaps,
+  IActionCreatorMap,
+  ActionCreator,
+  IMappedActionCreatorMaps,
+} from './actionCreator'
+import {
+  ISelectorMaps,
+  ISelectorMap,
+  IMappedSelectorMaps,
+} from './selector'
+
+export interface IMappedIntermediateModel<ReducerSchema> {
+  actions: IMappedActionCreatorMaps<ReducerSchema>
+  initialState: {}
+  reducers: IReducerMap<{}>
+  selectors: IMappedSelectorMaps<ReducerSchema>
+}
 
 export interface IIntermediateModel {
   actions: IActionCreatorMaps
@@ -23,13 +39,13 @@ export interface IModelFunction {
   reducers: IReducerMap<{}>
 }
 
-export interface IModel {
+export interface IModel<ReducerSchema> {
   namespace: string
-  actions: IActionCreatorMaps
+  actions: IMappedActionCreatorMaps<ReducerSchema>
   reducer: Reducer<{}>
-  selectors: ISelectorMaps
+  selectors: IMappedSelectorMaps<ReducerSchema>
 }
 
-export interface IModelMap {
-  [key: string]: IModel
+export type IModelMap<Schema> = {
+  [Key in keyof Schema]: IModel<Schema[Key]>
 }

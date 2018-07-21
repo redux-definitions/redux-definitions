@@ -4,10 +4,14 @@ export interface ISelectorMap<State> {
   [name: string]: Selector<State>
 }
 
-export interface ISelectorMaps {
-  [name: string]: ISelectorMap<{}>
+export type ISelectorMaps = {
+  [key: string]: ISelectorMap<{}>
 }
 
-export interface IRootSelectorMaps {
-  [name: string]: ISelectorMaps
+export type IMappedSelectorMaps<ReducerSchema> = {
+  [Key in keyof ReducerSchema]: ISelectorMap<{}>
+}
+
+export type IRootSelectorMaps<Schema> = {
+  [Key in keyof Schema]: IMappedSelectorMaps<Schema[Key]>
 }

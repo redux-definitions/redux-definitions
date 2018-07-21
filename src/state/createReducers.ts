@@ -6,14 +6,19 @@ import { IModelMap, IModel } from 'state/types/model'
 import { IReducerMap } from 'state/types/reducer'
 import { IRootActionCreatorMaps } from 'state/types/actionCreator'
 import { IRootSelectorMaps } from 'state/types/selector'
+import { Definitions } from '../index'
 
-export const createReducers = (schema: ISchema): IRoot => {
-  const localModels: IModelMap = {}
+export const createReducers = <Schema extends ISchema>(schema: Schema): IRoot<Schema> => {
+  // const localModels: IModelMap = {}
+  // const localReducers: IReducerMap<{}> = {}
+  // const localActions: IRootActionCreatorMaps = {}
+  // const localSelectors: IRootSelectorMaps = {}
+  const localModels: any = {}
   const localReducers: IReducerMap<{}> = {}
-  const localActions: IRootActionCreatorMaps = {}
-  const localSelectors: IRootSelectorMaps = {}
+  const localActions: any = {}
+  const localSelectors: any = {}
 
-  buildModels(schema).forEach((model: IModel) => {
+  buildModels(schema).forEach((model) => {
     localModels[model.namespace] = model
     localReducers[model.namespace] = model.reducer
     localActions[model.namespace] = model.actions
@@ -32,3 +37,12 @@ export const createReducers = (schema: ISchema): IRoot => {
     selectors: localSelectors,
   }
 }
+
+const { models, actions, selectors } = createReducers({
+  foo: {
+    people: Definitions.Collection
+  }
+})
+
+console.log(actions.foo.people)
+console.log(selectors.foo.people)

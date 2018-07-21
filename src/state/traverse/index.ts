@@ -1,10 +1,12 @@
 import { forIn } from 'lodash'
 import { makeError } from '../../utils'
 import { Model } from './model'
-import { IModelDefinition, IIntermediateModel } from 'state/types/model'
+import { IModelDefinition, IIntermediateModel, IMappedIntermediateModel } from 'state/types/model'
 import { isReducerDefinition, isFunction, isObject } from '../utils'
+import { IReducerAndAction } from '../makeScope'
+import { IReducerSchema } from 'state/types/schema'
 
-export const traverse = (schema: any, namespacing: string[]): IIntermediateModel => {
+export const traverse = <ReducerSchema extends IReducerSchema>(schema: ReducerSchema, namespacing: string[]): IIntermediateModel => {
   let rootModel: IIntermediateModel = {
     actions: {},
     initialState: {},
@@ -13,32 +15,23 @@ export const traverse = (schema: any, namespacing: string[]): IIntermediateModel
   }
 
   if (isReducerDefinition(schema)) {
-    // const reducerDefinition = schema
-
-    // rootModel = {
-    //   ...rootModel,
-    //   ...Model.fromDefinition(reducerDefinition, namespacing, true)
-    // }
     throw makeError('Reducer cannot be definition')
   } else if (isFunction(schema)) {
     throw makeError('Reducer cannot be function')
-  } else {
-    forIn(schema, (value, field) => {
-      let model: IModelDefinition
-      if (isReducerDefinition(value)) {
-        model = Model.fromDefinition(value, [...namespacing, field])
-      } else if (isObject(value)) {
-        // model = traverse(value, [...namespacing, field])
-        throw makeError('Reducer key cannot be object')
-      } else if (isFunction(value)) {
-        // model = Model.fromFunction(value, [...namespacing, field])
-        throw makeError('Reducer key cannot be function')
-      } else {
-        throw makeError(`Reducer key invalid at '${namespacing.join('.')}': ${value}`)
-      }
-      rootModel = Model.update(rootModel, field, model)
-    })
   }
+
+  type FieldAndModelDefinition = [string, IModelDefinition]
+  const models: FieldAndModelDefinition[] = []
+
+  forIn(schema, (value, field) => {
+    if (isReducerDefinition(value)) {
+      const model = Model.fromDefinition(value, [...namespacing, field])
+      rootModel = Model.update(rootModel, field, model)
+    } else {
+      throw makeError(`Invalid reducer definition at '${namespacing.join('.')}'`)
+    }
+  })
+  
 
   return rootModel
 }

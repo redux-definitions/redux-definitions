@@ -6,10 +6,14 @@ export interface IActionCreatorMap {
   [name: string]: ActionCreator<any>
 }
 
-export interface IActionCreatorMaps {
-  [name: string]: IActionCreatorMap
+export type IActionCreatorMaps = {
+  [key: string]: IActionCreatorMap
 }
 
-export interface IRootActionCreatorMaps {
-  [name: string]: IActionCreatorMaps
+export type IMappedActionCreatorMaps<ReducerSchema> = {
+  [Key in keyof ReducerSchema]: IActionCreatorMap
+}
+
+export type IRootActionCreatorMaps<Schema> = {
+  [Key in keyof Schema]: IMappedActionCreatorMaps<Schema[Key]>
 }
