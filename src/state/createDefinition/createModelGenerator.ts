@@ -1,10 +1,11 @@
 import { get } from 'lodash'
 import { Reducer } from 'redux-actions'
-import { IDefinitionReducerMap, IDefinitionOptions, ReducerMapOrConstructor, Selector, IModelDefinitionLowest } from '../types'
+import { IDefinitionReducerMap, IDefinitionOptions, ReducerMapOrConstructor } from 'state/types/definition'
+import { IModelDefinitionLowest } from 'state/types/model'
 import { makeScope } from '../makeScope'
 import { getActionType } from '../utils'
 import { getFormattedInitialState } from './initialState'
-import { ISelectorMap } from '../types'
+import { Selector, ISelectorMap } from 'state/types/selector'
 
 export interface ICreateModelGenerator<LocalState> {
   options: IDefinitionOptions

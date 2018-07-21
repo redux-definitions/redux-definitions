@@ -1,8 +1,7 @@
 import { handleActions } from 'redux-actions'
 import { makeError } from '../utils'
-import { IModel, ITopModel } from './types'
+import { IModel, ITopModel } from 'state/types/model'
 import { traverse } from './traverse'
-import { IModelDefinition } from './types'
 
 const buildModel = (namespace: string, schema: any): IModel<{}> => {
   const {

@@ -1,6 +1,9 @@
-import { IActionCreatorMapsGroup, IModelMap, IReducerMap, ISelectorMapsGroup } from './types'
+import { IRootActionCreatorMaps } from 'state/types/actionCreator'
+import { IModelMap } from 'state/types/model'
+import { IReducerMap } from 'state/types/reducer'
+import { IRootSelectorMaps } from 'state/types/selector'
 
-export const Actions: IActionCreatorMapsGroup = {}
+export const Actions: IRootActionCreatorMaps = {}
 export const Models: IModelMap<{}> = {}
 export const Reducers: IReducerMap<{}> = {}
-export const Selectors: ISelectorMapsGroup<{}> = {}
+export const Selectors: IRootSelectorMaps<{}> = {}

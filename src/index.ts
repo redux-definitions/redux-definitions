@@ -8,14 +8,12 @@ import {
   Reducers,
   Selectors,
 } from './state/storage'
-import {
-  IReducerMap,
-  IDefinition,
-  IModelMap,
-  IRootModel,
-  IActionCreatorMapsGroup,
-  ISelectorMapsGroup
-} from './state/types'
+import { IReducerMap } from './state/types/reducer'
+import { IDefinition } from './state/types/definition'
+import { IModelMap, IRootModel } from './state/types/model'
+import { IRootActionCreatorMaps } from './state/types/actionCreator'
+import { IRootSelectorMaps } from './state/types/selector'
+import { ISchema } from './state/types/schema'
 import Definitions from './definitions'
 
 const reducers = Reducers

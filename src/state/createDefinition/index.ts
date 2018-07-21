@@ -1,4 +1,4 @@
-import { IDefinitionOptions, IDefinition } from '../types'
+import { IDefinitionOptions, IDefinition } from 'state/types/definition'
 import { createModelGenerator } from './createModelGenerator'
 
 export const createDefinition = <LocalState>({

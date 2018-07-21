@@ -1,10 +1,10 @@
 import { makeScope } from '../makeScope'
+import { IReducerDefinition } from 'state/types/definition'
 import {
-  IReducerDefinition,
   IModelFunction,
   IModelDefinition,
   ITopModel
-} from '../types'
+} from 'state/types/model'
 import { getActionType } from '../utils'
 
 export const Model = {
