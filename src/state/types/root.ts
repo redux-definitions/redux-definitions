@@ -9,11 +9,3 @@ export type IRoot<Schema> = {
   selectors: IRootSelectorMaps<Schema>
   models: IMappedModelMap<Schema>
 }
-
-export type IGenericActionCreatorMaps = {
-  [key: string]: IActionCreatorMap
-}
-
-export type IGenericRootActionCreatorMaps = {
-  [key: string]: IGenericActionCreatorMaps
-}

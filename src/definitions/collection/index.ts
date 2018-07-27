@@ -18,7 +18,7 @@ const validateEntities = (list: any[]) => list.map(validateEntity)
 
 type State = INorm
 
-export default createDefinition<State>({
+export default createDefinition({
   reducers: {
     create: (state: State, { payload: entity }: Action<IEntity>): State => {
       if(!entity || !validateEntity(entity)) {
@@ -69,4 +69,3 @@ export default createDefinition<State>({
   transformInitialState: (initialState: IEntity[]): INorm =>
     Normalized.fromArray(validateEntities(initialState)),
 })
-

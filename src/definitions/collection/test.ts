@@ -9,10 +9,17 @@ describe('collection', () => {
     clearAllReducers()
   })
 
+
+  it('basics', () => {
+    const compiledDefinition = Definitions.Collection({})
+    const modelDefinition = compiledDefinition.generate(['foo'], false)
+    modelDefinition.selectors
+  })
+
   it('state placement', () => {
     const { models, store } = makeStoreAndDefineState({
       space: {
-        persons: Collection
+        persons: Collection({})
       }
     })
 

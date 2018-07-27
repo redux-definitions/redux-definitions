@@ -40,10 +40,11 @@ export const createReducers = <Schema extends ISchema>(schema: Schema): IRoot<Sc
 
 const { models, actions, selectors } = createReducers({
   foo: {
-    people: Definitions.Collection
+    people: Definitions.Collection({})
   }
 })
 
+selectors.foo.people
 console.log(actions.foo.people)
 console.log(selectors.foo.people)
 console.log(models.foo.actions.people)

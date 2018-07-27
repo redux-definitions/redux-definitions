@@ -1,5 +1,5 @@
 import { makeScope } from '../makeScope'
-import { IReducerDefinition } from 'state/types/definition'
+import { ICompiledDefinition } from 'state/types/definition'
 import {
   IModelFunction,
   IModelDefinition,
@@ -8,9 +8,9 @@ import {
 import { getActionType } from '../utils'
 
 export const Model = {
-  fromDefinition: (reducerDefinition: IReducerDefinition, namespacing: string[], topLevel?: boolean): IModelDefinition => ({
+  fromDefinition: (compiledDefinition: ICompiledDefinition, namespacing: string[], topLevel?: boolean): IModelDefinition => ({
     kind: 'definition',
-    ...reducerDefinition.generate(namespacing, topLevel),
+    ...compiledDefinition.generate(namespacing, topLevel || false),
   }),
   fromFunction: (fn: any, namespacing: string[], topLevel?: boolean): IModelFunction => {
     if (topLevel) {

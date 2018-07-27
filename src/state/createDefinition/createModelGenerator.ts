@@ -1,6 +1,6 @@
 import { get } from 'lodash'
 import { Reducer } from 'redux-actions'
-import { IDefinitionReducerMap, IInvokeDefinitionOptions, ReducerMapOrConstructor } from 'state/types/definition'
+import { IDefinitionReducerMap, IInvokeDefinitionOptions, ReducerMapOrConstructor, ReducerDefinition, DefinitionGenerator } from 'state/types/definition'
 import { IModelDefinition } from 'state/types/model'
 import { makeScope } from '../makeScope'
 import { getActionType } from '../utils'
@@ -16,13 +16,13 @@ export interface ICreateModelGenerator<LocalState> {
 }
 
 export const createModelGenerator =
-  <LocalState>(params: ICreateModelGenerator<LocalState>) =>
+  <LocalState>(params: ICreateModelGenerator<LocalState>): DefinitionGenerator =>
   (namespacing: string[], topLevel: boolean): IModelDefinition => {
   const {
     options,
     defaultState,
-    reducerMap,
-    selectorMap,
+    reducerMap, // TODO: try and map keys in from Definition
+    selectorMap, // TODO: try and map keys in from Definition
     transformInitialState,
   } = params
 
