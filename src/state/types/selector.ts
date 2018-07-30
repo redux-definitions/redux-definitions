@@ -12,7 +12,7 @@ export type IMappedSelectorMap<State, Selectors extends ISelectorMap<State>> = {
 }
 
 export type ISelectorMaps = {
-  [key: string]: ISelectorMap<{}>
+  [key: string]: ISelectorMap<any>
 }
 
 export type IMappedSelectorMaps<ReducerSchema> = {

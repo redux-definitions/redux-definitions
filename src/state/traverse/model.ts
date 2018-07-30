@@ -6,9 +6,10 @@ import {
   IIntermediateModel
 } from 'state/types/model'
 import { getActionType } from '../utils'
+import { ISelectorMap } from '../types/selector'
 
 export const Model = {
-  fromDefinition: (compiledDefinition: ICompiledDefinition, namespacing: string[], topLevel?: boolean): IModelDefinition => ({
+  fromDefinition: <LocalState, Selectors extends ISelectorMap<LocalState>>(compiledDefinition: ICompiledDefinition<LocalState, Selectors>, namespacing: string[], topLevel?: boolean): IModelDefinition<LocalState, Selectors> => ({
     kind: 'definition',
     ...compiledDefinition.generate(namespacing, topLevel || false),
   }),
@@ -27,7 +28,7 @@ export const Model = {
       },
     }
   },
-  update: (rootModel: IIntermediateModel, field: string, model: IModelDefinition): IIntermediateModel => {
+  update: <LocalState, Selectors extends ISelectorMap<LocalState>>(rootModel: IIntermediateModel, field: string, model: IModelDefinition<LocalState, Selectors>): IIntermediateModel => {
     // if (model.kind === 'definition') {
       const { actions, initialState, reducers, selectors } = model
       return {

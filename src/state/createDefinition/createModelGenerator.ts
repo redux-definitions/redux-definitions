@@ -16,8 +16,8 @@ export interface ICreateModelGenerator<LocalState, Selectors extends ISelectorMa
 }
 
 export const createModelGenerator =
-  <LocalState, Selectors extends ISelectorMap<LocalState>>(params: ICreateModelGenerator<LocalState, Selectors>): DefinitionGenerator =>
-  (namespacing: string[], topLevel: boolean): IModelDefinition => {
+  <LocalState, Selectors extends ISelectorMap<LocalState>>(params: ICreateModelGenerator<LocalState, Selectors>): DefinitionGenerator<LocalState, Selectors> =>
+  (namespacing: string[], topLevel: boolean): IModelDefinition<LocalState, Selectors> => {
   const {
     options,
     defaultState,
@@ -33,12 +33,24 @@ export const createModelGenerator =
     topLevel,
   })
 
-  const model: IModelDefinition = {
+  type SelectorTuple = [string, Selector<LocalState>]
+  
+  const selectors = Object.entries(selectorMap).reduce((acc, [key, fn]:  SelectorTuple) => {
+    const selector: Selector<{}> = (state: {}, args?: any) =>
+      fn(get(state, namespacing), args)
+
+    return {
+      ...acc,
+      [key]: selector
+    }
+  }, {}) as IMappedSelectorMap<LocalState, Selectors>
+
+  const model: IModelDefinition<LocalState, Selectors> = {
     kind: 'definition',
     actions: {},
     initialState: formattedInitialState,
     reducers: {},
-    selectors: {},
+    selectors
   }
 
   let reducers: IDefinitionReducerMap<LocalState>
@@ -56,13 +68,6 @@ export const createModelGenerator =
     const { reducer, action } = scope(type, fn)
     model.reducers[type] = reducer
     model.actions[key] = action
-  }
-
-  type SelectorTuple = [string, Selector<LocalState>]
-  for (const [key, fn] of Object.entries(selectorMap) as SelectorTuple[]) {
-    const selector: Selector<{}> = (state: {}, args?: any) =>
-      fn(get(state, namespacing), args)
-    model.selectors[key] = selector
   }
 
   return model

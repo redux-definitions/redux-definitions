@@ -8,8 +8,8 @@ export const createDefinition = <LocalState, Selectors extends ISelectorMap<Loca
   selectors,
   defaultState,
   transformInitialState,
-}: ICreateDefinition<LocalState, Selectors>): ReducerDefinition => {
-  const createModelGeneratorWithOptions = (options: IInvokeDefinitionOptions = {}): DefinitionGenerator =>
+}: ICreateDefinition<LocalState, Selectors>): ReducerDefinition<LocalState, Selectors> => {
+  const createModelGeneratorWithOptions = (options: IInvokeDefinitionOptions = {}): DefinitionGenerator<LocalState, Selectors> =>
     createModelGenerator<LocalState, Selectors>({
       reducerMap: reducers,
       defaultState,
@@ -18,7 +18,7 @@ export const createDefinition = <LocalState, Selectors extends ISelectorMap<Loca
       transformInitialState,
     })
 
-  const Type: ReducerDefinition = (options = {}) => ({
+  const Type: ReducerDefinition<LocalState, Selectors> = (options = {}) => ({
     generate: createModelGeneratorWithOptions(options)
   })
 

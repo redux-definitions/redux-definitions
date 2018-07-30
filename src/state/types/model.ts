@@ -9,6 +9,7 @@ import {
   ISelectorMaps,
   ISelectorMap,
   IMappedSelectorMaps,
+  IMappedSelectorMap,
 } from './selector'
 
 export interface IMappedIntermediateModel<ReducerSchema> {
@@ -25,12 +26,12 @@ export interface IIntermediateModel {
   selectors: ISelectorMaps
 }
 
-export interface IModelDefinition {
+export interface IModelDefinition<LocalState, Selectors extends ISelectorMap<LocalState>> {
   kind: 'definition'
   actions: IActionCreatorMap
   initialState: {}
   reducers: IReducerMap<{}>
-  selectors: ISelectorMap<{}>
+  selectors: IMappedSelectorMap<LocalState, Selectors>
 }
 
 export interface IModelFunction {

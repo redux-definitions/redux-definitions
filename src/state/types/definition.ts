@@ -21,10 +21,10 @@ export interface IDefinitionReducerMap<LocalState> {
   [name: string]: Reducer<LocalState>
 }
 
-export type DefinitionGenerator = (namespacing: string[], topLevel: boolean) => IModelDefinition
+export type DefinitionGenerator<LocalState, Selectors extends ISelectorMap<LocalState>> = (namespacing: string[], topLevel: boolean) => IModelDefinition<LocalState, Selectors>
 
-export interface ICompiledDefinition {
-  generate: DefinitionGenerator
+export interface ICompiledDefinition<LocalState, Selectors extends ISelectorMap<LocalState>> {
+  generate: DefinitionGenerator<LocalState, Selectors>
 }
 
-export type ReducerDefinition = (options?: IInvokeDefinitionOptions) => ICompiledDefinition
+export type ReducerDefinition<LocalState, Selectors extends ISelectorMap<LocalState>> = (options?: IInvokeDefinitionOptions) => ICompiledDefinition<LocalState, Selectors>
