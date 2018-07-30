@@ -5,18 +5,18 @@ import { IModelDefinition } from 'state/types/model'
 import { makeScope } from '../makeScope'
 import { getActionType } from '../utils'
 import { getFormattedInitialState } from './initialState'
-import { Selector, ISelectorMap } from 'state/types/selector'
+import { Selector, ISelectorMap, IMappedSelectorMap } from 'state/types/selector'
 
-export interface ICreateModelGenerator<LocalState> {
+export interface ICreateModelGenerator<LocalState, Selectors extends ISelectorMap<LocalState>> {
   options: IInvokeDefinitionOptions
   defaultState: any
   reducerMap: ReducerMapOrConstructor<LocalState>
-  selectorMap: ISelectorMap<LocalState>
+  selectorMap: IMappedSelectorMap<LocalState, Selectors>
   transformInitialState?: any
 }
 
 export const createModelGenerator =
-  <LocalState>(params: ICreateModelGenerator<LocalState>): DefinitionGenerator =>
+  <LocalState, Selectors extends ISelectorMap<LocalState>>(params: ICreateModelGenerator<LocalState, Selectors>): DefinitionGenerator =>
   (namespacing: string[], topLevel: boolean): IModelDefinition => {
   const {
     options,
@@ -58,7 +58,7 @@ export const createModelGenerator =
     model.actions[key] = action
   }
 
-  type SelectorTuple = [string, (state: {}, args: any) => any]
+  type SelectorTuple = [string, Selector<LocalState>]
   for (const [key, fn] of Object.entries(selectorMap) as SelectorTuple[]) {
     const selector: Selector<{}> = (state: {}, args?: any) =>
       fn(get(state, namespacing), args)

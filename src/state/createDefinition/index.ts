@@ -1,16 +1,16 @@
-import { IInvokeDefinitionOptions, ICreateDefinition, ReducerDefinition } from 'state/types/definition'
+import { IInvokeDefinitionOptions, ICreateDefinition, ReducerDefinition, ICompiledDefinition, DefinitionGenerator } from 'state/types/definition'
 import { createModelGenerator } from './createModelGenerator'
 import { ISelectorMap } from '../types/selector'
 import { IModelDefinition } from '../types/model'
 
-export const createDefinition = <LocalState, SelectorMap extends ISelectorMap<{}>>({
+export const createDefinition = <LocalState, Selectors extends ISelectorMap<LocalState>>({
   reducers,
   selectors,
   defaultState,
   transformInitialState,
-}: ICreateDefinition<LocalState, SelectorMap>): ReducerDefinition => {
-  const createModelGeneratorWithOptions = (options: IInvokeDefinitionOptions = {}) =>
-    createModelGenerator<LocalState>({
+}: ICreateDefinition<LocalState, Selectors>): ReducerDefinition => {
+  const createModelGeneratorWithOptions = (options: IInvokeDefinitionOptions = {}): DefinitionGenerator =>
+    createModelGenerator<LocalState, Selectors>({
       reducerMap: reducers,
       defaultState,
       options,
@@ -18,7 +18,7 @@ export const createDefinition = <LocalState, SelectorMap extends ISelectorMap<{}
       transformInitialState,
     })
 
-  const Type = (options?: IInvokeDefinitionOptions) => ({
+  const Type: ReducerDefinition = (options = {}) => ({
     generate: createModelGeneratorWithOptions(options)
   })
 

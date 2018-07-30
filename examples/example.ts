@@ -2,11 +2,17 @@ import { createReducers, Definitions } from '../src'
 
 const { Collection, Field, Flag, Index } = Definitions
 
-export default createReducers({
-  selected: Index(),
+const x = createReducers({
+  selected: {
+    selected: Index(),
+  },
   todoEditor: {
     editingId: Field(),
     isEditing: Flag(),
   },
-  todos: Collection(),
+  todos: {
+    todos: Collection(),
+  }
 })
+
+export default x

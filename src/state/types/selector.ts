@@ -1,11 +1,14 @@
-export type Selector<State> = (state: State, params?: any) => any
+export type Selector<State> = {
+  <P>(state: State): P
+  <T extends {}, P>(state: State, params: T): P
+}
 
 export interface ISelectorMap<State> {
   [name: string]: Selector<State>
 }
 
-export type IMappedSelectorMap<State, Schema> = {
-  [Key in keyof Schema]: Selector<State>
+export type IMappedSelectorMap<State, Selectors extends ISelectorMap<State>> = {
+  [Key in keyof Selectors]: Selectors[Key]
 }
 
 export type ISelectorMaps = {

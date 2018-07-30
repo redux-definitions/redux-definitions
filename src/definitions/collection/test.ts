@@ -11,7 +11,7 @@ describe('collection', () => {
 
 
   it('basics', () => {
-    const compiledDefinition = Definitions.Collection({})
+    const compiledDefinition = Definitions.Collection()
     const modelDefinition = compiledDefinition.generate(['foo'], false)
     modelDefinition.selectors
   })
@@ -19,7 +19,7 @@ describe('collection', () => {
   it('state placement', () => {
     const { models, store } = makeStoreAndDefineState({
       space: {
-        persons: Collection({})
+        persons: Collection()
       }
     })
 
@@ -47,7 +47,7 @@ describe('collection', () => {
     it('api', () => {
       const { models } = makeStoreAndDefineState({
         space: {
-          persons: Collection
+          persons: Collection()
         }
       })
 
@@ -67,7 +67,7 @@ describe('collection', () => {
       it('valid', () => {
         const { models, store } = makeStoreAndDefineState({
           space: {
-            persons: Collection
+            persons: Collection()
           }
         })
 
@@ -84,7 +84,7 @@ describe('collection', () => {
       it('invalid', () => {
         const { models, store } = makeStoreAndDefineState({
           space: {
-            persons: Collection
+            persons: Collection()
           }
         })
 
@@ -98,7 +98,7 @@ describe('collection', () => {
     it('reset', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          persons: Collection
+          persons: Collection()
         }
       })
 
@@ -121,7 +121,7 @@ describe('collection', () => {
       it('valid', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          persons: Collection
+          persons: Collection()
         }
       })
 
@@ -146,7 +146,7 @@ describe('collection', () => {
       it('invalid', () => {
         const { models, store } = makeStoreAndDefineState({
           space: {
-            persons: Collection
+            persons: Collection()
           }
         })
 
@@ -161,7 +161,7 @@ describe('collection', () => {
       it('valid', () => {
         const { models, store } = makeStoreAndDefineState({
           space: {
-            persons: Collection
+            persons: Collection()
           }
         })
 
@@ -186,7 +186,7 @@ describe('collection', () => {
       it('invalid', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          persons: Collection
+          persons: Collection()
         }
       })
 
@@ -202,7 +202,7 @@ describe('collection', () => {
       it('valid', () => {
         const { models, store } = makeStoreAndDefineState({
           space: {
-            persons: Collection
+            persons: Collection()
           }
         })
 
@@ -227,7 +227,7 @@ describe('collection', () => {
       it('invalid', () => {
         const { models, store } = makeStoreAndDefineState({
           space: {
-            persons: Collection
+            persons: Collection()
           }
         })
 
@@ -241,7 +241,7 @@ describe('collection', () => {
       it('doesn\'t exist', () => {
         const { models, store } = makeStoreAndDefineState({
           space: {
-            persons: Collection
+            persons: Collection()
           }
         })
 
@@ -257,7 +257,7 @@ describe('collection', () => {
     it('remove', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          persons: Collection
+          persons: Collection()
         }
       })
 
@@ -289,7 +289,7 @@ describe('collection', () => {
     it('api', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          persons: Collection
+          persons: Collection()
         }
       })
 
@@ -306,7 +306,7 @@ describe('collection', () => {
     it('get', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          persons: Collection
+          persons: Collection()
         }
       })
 
@@ -321,7 +321,7 @@ describe('collection', () => {
     it('ids', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          persons: Collection
+          persons: Collection()
         }
       })
 
@@ -337,7 +337,7 @@ describe('collection', () => {
     it('all', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          persons: Collection
+          persons: Collection()
         }
       })
 
@@ -354,7 +354,7 @@ describe('collection', () => {
       it('exists', () => {
         const { models, store } = makeStoreAndDefineState({
           space: {
-            persons: Collection
+            persons: Collection()
           }
         })
 
@@ -370,7 +370,7 @@ describe('collection', () => {
       it('does not exist', () => {
         const { models, store } = makeStoreAndDefineState({
           space: {
-            persons: Collection
+            persons: Collection()
           }
         })
 

@@ -60,8 +60,8 @@ export default createDefinition({
   },
   defaultState: Normalized.create(),
   selectors: {
-    find: (state: State, { id }: { id: string }): IEntity|undefined =>
-      state.entities[id] || undefined,
+    find: (state: State, params: { id: string }|undefined = undefined): IEntity|undefined =>
+      params && params.id ? state.entities[params.id] : undefined,
     get: (state: State): State => state,
     ids: (state: State): string[] => state.ids,
     all: (state: State): IEntity[] => Normalized.toArray(state),
