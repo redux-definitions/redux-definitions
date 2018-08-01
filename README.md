@@ -87,7 +87,7 @@ yarn add redux-enterprise
 # Concepts
 
 ## createReducers
-As shown above your core application state is described using a library of [reducer definitions](#reducer-definitions). `createReducers` takes these definitions and creates reducers for you with corresponding actions and selectors. Definitions can be nested to provide logical grouping and scope.
+As shown above your core application state is described using a library of [reducer definitions](#reducer-definitions). `createReducers` takes these definitions and creates reducers for you with corresponding actions and selectors.
 ```js
 import { createReducers, Definitions } from 'redux-enterprise'
 const { Collection, Flag, Field, Index } = Definitions
