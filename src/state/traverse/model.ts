@@ -6,10 +6,9 @@ import {
   IIntermediateModel
 } from 'state/types/model'
 import { getActionType } from '../utils'
-import { ISelectorMap } from '../types/selector'
 
 export const Model = {
-  fromDefinition: <LocalState, Selectors extends ISelectorMap<LocalState>>(compiledDefinition: ICompiledDefinition<LocalState, Selectors>, namespacing: string[], topLevel?: boolean): IModelDefinition<LocalState, Selectors> => ({
+  fromDefinition: <LocalState>(compiledDefinition: ICompiledDefinition, namespacing: string[], topLevel?: boolean): IModelDefinition<LocalState> => ({
     kind: 'definition',
     ...compiledDefinition.generate(namespacing, topLevel || false),
   }),
@@ -28,44 +27,26 @@ export const Model = {
       },
     }
   },
-  update: <LocalState, Selectors extends ISelectorMap<LocalState>>(rootModel: IIntermediateModel, field: string, model: IModelDefinition<LocalState, Selectors>): IIntermediateModel => {
-    // if (model.kind === 'definition') {
-      const { actions, initialState, reducers, selectors } = model
-      return {
-        ...rootModel,
-        reducers: {
-          ...rootModel.reducers,
-          ...reducers,
-        },
-        actions: {
-          ...rootModel.actions,
-          [field]: actions,
-        },
-        selectors: {
-          ...rootModel.selectors,
-          [field]: selectors,
-        },
-        initialState: {
-          ...rootModel.initialState,
-          [field]: initialState,
-        },
-      }
-    // }
-    // if (model.kind === 'function') {
-    //   const { action, reducers } = model
-    //   return {
-    //     ...rootModel,
-    //     reducers: {
-    //       ...rootModel.reducers,
-    //       ...reducers,
-    //     },
-    //     actions: {
-    //       ...rootModel.actions,
-    //       [field]: action
-    //     }
-    //   }
-    // }
-
-    // return rootModel
+  update: <LocalState>(rootModel: IIntermediateModel, field: string, model: IModelDefinition<LocalState>): IIntermediateModel => {
+    const { actions, initialState, reducers, selectors } = model
+    return {
+      ...rootModel,
+      reducers: {
+        ...rootModel.reducers,
+        ...reducers,
+      },
+      actions: {
+        ...rootModel.actions,
+        [field]: actions,
+      },
+      selectors: {
+        ...rootModel.selectors,
+        [field]: selectors,
+      },
+      initialState: {
+        ...rootModel.initialState,
+        [field]: initialState,
+      },
+    }
   }
 }

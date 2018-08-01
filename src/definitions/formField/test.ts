@@ -19,11 +19,13 @@ describe('formField', () => {
   })
 
   it('state placement', () => {
-    const { space, getState } = makeStoreAndDefineState({
-      space: formField
+    const { models, store } = makeStoreAndDefineState({
+      space: {
+        field: formField
+      }
     })
 
-    const { actions, selectors } = space
+    const { actions, selectors } = models.space
 
     const state = {
       error: null,
@@ -32,58 +34,20 @@ describe('formField', () => {
       value: 'flim',
     }
 
-    expect((getState() as any).space).toEqual(state)
-    expect(selectors.get(getState())).toEqual(state)
+    expect(selectors.field.get(store.getState())).toEqual(state)
   })
 
-  describe('nested', () => {
-    it('state placement', () => {
-      const { space, dispatch, getState } =makeStoreAndDefineState({
-        space: {
-          foo: formField
-        }
-      })
-
-      expect(space.selectors.foo.value(getState())).toEqual('flim')
+  it('receives action', () => {
+    const { models, store } = makeStoreAndDefineState({
+      space: {
+        field: formField
+      }
     })
 
-    it('receives action', () => {
-      const { space, dispatch, getState } =makeStoreAndDefineState({
-        space: {
-          foo: formField
-        }
-      })
+    const { actions, selectors } = models.space
 
-      dispatch(space.actions.foo.set('foobar'))
+    store.dispatch(actions.field.set('foobar'))
 
-      expect(space.selectors.foo.value(getState())).toEqual('foobar')
-    })
-  })
-
-  describe('double nested', () => {
-    it('state placement', () => {
-      const { space, dispatch, getState } =makeStoreAndDefineState({
-        space: {
-          foo: {
-            bar: formField
-          }
-        }
-      })
-
-      expect(space.selectors.foo.bar.value(getState())).toEqual('flim')
-    })
-
-    it('receives action', () => {
-      const { space, dispatch, getState } =makeStoreAndDefineState({
-        space: {
-          foo: {
-            bar: formField
-          }
-        }
-      })
-
-      dispatch(space.actions.foo.bar.set('foo'))
-      expect(space.selectors.foo.bar.value(getState())).toEqual('foo')
-    })
+    expect(selectors.field.value(store.getState())).toEqual('foobar')
   })
 })

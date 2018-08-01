@@ -1,9 +1,8 @@
 import { forIn } from 'lodash'
 import { makeError } from '../../utils'
 import { Model } from './model'
-import { IModelDefinition, IIntermediateModel, IMappedIntermediateModel } from 'state/types/model'
-import { isReducerDefinition, isFunction, isObject } from '../utils'
-import { IReducerAndAction } from '../makeScope'
+import { IIntermediateModel } from 'state/types/model'
+import { isReducerDefinition, isFunction } from '../utils'
 import { IReducerSchema } from 'state/types/schema'
 
 export const traverse = <ReducerSchema extends IReducerSchema>(schema: ReducerSchema, namespacing: string[]): IIntermediateModel => {

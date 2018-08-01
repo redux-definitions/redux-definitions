@@ -1,12 +1,12 @@
 import { Action, ActionFunction1 } from 'redux-actions'
 
-export type ActionCreator<Payload> = ActionFunction1<Payload, Action<Payload>> 
+export type ActionCreator = <Payload>(payload?: Payload) => Action<Payload>
 
 export interface IActionCreatorMap {
-  [name: string]: ActionCreator<any>
+  [name: string]: ActionCreator
 }
 
-export type IActionCreatorMaps = {
+export interface IActionCreatorMaps {
   [key: string]: IActionCreatorMap
 }
 
@@ -14,6 +14,6 @@ export type IMappedActionCreatorMaps<ReducerSchema> = {
   [Key in keyof ReducerSchema]: IActionCreatorMap
 }
 
-export type IRootActionCreatorMaps<Schema> = {
-  [Key in keyof Schema]: IMappedActionCreatorMaps<Schema[Key]>
+export interface IRootActionCreatorMaps {
+  [key: string]: IActionCreatorMaps
 }

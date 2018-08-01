@@ -1,5 +1,5 @@
 import { IReducerMap, Reducer } from './reducer'
-import { ISelectorMap, IMappedSelectorMap } from './selector'
+import { ISelectorMap } from './selector'
 import { IModelDefinition } from './model'
 
 export interface IInvokeDefinitionOptions {
@@ -10,9 +10,9 @@ export interface IInvokeDefinitionOptions {
 export type ReducerMapOrConstructor<LocalState> = IReducerMap<LocalState>|ReducerMapConstructor<LocalState>
 export type ReducerMapConstructor<LocalState> = (options: IInvokeDefinitionOptions) => IReducerMap<LocalState>
 
-export interface ICreateDefinition<LocalState, Selectors extends ISelectorMap<LocalState>> {
+export interface ICreateDefinition<LocalState> {
   reducers: ReducerMapOrConstructor<LocalState>
-  selectors: IMappedSelectorMap<LocalState, Selectors>
+  selectors: ISelectorMap<LocalState>
   defaultState: LocalState
   transformInitialState?: (initialState: any) => LocalState
 }
@@ -21,10 +21,13 @@ export interface IDefinitionReducerMap<LocalState> {
   [name: string]: Reducer<LocalState>
 }
 
-export type DefinitionGenerator<LocalState, Selectors extends ISelectorMap<LocalState>> = (namespacing: string[], topLevel: boolean) => IModelDefinition<LocalState, Selectors>
+export type DefinitionGenerator = <LocalState>(namespacing: string[], topLevel: boolean) => IModelDefinition<LocalState>
 
-export interface ICompiledDefinition<LocalState, Selectors extends ISelectorMap<LocalState>> {
-  generate: DefinitionGenerator<LocalState, Selectors>
+export interface ICompiledDefinition {
+  generate: DefinitionGenerator
 }
 
-export type ReducerDefinition<LocalState, Selectors extends ISelectorMap<LocalState>> = (options?: IInvokeDefinitionOptions) => ICompiledDefinition<LocalState, Selectors>
+export interface IReducerDefinition {
+  (options?: IInvokeDefinitionOptions): ICompiledDefinition
+  generate: DefinitionGenerator
+}

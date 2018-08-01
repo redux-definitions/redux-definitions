@@ -1,4 +1,4 @@
-import { isPlainObject, omit, union, without } from 'lodash'
+import { isPlainObject, omit, union, without, isArray } from 'lodash'
 
 export type Id = string
 export type Ids = string[]
@@ -39,10 +39,16 @@ export default {
     entities: mapPickIds(ids, norm.entities),
     ids,
   }),
-  remove: (norm: INorm, entityIdOrIds: Id|Ids): INorm => ({
-    entities: omit(norm.entities, entityIdOrIds) as IEntityMap,
-    ids: without(norm.ids, entityIdOrIds) as Ids,
-  }),
+  remove: (norm: INorm, entityIdOrIds: Id|Ids): INorm => {
+    const ids: Ids = isArray(entityIdOrIds)
+      ? without.apply(null, [norm.ids, ...entityIdOrIds])
+      : without(norm.ids, entityIdOrIds)
+
+    return {
+      entities: omit(norm.entities, entityIdOrIds) as IEntityMap,
+      ids,
+    }
+  },
   toArray: (arg1: Ids|INorm, arg2?: IEntityMap) => {
     const { ids, entities } = (arg2 ? { ids: arg1, entities: arg2 } : arg1 as INorm)
     if (!ids || !entities) {

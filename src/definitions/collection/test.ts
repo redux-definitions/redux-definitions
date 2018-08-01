@@ -9,13 +9,6 @@ describe('collection', () => {
     clearAllReducers()
   })
 
-
-  it('basics', () => {
-    const compiledDefinition = Definitions.Collection()
-    const modelDefinition = compiledDefinition.generate(['foo'], false)
-    modelDefinition.selectors
-  })
-
   it('state placement', () => {
     const { models, store } = makeStoreAndDefineState({
       space: {
@@ -47,7 +40,7 @@ describe('collection', () => {
     it('api', () => {
       const { models } = makeStoreAndDefineState({
         space: {
-          persons: Collection()
+          persons: Collection
         }
       })
 
@@ -67,7 +60,7 @@ describe('collection', () => {
       it('valid', () => {
         const { models, store } = makeStoreAndDefineState({
           space: {
-            persons: Collection()
+            persons: Collection
           }
         })
 
@@ -84,7 +77,7 @@ describe('collection', () => {
       it('invalid', () => {
         const { models, store } = makeStoreAndDefineState({
           space: {
-            persons: Collection()
+            persons: Collection
           }
         })
 
@@ -98,7 +91,7 @@ describe('collection', () => {
     it('reset', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          persons: Collection()
+          persons: Collection
         }
       })
 
@@ -111,7 +104,7 @@ describe('collection', () => {
         Normalized.fromArray(collection)
       )
 
-      store.dispatch(actions.persons.reset(1))
+      store.dispatch(actions.persons.reset())
 
       expect(selectors.persons.all(store.getState())).toEqual([])
       expect(selectors.persons.ids(store.getState())).toEqual([])
@@ -121,7 +114,7 @@ describe('collection', () => {
       it('valid', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          persons: Collection()
+          persons: Collection
         }
       })
 
@@ -146,7 +139,7 @@ describe('collection', () => {
       it('invalid', () => {
         const { models, store } = makeStoreAndDefineState({
           space: {
-            persons: Collection()
+            persons: Collection
           }
         })
 
@@ -161,7 +154,7 @@ describe('collection', () => {
       it('valid', () => {
         const { models, store } = makeStoreAndDefineState({
           space: {
-            persons: Collection()
+            persons: Collection
           }
         })
 
@@ -186,7 +179,7 @@ describe('collection', () => {
       it('invalid', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          persons: Collection()
+          persons: Collection
         }
       })
 
@@ -202,7 +195,7 @@ describe('collection', () => {
       it('valid', () => {
         const { models, store } = makeStoreAndDefineState({
           space: {
-            persons: Collection()
+            persons: Collection
           }
         })
 
@@ -220,14 +213,13 @@ describe('collection', () => {
         const updatedEntity1 = { id: '1', name: 'bar' }
         store.dispatch(actions.persons.update(updatedEntity1))
 
-        expect(selectors.persons.all(store.getState())).toEqual([entity1])
-        expect(selectors.persons.ids(store.getState())).toEqual([entity1.id])
+        expect(selectors.persons.all(store.getState())).toEqual([updatedEntity1])
       })
 
       it('invalid', () => {
         const { models, store } = makeStoreAndDefineState({
           space: {
-            persons: Collection()
+            persons: Collection
           }
         })
 
@@ -241,7 +233,7 @@ describe('collection', () => {
       it('doesn\'t exist', () => {
         const { models, store } = makeStoreAndDefineState({
           space: {
-            persons: Collection()
+            persons: Collection
           }
         })
 
@@ -254,34 +246,66 @@ describe('collection', () => {
       })
     })
 
-    it('remove', () => {
-      const { models, store } = makeStoreAndDefineState({
-        space: {
-          persons: Collection()
+    describe('remove', () => {
+      it('valid', () => {
+        const { models, store } = makeStoreAndDefineState({
+          space: {
+            persons: Collection
+          }
+        })
+
+        const { actions, selectors } = models.space
+
+        const entity1 = {
+          id: '1', name: 'foo'
         }
+        const entity2 = {
+          id: '2', name: 'bar'
+        }
+
+        const collection = [entity1, entity2]
+
+        store.dispatch(actions.persons.set(collection))
+
+        expect(selectors.persons.get(store.getState())).toEqual(
+          Normalized.fromArray(collection)
+        )
+
+        store.dispatch(actions.persons.remove(entity1.id))
+
+        expect(selectors.persons.all(store.getState())).toEqual([entity2])
+        expect(selectors.persons.ids(store.getState())).toEqual([entity2.id])
       })
 
-      const { actions, selectors } = models.space
+      it('batch', () => {
+        const { models, store } = makeStoreAndDefineState({
+          space: {
+            persons: Collection
+          }
+        })
 
-      const entity1 = {
-        id: '1', name: 'foo'
-      }
-      const entity2 = {
-        id: '2', name: 'bar'
-      }
+        const { actions, selectors } = models.space
 
-      const collection = [entity1, entity2]
+        const entity1 = {
+          id: '1', name: 'foo'
+        }
+        const entity2 = {
+          id: '2', name: 'bar'
+        }
 
-      store.dispatch(actions.persons.set(collection))
+        const collection = [entity1, entity2]
 
-      expect(selectors.persons.get(store.getState())).toEqual(
-        Normalized.fromArray(collection)
-      )
+        store.dispatch(actions.persons.set(collection))
 
-      store.dispatch(actions.persons.remove(entity1.id))
+        expect(selectors.persons.get(store.getState())).toEqual(
+          Normalized.fromArray(collection)
+        )
 
-      expect(selectors.persons.all(store.getState())).toEqual([entity2])
-      expect(selectors.persons.ids(store.getState())).toEqual([entity2.id])
+        store.dispatch(actions.persons.remove([entity1.id, entity2.id]))
+
+        expect(selectors.persons.all(store.getState())).toEqual([])
+        expect(selectors.persons.ids(store.getState())).toEqual([])
+      })
     })
   })
 
@@ -289,7 +313,7 @@ describe('collection', () => {
     it('api', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          persons: Collection()
+          persons: Collection
         }
       })
 
@@ -300,6 +324,7 @@ describe('collection', () => {
         'get',
         'ids',
         'all',
+        'count',
       ])
     })
 

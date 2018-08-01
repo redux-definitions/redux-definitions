@@ -2,21 +2,16 @@ import { buildModels } from './buildModels'
 import { Actions, Models, Reducers, Selectors } from './storage'
 import { ISchema } from 'state/types/schema'
 import { IRoot } from 'state/types/root'
-import { IModelMap, IModel } from 'state/types/model'
 import { IReducerMap } from 'state/types/reducer'
 import { IRootActionCreatorMaps } from 'state/types/actionCreator'
 import { IRootSelectorMaps } from 'state/types/selector'
-import { Definitions } from '../index'
+import { IModelMap } from 'state/types/model'
 
-export const createReducers = <Schema extends ISchema>(schema: Schema): IRoot<Schema> => {
-  // const localModels: IModelMap = {}
-  // const localReducers: IReducerMap<{}> = {}
-  // const localActions: IRootActionCreatorMaps = {}
-  // const localSelectors: IRootSelectorMaps = {}
-  const localModels: any = {}
+export const createReducers = <Schema extends ISchema>(schema: Schema): IRoot => {
+  const localModels: IModelMap = {}
   const localReducers: IReducerMap<{}> = {}
-  const localActions: any = {}
-  const localSelectors: any = {}
+  const localActions: IRootActionCreatorMaps = {}
+  const localSelectors: IRootSelectorMaps = {}
 
   buildModels(schema).forEach((model) => {
     localModels[model.namespace] = model
@@ -37,14 +32,3 @@ export const createReducers = <Schema extends ISchema>(schema: Schema): IRoot<Sc
     selectors: localSelectors,
   }
 }
-
-const { models, actions, selectors } = createReducers({
-  foo: {
-    people: Definitions.Collection({})
-  }
-})
-
-selectors.foo.people
-console.log(actions.foo.people)
-console.log(selectors.foo.people)
-console.log(models.foo.actions.people)

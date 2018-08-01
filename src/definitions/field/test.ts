@@ -8,15 +8,9 @@ describe('field', () => {
     clearAllReducers()
   })
 
-  it('state placement', () => {
-    expect(() => makeStoreAndDefineState({
-      space: Field
-    })).toThrow('Redux Enterprise\n\nThis Definition cannot be used at the reducer top level. Redux reducers do not support entire state being this state value.')
-  })
-
   describe('actions', () => {
-    it.only('api', () => {
-      const { space } = makeStoreAndDefineState({
+    it('api', () => {
+      const { models, store } = makeStoreAndDefineState({
         space: {
           foo: Field({
             initialState: 4
@@ -26,7 +20,7 @@ describe('field', () => {
 
       type Foo = string
 
-      const { actions } = space
+      const { actions } = models.space
 
       expect(Object.keys(actions.foo)).toEqual([
         'clear',
@@ -35,44 +29,45 @@ describe('field', () => {
     })
 
     it('set', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
+      const { models, store } = makeStoreAndDefineState({
         space: {
           foo: Field
         }
       })
 
-      const { actions, selectors } = space
+      const { actions, selectors } = models.space
 
-      expect(selectors.foo.get(getState())).toEqual(undefined)
-      dispatch(actions.foo.set('bar'))
-      expect(selectors.foo.get(getState())).toEqual('bar')
+      expect(selectors.foo.get(store.getState())).toEqual(undefined)
+      store.dispatch(actions.foo.set('bar'))
+      expect(selectors.foo.get(store.getState())).toEqual('bar')
     })
 
     it('clear', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
+      const { models, store } = makeStoreAndDefineState({
         space: {
           foo: Field
         }
       })
 
-      const { actions, selectors } = space
+      const { actions, selectors } = models.space
 
-      dispatch(actions.foo.set('bar'))
-      expect(selectors.foo.get(getState())).toEqual('bar')
-      dispatch(actions.foo.clear())
-      expect(selectors.foo.get(getState())).toEqual(undefined)
+
+      store.dispatch(actions.foo.set('bar'))
+      expect(selectors.foo.get(store.getState())).toEqual('bar')
+      store.dispatch(actions.foo.clear())
+      expect(selectors.foo.get(store.getState())).toEqual(undefined)
     })
   })
 
   describe('selectors', () => {
     it('api', () => {
-      const { space } = makeStoreAndDefineState({
+      const { models } = makeStoreAndDefineState({
         space: {
           foo: Field
         }
       })
 
-      const { selectors } = space
+      const { selectors } = models.space
 
       expect(Object.keys(selectors.foo)).toEqual([
         'get',
@@ -81,64 +76,34 @@ describe('field', () => {
     })
 
     it('isSet', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
+      const { models, store } = makeStoreAndDefineState({
         space: {
           foo: Field
         }
       })
 
-      const { actions, selectors } = space
+      const { actions, selectors } = models.space
 
       const collection = [{ id: '1', name: 'foo' }]
-      dispatch(actions.foo.set('bar'))
-      expect(selectors.foo.isSet(getState())).toEqual(true)
-      dispatch(actions.foo.clear())
-      expect(selectors.foo.isSet(getState())).toEqual(false)
+      store.dispatch(actions.foo.set('bar'))
+      expect(selectors.foo.isSet(store.getState())).toEqual(true)
+      store.dispatch(actions.foo.clear())
+      expect(selectors.foo.isSet(store.getState())).toEqual(false)
     })
 
     it('get', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
+      const { models, store } = makeStoreAndDefineState({
         space: {
           foo: Field
         }
       })
 
-      const { actions, selectors } = space
+      const { actions, selectors } = models.space
 
       const collection = [{ id: '1', name: 'foo' }]
-      dispatch(actions.foo.set('bar'))
+      store.dispatch(actions.foo.set('bar'))
 
-      expect(selectors.foo.get(getState())).toEqual('bar')
+      expect(selectors.foo.get(store.getState())).toEqual('bar')
     })
-  })
-
-  it('nested', () => {
-    const { space, dispatch, getState } = makeStoreAndDefineState({
-      space: {
-        foo: Field
-      }
-    })
-
-    const { actions, selectors } = space
-
-    expect(selectors.foo.get(getState())).toEqual(undefined)
-    dispatch(actions.foo.set('foo'))
-    expect(selectors.foo.get(getState())).toEqual('foo')
-  })
-
-  it('double nested', () => {
-    const { space, dispatch, getState } = makeStoreAndDefineState({
-      space: {
-        foo: {
-          bar: Field
-        }
-      }
-    })
-
-    const { actions, selectors } = space
-
-    expect(selectors.foo.bar.get(getState())).toEqual(undefined)
-    dispatch(actions.foo.bar.set('foo'))
-    expect(selectors.foo.bar.get(getState())).toEqual('foo')
   })
 })

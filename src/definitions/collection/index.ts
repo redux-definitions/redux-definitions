@@ -29,7 +29,7 @@ export default createDefinition({
       }
       return Normalized.upsert(state, entity)
     },
-    remove: (state: State, { payload: id }: Action<string>): State => {
+    remove: (state: State, { payload: id }: Action<string|string[]>): State => {
       if (!id) {
         return state
       }
@@ -46,8 +46,8 @@ export default createDefinition({
       if(!entity || !validateEntity(entity)) {
         return state
       }
-      if (find(state.ids, (id: string) => id === entity.id)) {
-        return state
+      if (!find(state.ids, (id: string) => id === entity.id)) {
+        logWarning(`Collection did not have an entity with id: ${entity.id}. Entity has been added.`)
       }
       return Normalized.upsert(state, entity)
     },
@@ -65,6 +65,7 @@ export default createDefinition({
     get: (state: State): State => state,
     ids: (state: State): string[] => state.ids,
     all: (state: State): IEntity[] => Normalized.toArray(state),
+    count: (state: State): number => state.ids.length,
   },
   transformInitialState: (initialState: IEntity[]): INorm =>
     Normalized.fromArray(validateEntities(initialState)),

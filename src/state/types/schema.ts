@@ -1,4 +1,4 @@
-import { ICompiledDefinition } from './definition'
+import { IReducerDefinition, ICompiledDefinition } from './definition'
 
 export interface IReducerSchema {
   [key: string]: ICompiledDefinition

@@ -9,195 +9,220 @@ describe('index', () => {
   })
 
   it('state placement', () => {
-    const { space, getState } = makeStoreAndDefineState({
-      space: Index
+    const { models, store } = makeStoreAndDefineState({
+      space: {
+        foo: Index()
+      }
     })
 
-    const { actions, selectors } = space
+    const { actions, selectors } = models.space
 
-    expect(selectors.get(getState())).toEqual([])
+    expect(selectors.foo.get(store.getState())).toEqual([])
   })
 
   describe('actions', () => {
     it('api', () => {
-      const { space } = makeStoreAndDefineState({
+      const { models } = makeStoreAndDefineState({
         space: {
           foo: Index
         }
       })
 
-      const { actions } = space
+      const { actions } = models.space
 
       expect(Object.keys(actions.foo)).toEqual([
         'add',
         'remove',
         'reset',
         'set',
-        'toggle',
+        'toggle'
       ])
     })
 
     it('set', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
+      const { models, store } = makeStoreAndDefineState({
         space: {
           foo: Index
         }
       })
 
-      const { actions, selectors } = space
+      const { actions, selectors } = models.space 
 
       const set = [1,2,3]
-      expect(selectors.foo.get(getState())).toEqual([])
-      dispatch(actions.foo.set(set))
-      expect(selectors.foo.get(getState())).toEqual(set)
+      expect(selectors.foo.get(store.getState())).toEqual([])
+      store.dispatch(actions.foo.set(set))
+      expect(selectors.foo.get(store.getState())).toEqual(set)
     })
 
     it('toggle', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
+      const { models, store } = makeStoreAndDefineState({
         space: {
           foo: Index
         }
       })
 
-      const { actions, selectors } = space
+      const { actions, selectors } = models.space 
 
       const set = [1,2,3]
-      expect(selectors.foo.get(getState())).toEqual([])
-      dispatch(actions.foo.set(set))
-      dispatch(actions.foo.toggle(3))
-      expect(selectors.foo.get(getState())).toEqual([1,2])
-      dispatch(actions.foo.toggle(3))
-      expect(selectors.foo.get(getState())).toEqual(set)
+      expect(selectors.foo.get(store.getState())).toEqual([])
+      store.dispatch(actions.foo.set(set))
+      store.dispatch(actions.foo.toggle(3))
+      expect(selectors.foo.get(store.getState())).toEqual([1,2])
+      store.dispatch(actions.foo.toggle(3))
+      expect(selectors.foo.get(store.getState())).toEqual(set)
     })
 
-    it('add', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
-        space: {
-          foo: Index
-        }
+    describe('add', () => {
+      it('add', () => {
+        const { models, store } = makeStoreAndDefineState({
+          space: {
+            foo: Index
+          }
+        })
+
+        const { actions, selectors } = models.space 
+
+        const set = [1,2,3]
+        expect(selectors.foo.get(store.getState())).toEqual([])
+        store.dispatch(actions.foo.set(set))
+        store.dispatch(actions.foo.add(3))
+        expect(selectors.foo.get(store.getState())).toEqual(set)
+        store.dispatch(actions.foo.add(4))
+        expect(selectors.foo.get(store.getState())).toEqual([...set, 4])
       })
 
-      const { actions, selectors } = space
+      it('add batch', () => {
+        const { models, store } = makeStoreAndDefineState({
+          space: {
+            foo: Index
+          }
+        })
 
-      const set = [1,2,3]
-      expect(selectors.foo.get(getState())).toEqual([])
-      dispatch(actions.foo.set(set))
-      dispatch(actions.foo.add(3))
-      expect(selectors.foo.get(getState())).toEqual(set)
-      dispatch(actions.foo.add(4))
-      expect(selectors.foo.get(getState())).toEqual([...set, 4])
+        const { actions, selectors } = models.space 
+
+        const set = [1,2,3]
+        expect(selectors.foo.get(store.getState())).toEqual([])
+        store.dispatch(actions.foo.set(set))
+        store.dispatch(actions.foo.add(3))
+        expect(selectors.foo.get(store.getState())).toEqual(set)
+        store.dispatch(actions.foo.add([4, 5, 6]))
+        expect(selectors.foo.get(store.getState())).toEqual([...set, 4, 5, 6])
+      })
     })
 
-    it('remove', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
-        space: {
-          foo: Index
-        }
+    describe('remove', () => {
+      it('remove', () => {
+        const { models, store } = makeStoreAndDefineState({
+          space: {
+            foo: Index
+          }
+        })
+
+        const { actions, selectors } = models.space 
+
+        const set = [1,2,3]
+        expect(selectors.foo.get(store.getState())).toEqual([])
+        store.dispatch(actions.foo.set(set))
+        store.dispatch(actions.foo.remove(4))
+        expect(selectors.foo.get(store.getState())).toEqual(set)
+        store.dispatch(actions.foo.remove(2))
+        expect(selectors.foo.get(store.getState())).toEqual([1,3])
       })
 
-      const { actions, selectors } = space
+      it('remove batch', () => {
+        const { models, store } = makeStoreAndDefineState({
+          space: {
+            foo: Index
+          }
+        })
 
-      const set = [1,2,3]
-      expect(selectors.foo.get(getState())).toEqual([])
-      dispatch(actions.foo.set(set))
-      dispatch(actions.foo.remove(4))
-      expect(selectors.foo.get(getState())).toEqual(set)
-      dispatch(actions.foo.remove(2))
-      expect(selectors.foo.get(getState())).toEqual([1,3])
+        const { actions, selectors } = models.space 
+
+        const set = [1,2,3]
+        expect(selectors.foo.get(store.getState())).toEqual([])
+        store.dispatch(actions.foo.set(set))
+        store.dispatch(actions.foo.remove([4]))
+        expect(selectors.foo.get(store.getState())).toEqual(set)
+        store.dispatch(actions.foo.remove([1,2]))
+        expect(selectors.foo.get(store.getState())).toEqual([3])
+      })
     })
 
     it('reset', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
+      const { models, store } = makeStoreAndDefineState({
         space: {
           foo: Index
         }
       })
 
-      const { actions, selectors } = space
+      const { actions, selectors } = models.space 
 
       const set = [1,2,3]
-      dispatch(actions.foo.set(set))
-      expect(selectors.foo.get(getState())).toEqual(set)
-      dispatch(actions.foo.reset())
-      expect(selectors.foo.get(getState())).toEqual([])
+      store.dispatch(actions.foo.set(set))
+      expect(selectors.foo.get(store.getState())).toEqual(set)
+      store.dispatch(actions.foo.reset())
+      expect(selectors.foo.get(store.getState())).toEqual([])
     })
   })
 
   describe('selectors', () => {
     it('api', () => {
-      const { space } = makeStoreAndDefineState({
+      const { models } = makeStoreAndDefineState({
         space: {
           foo: Index
         }
       })
 
-      const { selectors } = space
+      const { selectors } = models.space 
 
       expect(Object.keys(selectors.foo)).toEqual([
         'get',
         'includes',
+        'count'
       ])
     })
 
     it('includes', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
+      const { models, store } = makeStoreAndDefineState({
         space: {
           foo: Index
         }
       })
 
-      const { actions, selectors } = space
+      const { actions, selectors } = models.space 
 
       const set = [1,2,3]
-      dispatch(actions.foo.set(set))
-      expect(selectors.foo.includes(getState(), { id: 1 })).toEqual(true)
-      expect(selectors.foo.includes(getState(), { id: 4 })).toEqual(false)
+      store.dispatch(actions.foo.set(set))
+      expect(selectors.foo.includes(store.getState(), { id: 1 })).toEqual(true)
+      expect(selectors.foo.includes(store.getState(), { id: 4 })).toEqual(false)
     })
 
     it('get', () => {
-      const { space, dispatch, getState } = makeStoreAndDefineState({
+      const { models, store } = makeStoreAndDefineState({
         space: {
           foo: Index
         }
       })
 
-      const { actions, selectors } = space
+      const { actions, selectors } = models.space 
 
       const set = [1,2,3]
-      dispatch(actions.foo.set(set))
-      expect(selectors.foo.get(getState())).toEqual(set)
-    })
-  })
-
-  it('nested', () => {
-    const { space, dispatch, getState } = makeStoreAndDefineState({
-      space: {
-        foo: Index
-      }
+      store.dispatch(actions.foo.set(set))
+      expect(selectors.foo.get(store.getState())).toEqual(set)
     })
 
-    const { actions, selectors } = space
-
-    expect(selectors.foo.get(getState())).toEqual([])
-    const set = [1, 2, 3]
-    dispatch(actions.foo.set(set))
-    expect(selectors.foo.get(getState())).toEqual(set)
-  })
-
-  it('double nested', () => {
-    const { space, dispatch, getState } = makeStoreAndDefineState({
-      space: {
-        foo: {
-          bar: Index
+    it('count', () => {
+      const { models, store } = makeStoreAndDefineState({
+        space: {
+          foo: Index
         }
-      }
+      })
+
+      const { actions, selectors } = models.space 
+
+      const set = [1,2,3]
+      store.dispatch(actions.foo.set(set))
+      expect(selectors.foo.count(store.getState())).toEqual(3)
     })
-
-    const { actions, selectors } = space
-
-    const set = [1, 2, 3]
-    expect(selectors.foo.bar.get(getState())).toEqual([])
-    dispatch(actions.foo.bar.set(set))
-    expect(selectors.foo.bar.get(getState())).toEqual(set)
   })
 })

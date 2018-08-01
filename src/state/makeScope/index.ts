@@ -5,7 +5,7 @@ import { ActionCreator } from 'state/types/actionCreator'
 
 export interface IReducerAndAction<P> {
   reducer: Reducer<{}>
-  action: ActionCreator<P>
+  action: ActionCreator
 }
 
 export const makeScope =
@@ -31,7 +31,7 @@ export const makeScope =
 
   return {
     reducer,
-    action: createAction<P>(type),
+    action: createAction(type),
   }
 }
 
