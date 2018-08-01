@@ -65,20 +65,19 @@ const { actions, reducers, selectors } = createReducers({
   + [FAQ](#faq)
   + [Contributing](#contributing)
  
-## Overview
+# Overview
 Inspired by lessons learned building enterprise UIs, Redux Enterprise is a library that **abstracts common Redux reducer patterns into a library of definitions** that can be used to automatically create completely standardized actions, reducers, and selectors.
 
 > Redux Enterprise is 100% compatible with any existing Redux-based project.
 
-### Objective
+## Objective
 To help organizations scale development, maintainability, and velocity on Redux-based projects.
 
-### Whats included?
+## Whats included?
 - Library of reusable reducer definitions (Flag, Field, Collection, Index, etc)
 - Automatically generated actions, reducers, and selectors.
 - In-browser Redux-REPL for interacting with running application.
 
-## Get up and running in 5 minutes!
 
 ## Installation
 ```sh
