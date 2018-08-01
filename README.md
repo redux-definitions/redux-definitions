@@ -61,7 +61,7 @@ const { actions, reducers, selectors } = createReducers({
    + [Custom Reducer Definitions](#custom-reducer-definitions)
 + [**Appendix**](#appendix)
   + [Typescript](#typescript)
-  + [Boilerplates & Examples](#boilerplates--examples)
+  + [Examples](#examples)
   + [FAQ](#faq)
   + [Contributing](#contributing)
  
