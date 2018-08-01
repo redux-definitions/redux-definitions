@@ -11,16 +11,17 @@
   <a href="https://www.npmjs.com/package/redux-enterprise"><img src="https://img.shields.io/npm/v/redux-enterprise.svg" alt="npm version"></a>
   <a href="https://spectrum.chat/redux-enterprise"><img src="https://withspectrum.github.io/badge/badge.svg" alt="Join the community on Spectrum"></a>
   <a href="https://www.npmjs.com/package/redux-enterprise"><img src="https://img.shields.io/npm/dm/redux-enterprise.svg" alt="npm downloads"></a>
-  <a href="http://www.typescriptlang.org/index.html"><img src="https://badges.frapsoft.com/typescript/version/typescript-next.svg" alt="Standard - JavaScript Style Guide"></a>
+  <a href="http://www.typescriptlang.org/index.html"><img src="https://badges.frapsoft.com/typescript/version/typescript-next.svg" alt="Typescript - Next"></a>
 </p>
 
->👋 Welcome! Make sure to explore our [issues](https://github.com/redux-enterprise/redux-enterprise/issues), and feel free to ask any questions you may have!
+>👋 Welcome! [Feel free to ask any questions you may have!](https://spectrum.chat/redux-enterprise)
+>🙏 [**Looking for contributors to help complete TypeScript support!**](#typescript)
 
 <br>
 
 **TLDR**
 
-Automatically create standard reducers, actions, and selectors by describing your core application state using a library of [reducer definitions](#reducer-definitions). _The 12 lines of code below replaces 500+ lines of typical Redux code_
+Automatically create standard reducers, actions, and selectors by describing your core application state using a library of [reducer definitions](#reducer-definitions). _The 14 lines of code below replaces 500+ lines of typical Redux code_
 ```sh
 yarn add redux-enterprise
 ```
@@ -29,8 +30,11 @@ import { createReducers, Definitions } from 'redux-enterprise'
 const { Collection, Flag, Field, Index } = Definitions
 
 const { actions, reducers, selectors } = createReducers({
-  todos: Collection,
-  selectedIds: Index,
+  todoList: {
+    todos: Collection,
+    completedIds: Index,
+    selectedIds: Index,
+  },
   todoEditor: {
     isEditing: Flag,
     editingId: Field
@@ -47,10 +51,7 @@ const { actions, reducers, selectors } = createReducers({
   + [Actions](#actions)
   + [Selectors](#selectors)
   + [REPL](#redux-repl)
-  + [InitialState & Parameters](#initialstate--parameters)
-  + [Custom reducer functions](#custom-reducer-functions)
-    + [Nesting & scoping](#nesting--scoping)
-  + [Shortcut globals](#shortcut-globals)
+  + [InitialState](#initialstate)
  + [**Reducer Definitions**](#reducer-definitions)
    + [Collection](#collection)
    + [Field](#field)
@@ -64,10 +65,10 @@ const { actions, reducers, selectors } = createReducers({
   + [Contributing](#contributing)
  
 ## Overview
-Inspired by lessons learned building enterprise UIs, Redux Enterprise is a library that **abstracts common Redux reducer patterns into a library of reusable reducer definitions** that can be composed to describe and automatically create completely standardized actions, reducers, and selectors.
+Inspired by lessons learned building enterprise UIs, Redux Enterprise is a library that **abstracts common Redux reducer patterns into a library of definitions** that can be used to describe and automatically create completely standardized actions, reducers, and selectors.
 
 ### Whats the mission?
-To help teams and organizations scale development, maintainability, and velocity on Redux-based projects.
+To help organizations scale development, maintainability, and velocity on Redux-based projects.
 
 > Redux Enterprise is 100% compatible with any existing Redux-based project.
 
@@ -91,15 +92,18 @@ import { createReducers, Definitions } from 'redux-enterprise'
 const { Collection, Flag, Field, Index } = Definitions
 
 const { reducers } = createReducers({
-  todos: Collection,
-  selected: Index,
+  todoList: {
+    todos: Collection,
+    completedIds: Index,
+    selectedIds: Index,
+  },
   todoEditor: {
     isEditing: Flag,
     editingId: Field
   }
 })
-// `reducers` contains three reducers:
-// { todos: fn, todoEditor: fn, selected: fn }
+// `reducers` contains two reducers:
+// { todoList: fn, todoEditor: fn }
 
 export { reducers }
 ```
@@ -141,8 +145,11 @@ import { createReducers, Definitions } from 'redux-enterprise'
 const { Collection, Flag, Field, Index } = Definitions
 
 const { actions, reducers, selectors } = createReducers({
-  todos: Collection,
-  selected: Index,
+  todoList: {
+    todos: Collection,
+    completedIds: Index,
+    selectedIds: Index
+  },
   todoEditor: {
     isEditing: Flag,
     editingId: Field
@@ -155,24 +162,24 @@ const { actions, reducers, selectors } = createReducers({
 Standardized [FSA](https://github.com/redux-utilities/flux-standard-action) `actions` are returned from `createReducers` calls. The reducer definition determines what actions are available. For example a `Collection` has actions `create`, `upsert`, `remove`, `set`, `reset`, `clear`. Learn more about what actions are available and what their expected payloads look like the [reducer definitions](#reducer-definitions) section.
 
 ```js
-const { todos, todoEditor, notifications } = actions
+const { todoList, todoEditor } = actions
 
-todos.create({ id: 13, message: 'Do thee laundry' })
-// { type: 'todos/create', payload: { id: 13, message: 'Do thee laundry' } }
+todoList.todos.create({ id: '1', message: 'Do thee laundry' })
+// { type: 'todos/create', payload: { id: '1', message: 'Do thee laundry' } }
 
-todos.update({ id: 13, message: 'Do the laundry' })
-// { type: 'todos/update', payload: { id: 13, message: 'Do the laundry' } }
+todosList.todos.update({ id: '1', message: 'Do the laundry' })
+// { type: 'todos/update', payload: { id: '1', message: 'Do the laundry' } }
 
-todoEditor.editingId.set(37)
-// { type: 'todoEditor/editingId/set', payload: 37 }
+todoEditor.editingId.set('1')
+// { type: 'todoEditor/editingId/set', payload: '1' }
 
-todos.remove(37)
-// { type: 'todos/remove', payload: 37 }
+todoList.todos.remove('1')
+// { type: 'todos/remove', payload: '1' }
 
-selected.add(13)
-// { type: 'selected/add', payload: 13 } }
+todoList.selectedIds.add('1')
+// { type: 'selected/add', payload: '1' } }
 
-selected.clear()
+todoList.selectedIds.clear()
 // { type: 'selected/clear' }
 ```
 
@@ -207,13 +214,18 @@ const store = createStore(rootReducer, initialState, applyMiddleware(..))
 startRepl(store)
 ```
 
-## InitialState & Parameters
-Reducer definitions can also be invoked to provide any parameters. All definitions accept `initialState`.
+## InitialState
+All reducer definitions accept `initialState` values.
 ```js
 import { createReducers, Definitions } from 'redux-enterprise'
 const { Collection, Flag, Field } = Definitions
 
 const { reducers } = createReducers({
+  todoList: {
+    todos: Collection({
+	  initialState: [{ id: '1', message: 'Do the laundry' }]
+    })
+  },
   todoEditor: {
     isEditing: Flag({
 	  initialState: true
@@ -225,61 +237,11 @@ const { reducers } = createReducers({
 })
 ```
 
-## Custom reducer functions
-Redux Enterprise also allows you to create custom reducer functions. If a function is added anywhere in the reducer map, `createReducers` passes the function the reducer's `state` and incoming `action`:
-```js
-import { createReducers, Definitions } from 'redux-enterprise'
-const { Collection, Flag, Field } = Definitions
-
-const { reducers, actions } = createReducers({
-  todoEditor: {
-    isEditing: Flag,
-    editingId: Field,
-    customReducerFunction: (state, action) => {
-      // do anything I please with the `todoEditor` reducer
-      return state
-    }
-  }
-})
-
-actions.todoEditor.customReducerFunction('morty')
-// { type: 'todoEditor/customReducerFunction', payload: 'morty' }
-```
-As shown above, the corresponding action creator is available on the actions object.
-
-### Nesting & scoping
-If you nest a function, the `state` passed in will be scoped to that level of state automatically:
-```js
-const { reducers } = createReducers({
-  nested: {
-    stuff: {
-      someId: Field,
-      aontherId: Field,
-      nestedCustomReducerFunction: (state, action) => {
-        // here `state` is scoped to `nested.stuff`,
-        // so we are reducing: ({ someId, anotherId }, action)
-        return state
-      }
-    }
-  }
-})
-```
-
-## Shortcut globals
-For your convenience, Redux Enterprise also exports `Actions` and `Selectors` objects which hold actions and selectors from all `createReducers` calls.
-
-```js
-import { Actions, Selectors } from 'redux-enterprise'
-
-Actions.todoEditor.editingId.set(37)
-// { type: 'todoEditor/editingId/set', payload: 37 }
-```
-
 # Reducer Definitions
-Redux Enterprise provides a handful of reducer definitions that can be found by importing the `Definitions` object. Reducer definitions aim to be low-level enough to be generic but high level enough to abstract state patterns common to all applications.
+Redux Enterprise provides an assortment of reducer definitions that can be found by importing the `Definitions` object. Reducer definitions aim to be low-level enough to be generic but high level enough to abstract state patterns common to all applications.
 
 ## Collection
-Collection of `Entities`. `Entities` are objects with `id` properties. Entities can take any form as long as they at least have an id. Collection is internally stored in normalized form: `{ ids, entities }` where `ids` is an array of unique `id` keys and `entities` is an `id`-based lookup map.
+Collection creates a reducer that stores `Entities`. `Entities` are objects with `id` properties. Entities can take any form as long as they at least have an id. 
 
 `Id = string`
 `Entity = { id: Id }`
@@ -300,7 +262,7 @@ Takes an Entity and updates it in the collection. Entity is not added unless an 
 `upsert(payload: Entity)`
 Takes an Entity and updates it in the collection. The entity will be added if an entity with the `id` does not exist.
 
-`remove(payload: Id)`
+`remove(payload: Id|Id[])`
 Takes an Id and removes any existing entity with the `id`.
 
 ### Selectors
@@ -313,11 +275,14 @@ Returns array of ids.
 `find(state: {}, params: { id: Id }): Entity`
 Returns entity that matches id parameter.
 
+`count(state: {}) => number`
+Returns the number of entities in the collection.
+
 `get(state: {}) => Normalized`
-Returns the full underlying data structure of ids and entities.
+Returns the full underlying data structure which takes the form: `{ ids, entities }` where `ids` is an array of unique `id` keys and `entities` is an `id`-based lookup map.of ids and entities.
 
 ## Field
-A basic value of any type.
+Field creates a simple reducer that stores any value and comes with action types that set and clear.
 
 ### Actions
 `set(payload: any)`
@@ -334,7 +299,7 @@ Returns the value.
 Returns a boolean specifying whether a value is set.
 
 ## Flag
-A boolean value that can be toggled.
+Flag creates a reducer that stores a boolean value and comes with actions for setting and toggling.
 
 ### Actions
 `set(payload?: boolean)`
@@ -351,7 +316,7 @@ Toggles current value.
 Returns the current boolean value.
 
 ## Index
-A set of unique identifying values.
+Index creates a reducer that stores a unique set of ids. Ids can be added, removed, and toggled. An Index is perfect for 
 
 `Id = string`
 
@@ -365,11 +330,11 @@ Resets entire Index to empty.
 `toggle(payload: Id)`
 Takes an identifier and toggles its presence in the Index.
 
-`add(payload: Id)`
-Takes an identifier and ensures its presence in the Index.
+`add(payload: Id|Id[])`
+Takes an identifier(s) and ensures its presence in the Index.
 
-`remove(payload: Id)`
-Takes an identifier and ensures its removal from the Index.
+`remove(payload: Id|Id[])`
+Takes an identifier(s) and ensures its removal from the Index.
 
 ### Selectors
 `get(state: {}): Ids[]`
@@ -378,17 +343,15 @@ Returns the entire Index array.
 `includes(state: {}, { id: Id }): boolean`
 Takes id parameter and checks whether the identifier is present in the Index, returns boolean value.
 
-### Example Usage
-- Keeping track of what Todos are multi-selected.
-- What emails are unread.
-
+`count(state: {}) => number`
+Returns the number of Ids in the Index.
 
 ## Custom Reducer Definitions
-Create new Reducer Definitions with the `createDefinition` function. The resulting object is a valid reducer definition that can be used.
+Create new reducer definitions with the `createDefinition` function. The resulting object is a valid definition that can be used.
 ```js
 import { createDefinition } from 'redux-enterprise'
 
-const Morty = createDefinition({
+const SpecialField = createDefinition({
   defaultState: 'morty',
   reducers: {
     set: (state, { payload }) => payload,
@@ -399,55 +362,31 @@ const Morty = createDefinition({
   }
 })
 
-export Morty
+export { SpecialField }
 ```
-<details>
-<summary><b>Typescript version</b></summary>
-
-```ts
-import { createDefinition } from 'redux-enterprise'
-
-type State = string
-
-const Morty = createDefinition({
-  defaultState: 'morty' as State,
-  reducers: {
-    set: (state: State, { payload }: { payload: string }): State => payload,
-    clear: (state: State) => undefined,
-  },
-  selectors: {
-    get: (state: State): State => state
-  }
-})
-
-export Morty
-```
-</p>
-</details>
 
 ### Usage
 ```js
-import { createDefinition } from 'redux-enterprise'
-import { Morty } from './morty'
+import { createReducers } from 'redux-enterprise'
+import { SpecialField } from './specialField'
 
 const { reducers } = createReducers({
-  rick: Morty
+  people: {
+	rick: SpecialField
+  }
 })
 ```
 
 # Appendix
 
 ## Typescript
-Redux Enterprise is written in Typescript and comes with type declarations.
+Redux Enterprise is written in TypeScript. Due to the generative nature of the library fully typed actions, reducers, and selectors have proven difficult to implement. The goal is to get to the point where all actions and reducers have fully typed payloads ✨ Contributions from anyone with ideas on how to achieve this are very appreciated! Feel free to open a Github [issue](https://github.com/redux-enterprise/redux-enterprise/issues/new) or start a conversation on [Spectrum](https://spectrum.chat/redux-enterprise) with any thoughts or ideas.
 
-Coming in version 0.0.7 all actions returned from `createReducers` will have typed payloads! ✨
-
-## Boilerplates & Examples
+## Examples
 - [NextJS](https://github.com/redux-enterprise/redux-enterprise-nextjs-example)
 - NextJS Typescript  [Help with this](https://github.com/redux-enterprise/redux-enterprise/issues/17)
 - Create React App [Help with this](https://github.com/redux-enterprise/redux-enterprise/issues/16)
 - Create React App Typescript [Help with this](https://github.com/redux-enterprise/redux-enterprise/issues/18)
-
 
 PRs with other examples are appreciated!
 
