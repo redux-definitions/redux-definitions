@@ -173,13 +173,13 @@ const { Collection, Flag, Field } = Definitions
 const { reducers } = createReducers({
   todoList: {
     todos: Collection({
-	  initialState: [{ id: '1', message: 'Do the laundry' }]
+      initialState: [{ id: '1', message: 'Do the laundry' }]
     })
   },
   todoEditor: {
     isEditing: Flag({
-	  initialState: true
-	}),
+      initialState: true
+    }),
     editingId: Field({
       initialState: 'fooId'
     })
