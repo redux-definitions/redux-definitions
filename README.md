@@ -15,6 +15,7 @@
 </p>
 
 >👋 Welcome! [Feel free to ask any questions you may have!](https://spectrum.chat/redux-enterprise)
+
 >🙏 [**Looking for contributors to help complete TypeScript support!**](#typescript)
 
 <br>
@@ -65,17 +66,17 @@ const { actions, reducers, selectors } = createReducers({
   + [Contributing](#contributing)
  
 ## Overview
-Inspired by lessons learned building enterprise UIs, Redux Enterprise is a library that **abstracts common Redux reducer patterns into a library of definitions** that can be used to describe and automatically create completely standardized actions, reducers, and selectors.
+Inspired by lessons learned building enterprise UIs, Redux Enterprise is a library that **abstracts common Redux reducer patterns into a library of definitions** that can be used to automatically create completely standardized actions, reducers, and selectors.
+
+> Redux Enterprise is 100% compatible with any existing Redux-based project.
 
 ### Whats the mission?
 To help organizations scale development, maintainability, and velocity on Redux-based projects.
 
-> Redux Enterprise is 100% compatible with any existing Redux-based project.
-
 ### Whats included?
 - Library of reusable reducer definitions (Flag, Field, Collection, Index, etc)
-- Standard way to describe, name, scope, update, and derive application state
-- In-browser Redux-REPL for interacting with running application
+- Automatically generated actions, reducers, and selectors.
+- In-browser Redux-REPL for interacting with running application.
 
 ## Get up and running in 5 minutes!
 
