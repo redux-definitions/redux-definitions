@@ -373,7 +373,7 @@ import { SpecialField } from './specialField'
 
 const { reducers } = createReducers({
   people: {
-	rick: SpecialField
+    rick: SpecialField
   }
 })
 ```
