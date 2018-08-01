@@ -44,9 +44,9 @@ const { actions, reducers, selectors } = createReducers({
 ```
 
 + [**Overview**](#overview)
-  + [Whats the mission?](#whats-the-mission)
+  + [Objective](#objective)
   + [Whats included?](#whats-included)
-+ [**👇🏽Get up and running in 5 minutes!**](#get-up-and-running-in-5-minutes)
++ [**Installation**](#installation)
 + [**Concepts**](#concepts)
   + [createReducers](#createreducers)
   + [Actions](#actions)
@@ -70,7 +70,7 @@ Inspired by lessons learned building enterprise UIs, Redux Enterprise is a libra
 
 > Redux Enterprise is 100% compatible with any existing Redux-based project.
 
-### Whats the mission?
+### Objective
 To help organizations scale development, maintainability, and velocity on Redux-based projects.
 
 ### Whats included?
@@ -80,62 +80,10 @@ To help organizations scale development, maintainability, and velocity on Redux-
 
 ## Get up and running in 5 minutes!
 
-### Install the package
+## Installation
 ```sh
 yarn add redux-enterprise
 ```
-
-### Model your state
-Use Redux Enterprise's reducer definitions to model your reducers. Definitions can be nested to provide logical grouping and scope. Create a new file (eg: `reducers.js`) and paste the code below into your project. 
-
-```js
-import { createReducers, Definitions } from 'redux-enterprise'
-const { Collection, Flag, Field, Index } = Definitions
-
-const { reducers } = createReducers({
-  todoList: {
-    todos: Collection,
-    completedIds: Index,
-    selectedIds: Index,
-  },
-  todoEditor: {
-    isEditing: Flag,
-    editingId: Field
-  }
-})
-// `reducers` contains two reducers:
-// { todoList: fn, todoEditor: fn }
-
-export { reducers }
-```
-
-### Add the new reducers
-Import the `reducers` from the call to `createReducers` and add them into your `combineReducers` call.
-```js
-import { reducers } from './reducers.js'
-
-const rootReducer = combineReducers({
-  existingReducer,
-  anotherReducer,
-  ...reducers // <-- add them
-})
-```
-
-### Setup the REPL with your store
-Right after your call to Redux's `createStore` start the Redux Enterprise REPL:
-```js
-import { startRepl } from 'redux-enterprise'
-
-...
-
-const store = createStore(rootReducer, initialState, applyMiddleware(..))
-
-startRepl(store)
-```
-> Note: when server-side rendering this call will be a no-op.
-
-### All done! Try things in your browser console
-<img  width="100%" src="https://raw.githubusercontent.com/redux-enterprise/redux-enterprise/typescript/images/test-repl.png" />
 
 # Concepts
 
@@ -187,14 +135,15 @@ todoList.selectedIds.clear()
 > ⚠️ Remember that these are action creators. The actions must be dispatched just like any other actions!
 
 ## Selectors
-Selectors are also returned from `createReducers`. For example a `Collection` has `items`, `find`, and `ids`:
+Selectors are also returned from `createReducers`. For example a `Collection` has `all`, `find`, `ids`, and `count`:
 ```js
 const { todos, todoEditor, selected } = selectors
 
-todos.items(state) // returns a collection of todos
+todos.all(state) // returns a collection of todos
 todos.find(state, { id }) // returns a todo with matching `id`
 todos.ids(state) // returns an array of ids
 ```
+
 > These selectors are perfect for feeding into [Reselect](https://github.com/reactjs/reselect)
 
 ## Redux-REPL
@@ -214,6 +163,7 @@ const store = createStore(rootReducer, initialState, applyMiddleware(..))
 
 startRepl(store)
 ```
+> Note: when server-side rendering this call will be a no-op.
 
 ## InitialState
 All reducer definitions accept `initialState` values.
