@@ -1,6 +1,6 @@
 {
   "name": "redux-enterprise",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Library for organizing and scaling redux based projects",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -64,6 +64,7 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
+    "testURL": "http://localhost",
     "globals": {
       "ts-jest": {
         "enableTsDiagnostics": true
