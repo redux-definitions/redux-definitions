@@ -107,7 +107,7 @@ const { actions, reducers, selectors } = createReducers({
 > Each top-level key in the `createReducers` schema generates a separate reducer.
 
 ## Actions
-Standardized [FSA](https://github.com/redux-utilities/flux-standard-action) `actions` are returned from `createReducers` calls. The reducer definition determines what actions are available. For example a `Collection` has actions `create`, `upsert`, `remove`, `set`, `reset`, `clear`. Learn more about what actions are available and what their expected payloads look like the [reducer definitions](#reducer-definitions) section.
+Action creator functions are returned from `createReducers` calls as `actions`. The reducer definition determines what actions are available. For example a `Collection` has actions `create`, `upsert`, `remove`, `set`, `reset`, `clear`. Learn more about what actions are available and what their expected payloads look like the [reducer definitions](#reducer-definitions) section.
 
 ```js
 const { todoList, todoEditor } = actions
@@ -131,16 +131,14 @@ todoList.selectedIds.clear()
 // { type: 'selected/clear' }
 ```
 
-> ⚠️ Remember that these are action creators. The actions must be dispatched just like any other actions!
-
 ## Selectors
 Selectors are also returned from `createReducers`. For example a `Collection` has `all`, `find`, `ids`, and `count`:
 ```js
-const { todos, todoEditor, selected } = selectors
+const { todoList, todoEditor } = selectors
 
-todos.all(state) // returns a collection of todos
-todos.find(state, { id }) // returns a todo with matching `id`
-todos.ids(state) // returns an array of ids
+todoList.todos.all(state) // returns a collection of todos
+todoList.todos.find(state, { id }) // returns a todo with matching `id`
+todoList.todos.ids(state) // returns an array of ids
 ```
 
 > These selectors are perfect for feeding into [Reselect](https://github.com/reactjs/reselect)
@@ -148,7 +146,7 @@ todos.ids(state) // returns an array of ids
 ## Redux-REPL
 When in dev-mode Redux Enterprise automatically provides a REPL-like experience in the browser console for dispatching pre-bound actions and selectors. Actions and selectors from all `createReducers` calls are available in the REPL.
 
-<img  width="100%" src="https://raw.githubusercontent.com/redux-enterprise/redux-enterprise/typescript/images/repl.gif" />
+<img  width="100%" src="https://raw.githubusercontent.com/redux-enterprise/redux-enterprise/master/images/repl.gif" />
 
 > For your convenience unlike normal actions and selectors, calls to actions and selectors in the browser console are pre-bound to `store.dispatch` and `store.getState`. Remember, only in the console!
 
