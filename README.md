@@ -44,7 +44,7 @@ const { actions, reducers, selectors } = createReducers({
 ```
 Use the browser console  to call actions and selectors against the running Redux application.
   
-<img  width="100%" src="https://raw.githubusercontent.com/redux-enterprise/redux-enterprise/master/images/repl-and-app.gif" />
+<img  width="100%" src="https://raw.githubusercontent.com/redux-enterprise/redux-enterprise/master/images/repl-and-app-small.gif" />
 
 # Table of Contents
 + [**Overview**](#overview)
@@ -150,7 +150,7 @@ todoList.todos.ids(state) // returns an array of ids
 ## Redux-REPL
 When in dev-mode Redux Enterprise automatically provides a REPL-like experience in the browser console for dispatching pre-bound actions and selectors. Actions and selectors from all `createReducers` calls are available in the REPL.
 
-<img  width="100%" src="https://raw.githubusercontent.com/redux-enterprise/redux-enterprise/master/images/repl-and-app.gif" />
+<img  width="100%" src="https://raw.githubusercontent.com/redux-enterprise/redux-enterprise/master/images/repl-and-app-small.gif" />
 
 > For your convenience unlike normal actions and selectors, calls to actions and selectors in the browser console are pre-bound to `store.dispatch` and `store.getState`. Remember, only in the console!
 
