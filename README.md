@@ -172,7 +172,11 @@ const { reducers } = createReducers({
   todoList: {
     todos: Collection({
       initialState: [{ id: '1', message: 'Do the laundry' }]
-    })
+    }),
+    completedIds: Index({
+      initialState: ['1']
+    }),
+    selectedIds: Index
   },
   todoEditor: {
     isEditing: Flag({
@@ -328,7 +332,7 @@ const { reducers } = createReducers({
 # Appendix
 
 ## Typescript
-Redux Enterprise is written in TypeScript. Due to the generative nature of the library fully typed actions, reducers, and selectors have proven difficult to implement. The goal is to get to the point where all actions and reducers have fully typed payloads ✨ Contributions from anyone with ideas on how to achieve this are very appreciated! Feel free to open a Github [issue](https://github.com/redux-enterprise/redux-enterprise/issues/new) or start a conversation on [Spectrum](https://spectrum.chat/redux-enterprise) with any thoughts or ideas.
+Redux Enterprise is written in TypeScript. Due to the generative nature of the library fully typed actions, reducers, and selectors have proven difficult to implement. The goal is to get to the point where all actions and reducers have fully typed payloads. ✨Contributions from anyone with ideas on how to achieve this are very appreciated! Feel free to open a Github [issue](https://github.com/redux-enterprise/redux-enterprise/issues/new) or start a conversation on [Spectrum](https://spectrum.chat/redux-enterprise) with any thoughts or ideas.
 
 ## Examples
 - [NextJS](https://github.com/redux-enterprise/redux-enterprise-nextjs-example)
