@@ -42,7 +42,9 @@ const { actions, reducers, selectors } = createReducers({
   }
 })
 ```
-Use the browser console  to call actions and selectors against the running Redux application.
+**BONUS**
+
+Use the browser console to call actions and selectors against the running Redux application.
   
 <img  width="100%" src="https://raw.githubusercontent.com/redux-enterprise/redux-enterprise/master/images/repl-and-app-small.gif" />
 
