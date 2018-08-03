@@ -65,6 +65,7 @@ Use the browser console to call actions and selectors against the running Redux 
    + [Flag](#flag)
    + [Index](#index)
    + [Custom Reducer Definitions](#custom-reducer-definitions)
++ [**Roadmap**](#roadmap)
 + [**Appendix**](#appendix)
   + [Typescript](#typescript)
   + [Examples](#examples)
@@ -334,6 +335,16 @@ const { reducers } = createReducers({
   }
 })
 ```
+
+# Roadmap
+1. Full TypeScript support
+   - typed action and selector maps
+   - typed action and selector payloads
+2. Support for adding additional user created actions to the REPL
+   - Helpful for making existing actions/reducers accessible by the REPL
+3. createSagas helper for creating actions that initiate sagas and add actions to REPL
+4. Research how to best add async saga support within definitions
+   - Most asynchronous business logic will involve multiple reducers and therefore should not be associated with a single reducer or definition. Business logic should use createSagas and live in its own user defined directory/file. That being said the library should support adding basic asynchronous code to definitions.
 
 # Appendix
 
