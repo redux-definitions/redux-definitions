@@ -17,7 +17,7 @@ export const getFormattedInitialState = <State>(params: IGetFormattedInitialStat
     defaultState,
   } = params
 
-  const formattedInitialState = initialState ?
+  const formattedInitialState = initialState !== undefined ?
       transformInitialState(initialState) : defaultState
 
   if (!isObject(formattedInitialState) && topLevel) {
