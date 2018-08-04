@@ -1,24 +1,26 @@
 import { makeError } from '../../utils'
 import { isObject } from '../utils'
 
-export type TransformInitialState<State> = (s: any) => State
-export interface IGetFormattedInitialState<State> {
+export type TransformInitialState<LocalState> = (state: any, params: { namespacing: string[] }) => LocalState
+export interface IGetFormattedInitialState<LocalState> {
   initialState: any
-  transformInitialState?: TransformInitialState<State>
+  transformInitialState?: TransformInitialState<LocalState>
   topLevel: boolean
-  defaultState: State
+  namespacing: string[]
+  defaultState: LocalState
 }
 
-export const getFormattedInitialState = <State>(params: IGetFormattedInitialState<State>) => {
+export const getFormattedInitialState = <LocalState>(params: IGetFormattedInitialState<LocalState>) => {
   const {
     initialState,
-    transformInitialState = (((s) => s) as TransformInitialState<State>),
+    transformInitialState = (((s) => s) as TransformInitialState<LocalState>),
     topLevel,
+    namespacing,
     defaultState,
   } = params
 
   const formattedInitialState = initialState !== undefined ?
-      transformInitialState(initialState) : defaultState
+      transformInitialState(initialState, { namespacing }) : defaultState
 
   if (!isObject(formattedInitialState) && topLevel) {
     throw makeError('This Definition cannot be used at the reducer top level. Redux reducers do not support entire state being this state value.')

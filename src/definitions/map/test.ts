@@ -34,16 +34,33 @@ describe('map', () => {
 
       const { actions, selectors } = models.space
 
+      const val = { pickle: 'rick' }
+      const val2 = { morty: 'wew' }
       expect(selectors.foo.get(store.getState())).toEqual({})
-      store.dispatch(actions.foo.set({ pickle: 'rick' }))
+      store.dispatch(actions.foo.set(val))
+      expect(selectors.foo.get(store.getState())).toEqual(val)
+      store.dispatch(actions.foo.set(val2))
+      expect(selectors.foo.get(store.getState())).toEqual(val2)
+    })
+
+    it('update', () => {
+      const { models, store } = makeStoreAndDefineState({
+        space: {
+          foo: Map
+        }
+      })
+
+      const { actions, selectors } = models.space
+
+      const val = { pickle: 'rick' }
+      const val2 = { morty: 'wew' }
+      expect(selectors.foo.get(store.getState())).toEqual({})
+      store.dispatch(actions.foo.update(val))
+      expect(selectors.foo.get(store.getState())).toEqual(val)
+      store.dispatch(actions.foo.update(val2))
       expect(selectors.foo.get(store.getState())).toEqual({
-        pickle: 'rick'
-      })
-      expect(selectors.foo.get(store.getState(), 'pickle')).toEqual({
-        pickle: 'rick'
-      })
-      expect(selectors.foo.get(store.getState(), ['pickle'])).toEqual({
-        pickle: 'rick'
+        ...val,
+        ...val2
       })
     })
 
@@ -96,6 +113,21 @@ describe('map', () => {
       expect(selectors.foo.get(store.getState(), 'foo')).toEqual({ foo: 'bar' })
       expect(selectors.foo.get(store.getState(), ['foo', 'beep'])).toEqual(val)
     })
+
+    it('keys', () => {
+      const { models, store } = makeStoreAndDefineState({
+        space: {
+          foo: Map
+        }
+      })
+
+      const { actions, selectors } = models.space
+
+      const val = { foo: 'bar', beep: 'boop' }
+      store.dispatch(actions.foo.set(val))
+
+      expect(selectors.foo.keys(store.getState())).toEqual(Object.keys(val))
+    })
   })
 
   describe('initialState', () => {
@@ -125,6 +157,16 @@ describe('map', () => {
       const { selectors } = models.space
 
       expect(selectors.foo.get(store.getState())).toEqual({ foo: 'bar' })
+    })
+
+    it('invalid', () => {
+      expect(() => makeStoreAndDefineState({
+        space: {
+          foo: Map({
+            initialState: 'bar'
+          })
+        }
+      })).toThrowError()
     })
   })
 })

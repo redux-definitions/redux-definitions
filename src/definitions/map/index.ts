@@ -1,7 +1,7 @@
 import { Action } from 'redux-actions'
 import { createDefinition } from 'state/createDefinition'
 import { isObject, pick } from 'lodash'
-import { logWarning } from 'utils'
+import { logWarning, makeError } from 'utils'
 
 type State = {}
 
@@ -15,6 +15,12 @@ export default createDefinition({
         ...payload
       }
     },
+  },
+  transformInitialState: (state, { namespacing }) => {
+    if (!isObject(state)) {
+      throw makeError(`Definition Map at ${namespacing.join('.')} initialState invalid`)
+    }
+    return state
   },
   defaultState: {},
   selectors: {
