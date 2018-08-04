@@ -1,9 +1,9 @@
 import { clearAllReducers, Definitions } from '../../index'
 import { makeStoreAndDefineState } from '../test-utils'
 
-const { Field } = Definitions
+const { Map } = Definitions
 
-describe('field', () => {
+describe('map', () => {
   beforeEach(() => {
     clearAllReducers()
   })
@@ -12,9 +12,7 @@ describe('field', () => {
     it('api', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          foo: Field({
-            initialState: 4
-          })
+          foo: Map
         }
       })
 
@@ -23,37 +21,46 @@ describe('field', () => {
       expect(Object.keys(actions.foo)).toEqual([
         'clear',
         'set',
+        'update'
       ])
     })
 
     it('set', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          foo: Field
+          foo: Map
         }
       })
 
       const { actions, selectors } = models.space
 
-      expect(selectors.foo.get(store.getState())).toEqual(undefined)
-      store.dispatch(actions.foo.set('bar'))
-      expect(selectors.foo.get(store.getState())).toEqual('bar')
+      expect(selectors.foo.get(store.getState())).toEqual({})
+      store.dispatch(actions.foo.set({ pickle: 'rick' }))
+      expect(selectors.foo.get(store.getState())).toEqual({
+        pickle: 'rick'
+      })
+      expect(selectors.foo.get(store.getState(), 'pickle')).toEqual({
+        pickle: 'rick'
+      })
+      expect(selectors.foo.get(store.getState(), ['pickle'])).toEqual({
+        pickle: 'rick'
+      })
     })
 
     it('clear', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          foo: Field
+          foo: Map
         }
       })
 
       const { actions, selectors } = models.space
 
 
-      store.dispatch(actions.foo.set('bar'))
-      expect(selectors.foo.get(store.getState())).toEqual('bar')
+      store.dispatch(actions.foo.set({ foo: 'bar' }))
+      expect(selectors.foo.get(store.getState())).toEqual({ foo: 'bar' })
       store.dispatch(actions.foo.clear())
-      expect(selectors.foo.get(store.getState())).toEqual(undefined)
+      expect(selectors.foo.get(store.getState())).toEqual({})
     })
   })
 
@@ -61,7 +68,7 @@ describe('field', () => {
     it('api', () => {
       const { models } = makeStoreAndDefineState({
         space: {
-          foo: Field
+          foo: Map
         }
       })
 
@@ -69,37 +76,25 @@ describe('field', () => {
 
       expect(Object.keys(selectors.foo)).toEqual([
         'get',
-        'isSet',
+        'keys'
       ])
-    })
-
-    it('isSet', () => {
-      const { models, store } = makeStoreAndDefineState({
-        space: {
-          foo: Field
-        }
-      })
-
-      const { actions, selectors } = models.space
-
-      store.dispatch(actions.foo.set('bar'))
-      expect(selectors.foo.isSet(store.getState())).toEqual(true)
-      store.dispatch(actions.foo.clear())
-      expect(selectors.foo.isSet(store.getState())).toEqual(false)
     })
 
     it('get', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          foo: Field
+          foo: Map
         }
       })
 
       const { actions, selectors } = models.space
 
-      store.dispatch(actions.foo.set('bar'))
+      const val = { foo: 'bar', beep: 'boop' }
+      store.dispatch(actions.foo.set(val))
 
-      expect(selectors.foo.get(store.getState())).toEqual('bar')
+      expect(selectors.foo.get(store.getState())).toEqual(val)
+      expect(selectors.foo.get(store.getState(), 'foo')).toEqual({ foo: 'bar' })
+      expect(selectors.foo.get(store.getState(), ['foo', 'beep'])).toEqual(val)
     })
   })
 
@@ -107,41 +102,29 @@ describe('field', () => {
     it('default', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          foo: Field
+          foo: Map
         }
       })
 
       const { selectors } = models.space
 
-      expect(selectors.foo.get(store.getState())).toEqual(undefined)
+      expect(selectors.foo.get(store.getState())).toEqual({})
     })
 
-    it('empty string', () => {
+    it('custom', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          foo: Field({
-            initialState: ''
+          foo: Map({
+            initialState: {
+              foo: 'bar'
+            }
           })
         }
       })
 
       const { selectors } = models.space
 
-      expect(selectors.foo.get(store.getState())).toEqual('')
-    })
-
-    it('0', () => {
-      const { models, store } = makeStoreAndDefineState({
-        space: {
-          foo: Field({
-            initialState: 0
-          })
-        }
-      })
-
-      const { selectors } = models.space
-
-      expect(selectors.foo.get(store.getState())).toEqual(0)
+      expect(selectors.foo.get(store.getState())).toEqual({ foo: 'bar' })
     })
   })
 })
