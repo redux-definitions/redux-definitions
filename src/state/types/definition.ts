@@ -21,7 +21,7 @@ export interface IDefinitionReducerMap<LocalState> {
   [name: string]: Reducer<LocalState>
 }
 
-export type DefinitionGenerator = <LocalState>(namespacing: string[], topLevel: boolean) => IModelDefinition<LocalState>
+export type DefinitionGenerator = <LocalState>(namespacing: string[]) => IModelDefinition<LocalState>
 
 export interface ICompiledDefinition {
   generate: DefinitionGenerator
