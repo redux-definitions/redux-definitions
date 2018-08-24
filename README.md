@@ -1,3 +1,4 @@
+
 <br>
 <p align="center"><img height="55px" src="https://raw.githubusercontent.com/redux-enterprise/redux-enterprise/master/images/logo-pad-right.png" alt="🚀"></p>
 <h1 align="center">
@@ -60,9 +61,10 @@ Use the browser console to call actions and selectors against the running Redux 
   + [REPL](#redux-repl)
   + [InitialState](#initialstate)
  + [**Reducer Definitions**](#reducer-definitions)
-   + [Collection](#collection)
    + [Field](#field)
    + [Flag](#flag)
+   + [Record](#record)
+   + [Collection](#collection)
    + [Index](#index)
    + [Custom Reducer Definitions](#custom-reducer-definitions)
 + [**Roadmap**](#roadmap)
@@ -199,6 +201,60 @@ const { reducers } = createReducers({
 # Reducer Definitions
 Redux Enterprise provides an assortment of reducer definitions that can be found by importing the `Definitions` object. Reducer definitions aim to be low-level enough to be generic but high level enough to abstract state patterns common to all applications.
 
+## Field
+Field creates a simple reducer that stores any value and comes with action types that set and clear.
+
+### Actions
+`set(payload: any)`
+Sets Field to payload value.
+
+`clear(void)`
+Clears current Field state.
+
+### Selectors
+`get(state: {}): any`
+Returns the Field state.
+
+`isSet(state: {}): boolean`
+Returns a boolean specifying whether a Field value is set.
+
+## Record
+Record creates a reducer that stores an object. The object can be set or updated (similar to setState).
+
+### Actions
+`set(payload: {})`
+Sets Record state to payload object.
+
+`update(payload: {})`
+Merges payload object into the current Record state.
+
+`clear(void)`
+Clears Record and sets it to an empty object.
+
+### Selectors
+`get(state: {}, keys?: string|string[]): {}`
+Returns the Record object, optionally takes keys to return a subset of the Record.
+
+`keys(state: {}): string[]`
+Returns an array of the Record's existing key names.
+
+## Flag
+Flag creates a reducer that stores a boolean value and comes with actions for setting and toggling.
+
+### Actions
+`set(payload?: boolean)`
+Sets Flag to true or to the optional payload's boolean value.
+
+`unset(void)`
+Sets Flag to false.
+
+`toggle(void)`
+Toggles Flag value.
+
+### Selectors
+`get(state: {}): boolean`
+Returns the current Flag value.
+
 ## Collection
 Collection creates a reducer that stores `Entities`. `Entities` are objects with `id` properties. Entities can take any form as long as they at least have an id. 
 
@@ -210,16 +266,16 @@ Collection creates a reducer that stores `Entities`. `Entities` are objects with
 Takes an array of entities. Resets entire Collection to the payload of entities.
 
 `reset(void)` 
-Resets the entire Collection to empty state.
+Resets the entire Collection to empty.
 
 `create(payload: Entity)` 
-Takes an Entity and adds it to the collection. Warning will be logged if an entity with the `id` already exists.
+Takes an Entity and adds it to the Collection. Warning will be logged if an entity with the `id` already exists.
 
 `update(payload: Entity)`
-Takes an Entity and updates it in the collection. Entity is not added unless an entity with the `id` already exist.
+Takes an Entity and updates it in the Collection. Entity is not added unless an entity with the `id` already exist.
 
 `upsert(payload: Entity)`
-Takes an Entity and updates it in the collection. The entity will be added if an entity with the `id` does not exist.
+Takes an Entity and updates it in the Collection. The entity will be added if an entity with the `id` does not exist.
 
 `remove(payload: Id|Id[])`
 Takes an Id and removes any existing entity with the `id`.
@@ -235,44 +291,10 @@ Returns array of ids.
 Returns entity that matches id parameter.
 
 `count(state: {}) => number`
-Returns the number of entities in the collection.
+Returns the number of entities in the Collection.
 
 `get(state: {}) => Normalized`
 Returns the full underlying data structure which takes the form: `{ ids, entities }` where `ids` is an array of unique `id` keys and `entities` is an `id`-based lookup map.of ids and entities.
-
-## Field
-Field creates a simple reducer that stores any value and comes with action types that set and clear.
-
-### Actions
-`set(payload: any)`
-Takes a value and sets it.
-
-`clear(void)`
-Clears any currently set value.
-
-### Selectors
-`get(state: {}): any`
-Returns the value.
-
-`isSet(state: {}): boolean`
-Returns a boolean specifying whether a value is set.
-
-## Flag
-Flag creates a reducer that stores a boolean value and comes with actions for setting and toggling.
-
-### Actions
-`set(payload?: boolean)`
-Sets value to true or optional payload's boolean value.
-
-`unset(void)`
-Sets value to false.
-
-`toggle(void)`
-Toggles current value.
-
-### Selectors
-`get(state: {}): boolean`
-Returns the current boolean value.
 
 ## Index
 Index creates a reducer that stores a unique set of ids. Ids can be added, removed, and toggled. An Index is perfect for 

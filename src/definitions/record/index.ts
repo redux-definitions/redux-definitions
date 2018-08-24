@@ -26,13 +26,13 @@ export default createDefinition({
   },
   defaultState: {},
   selectors: {
-    get: (state: IState, keys: string|string[]|undefined = undefined): any => {
+    get: (state: IState, keys: string|string[]|undefined = undefined): {} => {
       if (keys) {
         if (isObject(state)) {
           return pick(state, keys)
         }
         logWarning('Record state invalid, `get` returning undefined.')
-        return undefined
+        return {}
       }
       return state
     },
