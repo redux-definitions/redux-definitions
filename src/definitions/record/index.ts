@@ -3,13 +3,15 @@ import { createDefinition } from 'state/createDefinition'
 import { isObject, pick } from 'lodash'
 import { logWarning, makeError } from 'utils'
 
-type State = {}
+interface IState {
+  [key: string]: any
+}
 
 export default createDefinition({
   reducers: {
-    clear: (): State => ({}),
-    set: (state: State, { payload = {} }: Action<{}>): State => payload,
-    update: (state: State, { payload = {} }: Action<{}>): State => {
+    clear: (): IState => ({}),
+    set: (state: IState, { payload = {} }: Action<{}>): IState => payload,
+    update: (state: IState, { payload = {} }: Action<{}>): IState => {
       return {
         ...state,
         ...payload
@@ -18,23 +20,23 @@ export default createDefinition({
   },
   transformInitialState: (state, { namespacing }) => {
     if (!isObject(state)) {
-      throw makeError(`Definition Map at ${namespacing.join('.')} initialState invalid`)
+      throw makeError(`Definition Record at ${namespacing.join('.')} initialState invalid`)
     }
     return state
   },
   defaultState: {},
   selectors: {
-    get: (state: State, keys: string|string[]|undefined = undefined): any => {
+    get: (state: IState, keys: string|string[]|undefined = undefined): any => {
       if (keys) {
         if (isObject(state)) {
           return pick(state, keys)
         }
-        logWarning('Map state invalid, `get` returning undefined.')
+        logWarning('Record state invalid, `get` returning undefined.')
         return undefined
       }
       return state
     },
-    keys: (state: State) => Object.keys(state),
+    keys: (state: IState) => Object.keys(state),
   },
 })
 

@@ -1,9 +1,9 @@
 import { clearAllReducers, Definitions } from '../../index'
 import { makeStoreAndDefineState } from '../test-utils'
 
-const { Map } = Definitions
+const { Record } = Definitions
 
-describe('map', () => {
+describe('record', () => {
   beforeEach(() => {
     clearAllReducers()
   })
@@ -12,7 +12,7 @@ describe('map', () => {
     it('api', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          foo: Map
+          foo: Record
         }
       })
 
@@ -28,7 +28,7 @@ describe('map', () => {
     it('set', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          foo: Map
+          foo: Record
         }
       })
 
@@ -46,7 +46,7 @@ describe('map', () => {
     it('update', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          foo: Map
+          foo: Record
         }
       })
 
@@ -67,7 +67,7 @@ describe('map', () => {
     it('clear', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          foo: Map
+          foo: Record
         }
       })
 
@@ -85,7 +85,7 @@ describe('map', () => {
     it('api', () => {
       const { models } = makeStoreAndDefineState({
         space: {
-          foo: Map
+          foo: Record
         }
       })
 
@@ -100,7 +100,7 @@ describe('map', () => {
     it('get', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          foo: Map
+          foo: Record
         }
       })
 
@@ -117,7 +117,7 @@ describe('map', () => {
     it('keys', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          foo: Map
+          foo: Record
         }
       })
 
@@ -134,7 +134,7 @@ describe('map', () => {
     it('default', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          foo: Map
+          foo: Record
         }
       })
 
@@ -146,7 +146,7 @@ describe('map', () => {
     it('custom', () => {
       const { models, store } = makeStoreAndDefineState({
         space: {
-          foo: Map({
+          foo: Record({
             initialState: {
               foo: 'bar'
             }
@@ -162,7 +162,7 @@ describe('map', () => {
     it('invalid', () => {
       expect(() => makeStoreAndDefineState({
         space: {
-          foo: Map({
+          foo: Record({
             initialState: 'bar'
           })
         }
