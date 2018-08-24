@@ -1,6 +1,3 @@
-import { makeError } from '../../utils'
-import { isObject } from '../utils'
-
 export type TransformInitialState<LocalState> = (state: any, params: { namespacing: string[] }) => LocalState
 export interface IGetFormattedInitialState<LocalState> {
   initialState: any

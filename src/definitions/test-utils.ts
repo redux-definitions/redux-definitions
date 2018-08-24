@@ -3,7 +3,7 @@ import { applyMiddleware, combineReducers, createStore } from 'redux'
 import { Store } from 'redux'
 import { createLogger } from 'redux-logger'
 import { IModelMap } from '../state/types/model'
-import { ISchema } from 'state/types/schema'
+import { ISchema } from '../state/types/schema'
 
 export interface IReturn {
   store: Store<{}>

@@ -1,5 +1,5 @@
 import { createDefinition } from '../../state/createDefinition'
-import { Action } from 'redux-actions';
+import { Action } from 'redux-actions'
 
 const defaultState = {
   error: null,
