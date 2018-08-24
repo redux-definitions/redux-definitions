@@ -1,7 +1,7 @@
 import { Action } from 'redux-actions'
-import { createDefinition } from 'state/createDefinition'
+import { createDefinition } from '../../state/createDefinition'
 import { isObject, pick } from 'lodash'
-import { logWarning, makeError } from 'utils'
+import { logWarning, makeError } from '../../utils'
 
 interface IState {
   [key: string]: any

@@ -1,7 +1,7 @@
-import { IRootActionCreatorMaps, IActionCreatorMap } from 'state/types/actionCreator'
-import { IReducerMap } from 'state/types/reducer'
-import { IRootSelectorMaps } from 'state/types/selector'
-import { IModelMap } from 'state/types/model'
+import { IRootActionCreatorMaps, IActionCreatorMap } from './actionCreator'
+import { IReducerMap } from './reducer'
+import { IRootSelectorMaps } from './selector'
+import { IModelMap } from './model'
 
 export interface IRoot {
   actions: IRootActionCreatorMaps

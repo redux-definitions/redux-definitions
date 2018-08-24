@@ -1,11 +1,11 @@
 import { buildModels } from './buildModels'
 import { Actions, Models, Reducers, Selectors } from './storage'
-import { ISchema } from 'state/types/schema'
-import { IRoot } from 'state/types/root'
-import { IReducerMap } from 'state/types/reducer'
-import { IRootActionCreatorMaps } from 'state/types/actionCreator'
-import { IRootSelectorMaps } from 'state/types/selector'
-import { IModelMap } from 'state/types/model'
+import { ISchema } from './types/schema'
+import { IRoot } from './types/root'
+import { IReducerMap } from './types/reducer'
+import { IRootActionCreatorMaps } from './types/actionCreator'
+import { IRootSelectorMaps } from './types/selector'
+import { IModelMap } from './types/model'
 
 export const createReducers = <Schema extends ISchema>(schema: Schema): IRoot => {
   const localModels: IModelMap = {}

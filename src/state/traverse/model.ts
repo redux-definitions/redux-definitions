@@ -1,10 +1,10 @@
 import { makeScope } from '../makeScope'
-import { ICompiledDefinition } from 'state/types/definition'
+import { ICompiledDefinition } from '../types/definition'
 import {
   IModelFunction,
   IModelDefinition,
   IIntermediateModel
-} from 'state/types/model'
+} from '../types/model'
 import { getActionType } from '../utils'
 
 export const Model = {

@@ -1,4 +1,10 @@
-import { IInvokeDefinitionOptions, ICreateDefinition, IReducerDefinition, ICompiledDefinition, DefinitionGenerator } from 'state/types/definition'
+import {
+  IInvokeDefinitionOptions,
+  ICreateDefinition,
+  IReducerDefinition,
+  ICompiledDefinition,
+  DefinitionGenerator
+} from '../types/definition'
 import { createModelGenerator } from './createModelGenerator'
 import { ISelectorMap } from '../types/selector'
 import { IModelDefinition } from '../types/model'

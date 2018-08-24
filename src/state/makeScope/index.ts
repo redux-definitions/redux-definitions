@@ -1,7 +1,7 @@
 import { update } from 'lodash'
 import { Action, createAction } from 'redux-actions'
-import { Reducer } from 'state/types/reducer'
-import { ActionCreator } from 'state/types/actionCreator'
+import { Reducer } from '../types/reducer'
+import { ActionCreator } from '../types/actionCreator'
 
 export interface IReducerAndAction<P> {
   reducer: Reducer<{}>

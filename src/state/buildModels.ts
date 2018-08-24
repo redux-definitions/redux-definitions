@@ -1,8 +1,8 @@
 import { handleActions } from 'redux-actions'
 import { makeError } from '../utils'
-import { IModel, IIntermediateModel } from 'state/types/model'
+import { IModel, IIntermediateModel } from './types/model'
 import { traverse } from './traverse'
-import { ISchema, IReducerSchema } from 'state/types/schema'
+import { ISchema, IReducerSchema } from './types/schema'
 
 const buildModel = <ReducerSchema extends IReducerSchema>(namespace: string, schema: ReducerSchema): IModel => {
   const {
