@@ -18,8 +18,6 @@ describe('field', () => {
         }
       })
 
-      type Foo = string
-
       const { actions } = models.space
 
       expect(Object.keys(actions.foo)).toEqual([
@@ -84,7 +82,6 @@ describe('field', () => {
 
       const { actions, selectors } = models.space
 
-      const collection = [{ id: '1', name: 'foo' }]
       store.dispatch(actions.foo.set('bar'))
       expect(selectors.foo.isSet(store.getState())).toEqual(true)
       store.dispatch(actions.foo.clear())
@@ -100,10 +97,51 @@ describe('field', () => {
 
       const { actions, selectors } = models.space
 
-      const collection = [{ id: '1', name: 'foo' }]
       store.dispatch(actions.foo.set('bar'))
 
       expect(selectors.foo.get(store.getState())).toEqual('bar')
+    })
+  })
+
+  describe('initialState', () => {
+    it('default', () => {
+      const { models, store } = makeStoreAndDefineState({
+        space: {
+          foo: Field
+        }
+      })
+
+      const { selectors } = models.space
+
+      expect(selectors.foo.get(store.getState())).toEqual(undefined)
+    })
+
+    it('empty string', () => {
+      const { models, store } = makeStoreAndDefineState({
+        space: {
+          foo: Field({
+            initialState: ''
+          })
+        }
+      })
+
+      const { selectors } = models.space
+
+      expect(selectors.foo.get(store.getState())).toEqual('')
+    })
+
+    it('0', () => {
+      const { models, store } = makeStoreAndDefineState({
+        space: {
+          foo: Field({
+            initialState: 0
+          })
+        }
+      })
+
+      const { selectors } = models.space
+
+      expect(selectors.foo.get(store.getState())).toEqual(0)
     })
   })
 })

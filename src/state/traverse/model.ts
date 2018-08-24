@@ -8,15 +8,11 @@ import {
 import { getActionType } from '../utils'
 
 export const Model = {
-  fromDefinition: <LocalState>(compiledDefinition: ICompiledDefinition, namespacing: string[], topLevel?: boolean): IModelDefinition<LocalState> => ({
+  fromDefinition: <LocalState>(compiledDefinition: ICompiledDefinition, namespacing: string[]): IModelDefinition<LocalState> => ({
     kind: 'definition',
-    ...compiledDefinition.generate(namespacing, topLevel || false),
+    ...compiledDefinition.generate(namespacing),
   }),
-  fromFunction: (fn: any, namespacing: string[], topLevel?: boolean): IModelFunction => {
-    if (topLevel) {
-      throw Error('Redux Enterprise: Reducer Definition custom functions cannot be used at the reducer top level.')
-    }
-
+  fromFunction: (fn: any, namespacing: string[]): IModelFunction => {
     const type = getActionType(namespacing)
     const { reducer, action } = makeScope(namespacing, true)(type, fn)
     return {

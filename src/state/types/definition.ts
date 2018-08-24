@@ -14,14 +14,14 @@ export interface ICreateDefinition<LocalState> {
   reducers: ReducerMapOrConstructor<LocalState>
   selectors: ISelectorMap<LocalState>
   defaultState: LocalState
-  transformInitialState?: (initialState: any) => LocalState
+  transformInitialState?: (initialState: any, params: { namespacing: string[] }) => LocalState
 }
 
 export interface IDefinitionReducerMap<LocalState> {
   [name: string]: Reducer<LocalState>
 }
 
-export type DefinitionGenerator = <LocalState>(namespacing: string[], topLevel: boolean) => IModelDefinition<LocalState>
+export type DefinitionGenerator = <LocalState>(namespacing: string[]) => IModelDefinition<LocalState>
 
 export interface ICompiledDefinition {
   generate: DefinitionGenerator

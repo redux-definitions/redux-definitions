@@ -12,12 +12,12 @@ export interface ICreateModelGenerator<LocalState> {
   defaultState: any
   reducerMap: ReducerMapOrConstructor<LocalState>
   selectorMap: ISelectorMap<LocalState>
-  transformInitialState?: any
+  transformInitialState?: (state: any, params: { namespacing: string[] }) => LocalState
 }
 
 export const createModelGenerator =
   <LocalState>(params: ICreateModelGenerator<LocalState>) =>
-  (namespacing: string[], topLevel: boolean): IModelDefinition<LocalState> => {
+  (namespacing: string[]): IModelDefinition<LocalState> => {
   const {
     options,
     defaultState,
@@ -30,7 +30,7 @@ export const createModelGenerator =
     initialState: options.initialState,
     defaultState,
     transformInitialState,
-    topLevel,
+    namespacing
   })
 
   const model: IModelDefinition<LocalState> = {
