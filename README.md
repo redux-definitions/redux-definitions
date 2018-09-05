@@ -112,6 +112,17 @@ const { actions, reducers, selectors } = createReducers({
     editingId: Field
   }
 })
+
+export default reducers
+
+// in your reducer file
+import reducers as enterpriseReducers from './enterprise'
+import reducers as customReducers from './custom'
+
+const rootReducer = combineReducers({...enterpriseReducers, custom })
+
+const store = createStore(rootReducer)
+
 ```
 > Each top-level key in the `createReducers` schema generates a separate reducer.
 
