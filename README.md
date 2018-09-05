@@ -116,10 +116,9 @@ const { actions, reducers, selectors } = createReducers({
 export default reducers
 
 // in your reducer file
-import reducers as enterpriseReducers from './enterprise'
-import reducers as customReducers from './custom'
 
-const rootReducer = combineReducers({...enterpriseReducers, custom })
+// combine by spreading alongside your existing custom reducers
+const rootReducer = combineReducers({...enterpriseReducers, customReducer1: reducer1 })
 
 const store = createStore(rootReducer)
 
