@@ -1,0 +1,3 @@
+interface INormalizable {
+  id: string;
+}
