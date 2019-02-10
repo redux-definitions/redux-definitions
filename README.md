@@ -19,19 +19,16 @@
 
 <br>
 
-**TLDR**
-
-Define and share reusable slices of Redux. Common reducer patterns always get recycled, write them once and then never repeat yourself again!. Use new and existing [definitions](#reducer-definitions) to automatically generate namespaced reducers, actions, and selectors. _The 14 lines of code below replaces 500+ lines of typical Redux code_
 ```sh
 yarn add redux-definitions
 ```
-```js
-import { createReducers, Definitions } from 'redux-definitions'
-// Use the Definitions included in the redux-definitions library or use ones from elsewhere!
-const { Collection, Flag, Field, Index } = Definitions
 
-// Create your own new ones
-import { createDefinition } from 'redux-definitions'
+**TLDR**
+
+Define and share reusable slices of Redux. Common reducer patterns always get recycled, write them once and then never repeat yourself again! Use new and existing [definitions](#reducer-definitions) to automatically generate namespaced reducers, actions, and selectors. _The example below uses an existing Collection and custom Cart definition to implement the Redux code necessary for a basic shopping experience in 12 lines of code._
+```js
+import { createReducers, createDefinition, Definitions } from 'redux-definitions'
+const { Collection } = Definitions
 
 const Cart = createDefinition({
   defaultState: [],
@@ -45,7 +42,7 @@ const Cart = createDefinition({
 })
 
 const { actions, reducers, selectors } = createReducers({
-  onlineStore: {
+  shopping: {
     items: Collection,
     cart: Cart
   }
