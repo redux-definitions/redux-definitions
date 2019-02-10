@@ -21,7 +21,7 @@ yarn add redux-definitions
 
 **TLDR - Define and share reusable slices of Redux.**
 
-Common reducer patterns always get recycled, write them once and then never repeat yourself again! Use new and existing [definitions](#reducer-definitions) to automatically generate namespaced reducers, actions, and selectors.
+Common reducer patterns always get recycled, write them once and then never repeat yourself again! Use [definitions](#reducer-definitions) to automatically generate namespaced reducers, actions, and selectors for a predefined slice of functionality.
 
 > _The example below implements the Redux code necessary for a basic shopping experience in 12 lines of code. This is achieved by leveraging an existing Collection definition and creating a custom Cart definition._
 ```js
