@@ -15,10 +15,6 @@
   <a href="http://www.typescriptlang.org/index.html"><img src="https://badges.frapsoft.com/typescript/version/typescript-next.svg" alt="Typescript - Next"></a>
 </p>
 
->👋 Welcome! [Feel free to ask any questions you may have!](https://spectrum.chat/redux-enterprise)
-
-<br>
-
 ```sh
 yarn add redux-definitions
 ```
