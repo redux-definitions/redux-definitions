@@ -10,36 +10,44 @@
 <p align="center">
   <a href="https://travis-ci.org/redux-definitions/redux-definitions"><img src="https://img.shields.io/travis/redux-definitions/redux-definitions/master.svg" alt="travis"></a>
   <a href="https://www.npmjs.com/package/redux-definitions"><img src="https://img.shields.io/npm/v/redux-definitions.svg" alt="npm version"></a>
-  <a href="https://spectrum.chat/redux-definitions"><img src="https://withspectrum.github.io/badge/badge.svg" alt="Join the community on Spectrum"></a>
+  <a href="https://spectrum.chat/redux-enterprise"><img src="https://withspectrum.github.io/badge/badge.svg" alt="Join the community on Spectrum"></a>
   <a href="https://www.npmjs.com/package/redux-definitions"><img src="https://img.shields.io/npm/dm/redux-definitions.svg" alt="npm downloads"></a>
   <a href="http://www.typescriptlang.org/index.html"><img src="https://badges.frapsoft.com/typescript/version/typescript-next.svg" alt="Typescript - Next"></a>
 </p>
 
->👋 Welcome! [Feel free to ask any questions you may have!](https://spectrum.chat/redux-definitions)
-
->🙏 [**Looking for contributors to help complete TypeScript support!**](#typescript)
+>👋 Welcome! [Feel free to ask any questions you may have!](https://spectrum.chat/redux-enterprise)
 
 <br>
 
 **TLDR**
 
-Automatically create standard reducers, actions, and selectors by describing your core application state using a library of [reducer definitions](#reducer-definitions). _The 14 lines of code below replaces 500+ lines of typical Redux code_
+Define and share reusable slices of Redux. Common reducer patterns always get recycled, write them once and then never repeat yourself again!. Use new and existing [definitions](#reducer-definitions) to automatically generate namespaced reducers, actions, and selectors. _The 14 lines of code below replaces 500+ lines of typical Redux code_
 ```sh
 yarn add redux-definitions
 ```
 ```js
 import { createReducers, Definitions } from 'redux-definitions'
+// Use the Definitions included in the redux-definitions library or use ones from elsewhere!
 const { Collection, Flag, Field, Index } = Definitions
 
-const { actions, reducers, selectors } = createReducers({
-  todoList: {
-    todos: Collection,
-    completedIds: Index,
-    selectedIds: Index,
+// Create your own new ones
+import { createDefinition } from 'redux-definitions'
+
+const Cart = createDefinition({
+  defaultState: [],
+  reducers: {
+    addItem: (state, { payload }) => state.push(payload),
+    clearItems: () => [],
   },
-  todoEditor: {
-    isEditing: Flag,
-    editingId: Field
+  selectors: {
+    getTotal: (state) => state.reduce((total, item) => total + item.price, 0)
+  }
+})
+
+const { actions, reducers, selectors } = createReducers({
+  onlineStore: {
+    items: Collection,
+    cart: Cart
   }
 })
 ```
@@ -75,7 +83,7 @@ Use the browser console to call actions and selectors against the running Redux 
   + [Contributing](#contributing)
  
 # Overview
-Inspired by lessons learned building definitions UIs, Redux Definitions is a library that **abstracts common Redux reducer patterns into a library of definitions** that can be used to automatically create completely standardized actions, reducers, and selectors.
+Inspired by lessons learned building countless UIs, Redux Definitions is a library that **abstracts common Redux reducer patterns into reusable definitions** that can be shared and used to generate standardized and logically related actions, reducers, and selectors.
 
 > Redux Definitions is 100% compatible with any existing Redux-based project.
 
