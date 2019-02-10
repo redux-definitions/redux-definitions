@@ -5,15 +5,15 @@ export const isBrowser: boolean = process && process.title === 'browser'
 
 /* tslint:disable */
 export const makeError = (message: string): Error =>
-  Error(`Redux Enterprise\n\n${message}`)
+  Error(`Redux Definitions\n\n${message}`)
 export const logWarning = (message: string): void => {
   if (!isProduction) {
-    console.warn(`Redux Enterprise\n\n${message}\n`)
+    console.warn(`Redux Definitions\n\n${message}\n`)
   }
 }
 export const log = (message: string): void => {
   if (!isProduction) {
-    console.log(`Redux Enterprise\n\n${message}\n`)
+    console.log(`Redux Definitions\n\n${message}\n`)
   }
 }
 /* tslint:enable */

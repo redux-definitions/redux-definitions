@@ -1,6 +1,6 @@
 ## Reporting Issues and Asking Questions
 
-Before opening an issue, please search the [issue tracker](https://github.com/redux-enterprise/redux-enterprise/issues) to make sure your issue hasn’t already been reported.
+Before opening an issue, please search the [issue tracker](https://github.com/redux-definitions/redux-definitions/issues) to make sure your issue hasn’t already been reported.
 
 
 
@@ -14,7 +14,7 @@ On the other hand, sometimes the best way to start a conversation is to send a p
 
 In general, the contribution workflow looks like this:
 
-- Open a new issue in the [issue tracker](https://github.com/redux-enterprise/redux-enterprise/issues)
+- Open a new issue in the [issue tracker](https://github.com/redux-definitions/redux-definitions/issues)
 - Fork the repo.
 - Create a new feature branch based off the master branch.
 - Make sure all tests pass and there are no linting errors.
